@@ -26,6 +26,9 @@ public class Main {
         System.out.println(printNumberInWord(91));
 
        System.out.println(getDaysInMonth(4, 1600));
+
+       System.out.println(sumDigits(11022));
+       
     }
 
     public static String printNumberInWord(int number) {
@@ -99,6 +102,20 @@ public class Main {
         }
 
         return sumTotal;
+    }
+
+    public static int sumDigits(int number){
+        if (number < 0) return -1;
+        else if (number > 0 && number < 10) return number;
+        
+        int sum = 0;
+        while(number > 0) {
+            int lastDigit = number % 10;
+            sum += lastDigit;
+            number /= 10;
+        }
+
+        return sum;
     }
 
 }
