@@ -28,7 +28,11 @@ public class Main {
        System.out.println(getDaysInMonth(4, 1600));
 
        System.out.println(sumDigits(11022));
-       
+       System.out.println(isPalindrome(1101));
+       System.out.println(sumFirstAndLastDigit(-3105));
+       System.out.println(getEvenDigitSum(2000));
+       System.out.println(getGreatestCommonDivisor(21, 16));
+       printFactors(90);
     }
 
     public static String printNumberInWord(int number) {
@@ -118,4 +122,102 @@ public class Main {
         return sum;
     }
 
+    public static boolean isPalindrome(int number) {
+       String string = Integer.toString(number).replace('-', ' ').trim();
+       String reversed = new StringBuilder(string).reverse().toString().replace('-', ' ').trim();
+       return Integer.parseInt(string) == Integer.parseInt(reversed);
+    }
+
+    public static int sumFirstAndLastDigit(int number) {
+        if (number < 0) return -1;
+        int lastDigit = number % 10;
+        int newNumber = number / 10;
+        int sumResult = lastDigit;
+        if (newNumber == 0) sumResult += lastDigit;
+
+        while (newNumber != 0) {
+            if (newNumber < 10) {
+                sumResult += newNumber;
+                break;
+            }
+            newNumber /= 10;
+        }
+
+        return sumResult;
+    }
+
+    public static int getEvenDigitSum(int number) {
+        if (number < 0) return -1;
+
+        int sum = 0;
+        int lastDigit = number % 10;
+        int newNumber = number / 10;
+        if (lastDigit % 2 == 0) sum += lastDigit;
+
+        while (newNumber != 0) {
+            lastDigit = newNumber % 10;
+            newNumber /= 10;
+            if (lastDigit % 2 == 0) sum += lastDigit;
+        }
+
+        System.out.println("newNumber: " + newNumber);
+        
+
+        return sum;
+    }
+
+    public static boolean hasSharedDigit(int number1, int number2) {
+        if (number1 < 10 || number1 > 99 || number2 < 10 || number2 > 99) return false;
+        
+        int number1FirstDigit = number1 / 10;
+        int number1LastDigit = number1 % 10;
+        int number2FirstDigit = number2 / 10;
+        int number2LastDigit = number2 % 10;
+
+        boolean firstDigitsTheSame = number1FirstDigit == number2FirstDigit;
+        boolean lastDigitsTheSame = number1LastDigit == number2LastDigit;
+        boolean mix1TheSame = number1FirstDigit == number2LastDigit;
+        boolean mix2TheSame = number2FirstDigit == number1LastDigit;
+
+        return firstDigitsTheSame || lastDigitsTheSame || mix1TheSame || mix2TheSame;
+    }
+
+    public static int getGreatestCommonDivisor(int first, int second) {
+        if (first < 10 || second < 10) return -1;
+
+        int larger = first;
+        int smaller = second;
+        if (second > larger) {
+            larger = second;
+            smaller = first;
+        }
+
+        for(int i = smaller; i > 0; i--) {
+            boolean largerIsDivisible = larger % i == 0;
+            boolean smallerIsDivisible = smaller % i == 0;
+
+            if (largerIsDivisible && smallerIsDivisible) return i;
+        }
+
+        return 1;
+    }
+
+    public static void printFactors(int number) {
+        if (number < 1 ) {
+            System.out.println("Invalid Value");
+            return;
+        }
+        
+        double stop = Math.floor((double) number / 2.0d);
+        for (double i = 0; i <= stop; i++) {
+            if (number % i == 0) System.out.println((int)i);
+        }
+
+        System.out.println(number);
+    }
+
+    public static boolean isPerfectNumber(int number) {
+        if (number < 1) return false;
+        
+    }
 }
