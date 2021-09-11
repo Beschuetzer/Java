@@ -1,5 +1,7 @@
 package major.adam;
 
+import java.util.ArrayList;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -33,6 +35,11 @@ public class Main {
        System.out.println(getEvenDigitSum(2000));
        System.out.println(getGreatestCommonDivisor(21, 16));
        printFactors(90);
+       System.out.println(isPerfectNumber(100));
+       System.out.println(getDigitCount(0));
+       System.out.println(reverse(107));
+       numberToWords(11);
+       
     }
 
     public static String printNumberInWord(int number) {
@@ -216,8 +223,152 @@ public class Main {
         System.out.println(number);
     }
 
+    public static ArrayList<Integer> getFactors(int number) {
+        ArrayList<Integer> factors = new ArrayList<Integer>();
+        if (number < 1 ) {
+            factors.add(-1);
+            return factors;
+        }
+        
+        double stop = Math.floor((double) number / 2.0d);
+        for (double i = 0; i <= stop; i++) {
+            if (number % i == 0) factors.add((int)i);
+        }
+
+        factors.add(number);
+
+       return factors;
+    }
+
     public static boolean isPerfectNumber(int number) {
         if (number < 1) return false;
+
+        ArrayList<Integer> factors = getFactors(number);
         
+        factors.remove(factors.size() - 1);
+        int sum = factors.stream().reduce((a, b) -> a+b).get();
+        
+        return sum == number;
+    }
+
+    public static int getDigitCount(int number) {
+        if (number < 0) return -1;
+        int count = 0;
+        int newNumber = number / 10;
+
+        while (newNumber != 0) {
+            count++;
+            newNumber /= 10;
+        }
+
+        count++;
+        return count;
+    }
+
+    public static int reverse(int number) {
+        //get the factor that is power of 10
+        int reversed = 0;
+        int newNumber = number / 10;
+        int lastDigit = number % 10;
+        int numberOfDigits = getDigitCount(Math.abs(number));
+
+
+        newNumber = number / 10;
+        lastDigit = number % 10;
+
+        int i = 0;
+        while (lastDigit != 0 || newNumber != 0){
+            int nthPower = numberOfDigits - i - 1;
+            reversed += Math.pow(10, (nthPower)) * lastDigit;
+            
+            lastDigit = newNumber % 10;
+            newNumber /= 10;
+            i++;
+        }
+
+        return reversed;
+    }
+
+    public static void numberToWords(int number) {
+        if (number < 0) {
+            System.out.println("Invalid Value");
+            return;            
+        }
+
+        int reversed = reverse(number);
+        int digitCount = getDigitCount(number);
+        int lastDigit = reversed % 10;
+        int newNumber = reversed / 10;
+        int count = 0;
+
+        do {
+            switch (lastDigit) {
+                case 0:
+                    System.out.println("Zero");
+                    break;
+                case 1:
+                    System.out.println("One");
+                    break;
+                case 2:
+                    System.out.println("Two");
+                    break;
+                case 3:
+                    System.out.println("Three");
+                    break;
+                case 4:
+                    System.out.println("Four");
+                    break;
+                case 5:
+                    System.out.println("Five");
+                    break;
+                case 6:
+                    System.out.println("Six");
+                    break;
+                case 7:
+                    System.out.println("Seven");
+                    break;
+                case 8:
+                    System.out.println("Eight");
+                    break;
+                case 9:
+                    System.out.println("Nine");
+                    break;
+                default:
+                    System.out.println("Invalid Value");
+                    break;
+            }
+            lastDigit = newNumber % 10;
+            newNumber /= 10;
+            count++;
+
+        } while (count != digitCount);
+
+    }
+
+    public static String getWordForNumber(int number) {
+        switch (number) {
+            case 0:
+                return "Zero";
+            case 1:
+                return "One";
+            case 2:
+                return "Two";
+            case 3:
+                return "Three";
+            case 4:
+                return "Four";
+            case 5:
+                return "Five";
+            case 6:
+                return "Six";
+            case 7:
+                return "Seven";
+            case 8:
+                return "Eight";
+            case 9:
+                return "Nine";
+            default:
+                return "Invalid Value";
+        }
     }
 }
