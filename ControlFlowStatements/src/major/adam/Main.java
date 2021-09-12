@@ -39,7 +39,9 @@ public class Main {
        System.out.println(getDigitCount(0));
        System.out.println(reverse(107));
        numberToWords(11);
-       
+       System.out.println(canPack(5,3,24));
+       System.out.println(getLargestPrime(25));
+       printSquareStar(10);
     }
 
     public static String printNumberInWord(int number) {
@@ -342,6 +344,7 @@ public class Main {
             count++;
 
         } while (count != digitCount);
+ 
 
     }
 
@@ -369,6 +372,77 @@ public class Main {
                 return "Nine";
             default:
                 return "Invalid Value";
+        }
+    }
+
+    public static boolean canPack(int bigCount, int smallCount, int goal) {
+        int bigCountMultiplier = 5;
+        
+        if (bigCount < 0 || smallCount < 0 || goal < 0) return false;
+        if (goal < 5 && smallCount < goal) return false;
+        if ((goal % 5 == 0) && (bigCount * bigCountMultiplier >= goal)) return true;
+        if (goal <= smallCount) return true;
+
+        
+        boolean canPack = false;
+        if (bigCount * bigCountMultiplier + smallCount >= goal) {
+            int maxNumberOfBigCountCanUse = goal / bigCountMultiplier;
+
+            int numberFilledByBigCount = maxNumberOfBigCountCanUse <= bigCount ? (maxNumberOfBigCountCanUse * bigCountMultiplier) : (bigCount * bigCountMultiplier);
+            
+            int numberOfSmallCountNeeded = goal - numberFilledByBigCount;
+
+            canPack = numberOfSmallCountNeeded <= smallCount;
+        } 
+
+        return canPack;
+    }
+
+    public static int getLargestPrime(int number) {
+        if (number <= 1 ) return -1;
+
+        for(double i = Math.floor(number / 2); i > 1; i--) {
+            if (number % i == 0) {
+                //check if factor is prime, if so then return it
+                boolean isFactorPrime = true;
+                for(double j = Math.floor(i / 2); j > 1; j--) {
+                    if (i % j == 0) {
+                        isFactorPrime = false;
+                        break;
+                    }
+                }
+
+                if (isFactorPrime) return (int) i;
+            }
+        }
+
+        return number;
+    }
+
+    public static void printSquareStar(int number) {
+        if (number < 5) {
+            System.out.println("Invalid Value");
+            return;
+        }
+
+        //number is number of rows (max iteration of loop)
+        for(int column = 1; column <= number; column++) {
+            for (int row = 1; row <= number; row++) {
+                boolean shouldPrintStart = false;
+
+                boolean isFirstOrLastRow = (row == 1 || row == number);
+                boolean isFirstOrLastColumn = (column == 1 || column == number);
+                boolean rowEqualsColumn = column == row;
+                boolean columnEquals = column == (number - row + 1);
+                
+                if (isFirstOrLastRow || isFirstOrLastColumn || rowEqualsColumn|| columnEquals) shouldPrintStart = true;
+
+                if (shouldPrintStart) System.out.print("*");
+                else {
+                    System.out.print(" ");
+                }
+                if (row == number) System.out.println("");
+            }
         }
     }
 }
