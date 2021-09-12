@@ -5,8 +5,11 @@ import java.util.Calendar;
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println(getBucketCount(2.75, 3.25, 2.5, 1));
+        
         // ReadingUserInputChallenge();
-        MinAndMaxInputChallenge();
+        // MinAndMaxInputChallenge();
+        // inputThenPrintSumAndAverage();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your birth year: ");
@@ -77,5 +80,48 @@ public class Main {
         }
         
         scanner.close();
+    }
+
+    public static void inputThenPrintSumAndAverage() {
+        Scanner scanner = new Scanner(System.in);
+        int sum = 0;
+        int count = 0;
+        long avg = 0;
+        
+        while (true) {
+            System.out.print("Enter an integer: ");
+            boolean hasNextInt = scanner.hasNextInt();
+
+            if (hasNextInt) {
+                int numberEntered = scanner.nextInt();
+                
+                count++;
+                sum += numberEntered;
+                avg = sum / count;
+
+                System.out.println("avg: " + avg);
+                System.out.println("sum: " + sum);
+            } else {
+                String format = "SUM = %s AVG = %S";
+                System.out.println(String.format(format, sum, avg));
+                break;
+            }
+
+            scanner.nextLine();
+        }
+
+        scanner.close();
+    }
+
+    public static int getBucketCount(double width, double height, double areaPerBucket, int extraBuckets) {
+        if (width <= 0 || height <= 0 || areaPerBucket <= 0 || extraBuckets < 0) return -1;
+
+        double areaToCover = width * height;
+        double areaCanCoverFromExtras = extraBuckets * areaPerBucket;
+
+        double areaNeedToGetBucketsFor = (areaToCover - areaCanCoverFromExtras);
+
+        if (areaNeedToGetBucketsFor <= 0) return 0;
+        return (int) Math.ceil(areaNeedToGetBucketsFor / areaPerBucket);
     }
 }
