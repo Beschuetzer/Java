@@ -1,8 +1,8 @@
 package major.adam;
 
 public class Main {
-
     public static void main(String[] args) {
-	// write your code here
+        Burger burger = new Burger();
+        System.out.println(IngredientList.getPrice(Ingredients.tomato));
     }
 }
