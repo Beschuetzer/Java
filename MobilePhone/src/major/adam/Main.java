@@ -21,6 +21,8 @@ public class Main {
         mobilePhone.printContacts();
         mobilePhone.removeContact(new Contact("Adam", 1234));
         mobilePhone.printContacts();
+        mobilePhone.addContact(contact4);
+        mobilePhone.printContacts();
     }
 
 

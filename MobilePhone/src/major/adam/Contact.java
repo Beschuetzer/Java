@@ -4,7 +4,7 @@ public class Contact {
     private String name;
     private long phoneNumber;
 
-    public Contact(String name, int phoneNumber) {
+    public Contact(String name, long phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
@@ -15,5 +15,9 @@ public class Contact {
 
     public long getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public static Contact createContact(String name, long phoneNumber) {
+        return new Contact(name, phoneNumber);
     }
 }
