@@ -2,45 +2,19 @@ package major.adam;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Album {
     private String name;
     private String artist;
-    private ArrayList<Song> songs;
+    private SongList songs;
 
     public Album(String name, String artist) {
         this.name = name;
         this.artist = artist;
-        this.songs = new ArrayList<Song>();
+        this.songs = new SongList();
     }
 
-    public boolean addSong(String title, double duration) {
-        if (title == "" || duration <= 0) {
-            System.err.println("Invalid arg in album.addSong()");
-            return false;
-        }
-
-        Song songFound = findSong(title);
-        if (songFound != null) return false;
-
-        songs.add(new Song(title, duration));
-        return true;
-    }
-
-    private Song findSong(String title) {
-        if (title == "") {
-            System.err.println("Invalid arg in album.findSong()");
-            return null;
-        }
-
-        for(Song song : songs) {
-            if (song.getTitle() == title) {
-                return song;
-            }
-        }
-
-        return null;
-    }
 
     public boolean addToPlayList(int trackNumber, LinkedList<Song> playlist) {
         if (trackNumber <= 0 || playlist == null) {
@@ -48,7 +22,7 @@ public class Album {
             return false;
         }
 
-        Song songToAdd = songs.get(trackNumber - 1);
+        Song songToAdd = songs.getSongs().get(trackNumber - 1);
         if (songToAdd == null ) return  false;
 
         playlist.add(songToAdd);
@@ -61,11 +35,50 @@ public class Album {
             return false;
         }
 
-        Song songToAdd = findSong(title);
+        Song songToAdd = songs.findSong(title);
         if (songToAdd == null ) return  false;
 
         playlist.add(songToAdd);
         return true;
     }
 
+    private class SongList {
+        private List<Song> songs;
+
+        public SongList() {
+            this.songs = new ArrayList<Song>();
+        }
+
+        public List<Song> getSongs() {
+            return songs;
+        }
+
+        public boolean addSong(Song song) {
+            if (song.getTitle() == "" || song.getDuration() <= 0) return false;
+
+            Song foundSong = findSong(song);
+            if (foundSong != null) return false;
+
+            this.songs.add(song);
+            return true;
+        }
+
+        private Song findSong(Song song) {
+            if (song.getTitle() == "" || song.getDuration() <= 0) return new Song("", 0);
+
+            for(Song songLocal : songs) {
+                if (song.getTitle() == songLocal.getTitle() && song.getDuration() == songLocal.getDuration()) return songLocal;
+            }
+            return null;
+        }
+
+        private Song findSong(String title) {
+            if (title == "") return new Song("", 0);
+
+            for(Song songLocal : songs) {
+                if (title == songLocal.getTitle()) return songLocal;
+            }
+            return null;
+        }
+    }
 }
