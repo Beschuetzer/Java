@@ -1,6 +1,6 @@
 package major.adam;
 
-public class SearchTree implements NodeList{
+public class SearchTree implements NodeList {
     private ListItem root;
     private int size;
 
@@ -28,23 +28,29 @@ public class SearchTree implements NodeList{
         }
 
         ListItem currentNode = root;
+        ListItem rightNode = root.next();
+        ListItem leftNode = root;
+
         while (currentNode != null) {
             int itemComparison = itemToAdd.compareTo(currentNode);
-
             if (itemComparison == 0) return false;
             else if (itemComparison > 0) {
-                if (currentNode.next() == null) {
+                if (rightNode == null) {
                     currentNode.setNext(itemToAdd);
                     return true;
                 }
-                currentNode = currentNode.next();
+
+                currentNode = rightNode;
             } else if (itemComparison < 0) {
-                if (currentNode.previous() == null) {
+                if (leftNode == null) {
                     currentNode.setPrevious(itemToAdd);
                     return true;
                 }
-                currentNode = currentNode.previous();
+                currentNode = leftNode;
             }
+
+            rightNode = currentNode.next();
+            leftNode = currentNode.previous();
         }
 
         return false;
@@ -53,44 +59,90 @@ public class SearchTree implements NodeList{
     @Override
     public boolean removeItem(ListItem itemToRemove) {
         if (itemToRemove == null || root == null) return false;
-        if (root.getValue() == itemToRemove.getValue() ) {
+        if (root.getValue() == itemToRemove.getValue()) {
             root = null;
             size = size <= 1 ? size = 0 : size--;
             return true;
         }
 
         ListItem current = root;
-        ListItem previous = root;
-        ListItem next = current.next() != null ? current.next() : null;
-        int count = 0;
+        ListItem previous = null;
+
+        int iterations = 1;
         while (current != null) {
-            if (current.compareTo(itemToRemove) == 0) {
-                if (size == 1) {
-                    root = null;
-                } else {
-//                    boolean previousIsSameAsCurrent = previous.compareTo(current) == 0;
-
-                    if (count == 0) {
-                        root = next;
-                        root.setPrevious(null);
-                    } else {
-                        previous.setNext(next);
-                        next.setPrevious(previous);
+            System.out.println("current.getValue(): " + current.getValue());
+            System.out.println("itemToRemove.getValue(): " + itemToRemove.getValue());
+            if (current.getValue() == itemToRemove.getValue()) {
+                if (iterations == 1) {
+                    if (size == 1) {
+                        root = null;
+                        size = 0;
+                        return  true;
                     }
-//                    if (!previousIsSameAsCurrent) previous.setNext(next);
-                }
 
-                size = size <= 1 ? size = 0 : size--;
+                    //NEED TO FIGURE OUT HOW TO HANDLE ROOT REMOVAL
+                    boolean isLeftNull = root.previous() == null;
+                    boolean isRightNull = root.next() == null;
+                    if (!isLeftNull) {
+                        root = root.previous();
+
+                        if (!isRightNull)
+                    } else if (!isRightNull) {
+                        root = root.next();
+                    }
+
+                    size = size <= 1 ? 0 : size--;
+                } else {
+                    int comparisonWithPrevious = itemToRemove.compareTo(previous);
+                    boolean isLeftNull = current.previous() == null;
+                    boolean isRightNull = current.next() == null;
+
+                    if (comparisonWithPrevious > 0) {
+                        if (!isLeftNull) {
+                            previous.setNext(current.previous());
+                            if (current.next() != null) addItem(current.next(), current.previous(), true);
+                        } else {
+                            previous.setNext(current.next());
+                        }
+                    } else if (comparisonWithPrevious < 0) {
+                        if (!isRightNull) {
+                            previous.setPrevious(current.next());
+                            if (current.previous() != null) addItem(current.previous(), current.next(), false);
+
+                        } else {
+                            previous.setPrevious(current.previous());
+                        }
+                    }
+                    size = size <= 1 ? 0 : size--;
+                }
                 return true;
             }
 
             previous = current;
-            current = current.next();
-            next = current != null ? current.next() : null;
-            count++;
+            current = itemToRemove.compareTo(current) > 0 ? current.next() : current.previous();
+            iterations++;
         }
 
         return false;
+    }
+
+    private void addItem(ListItem itemToAdd, ListItem root, boolean addToRight) {
+        if (root == null || itemToAdd == null) return;
+
+        if (addToRight) {
+            ListItem furthestRight = root;
+            while (furthestRight.next() != null) {
+                furthestRight = furthestRight.next();
+            }
+            furthestRight.setNext(itemToAdd);
+        } else {
+            ListItem furthestLeft = root;
+            while (furthestLeft.previous() != null) {
+                furthestLeft = furthestLeft.previous();
+            }
+            furthestLeft.setPrevious(itemToAdd);
+        }
+
     }
 
     @Override

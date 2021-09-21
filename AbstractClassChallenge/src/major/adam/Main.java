@@ -34,22 +34,23 @@ public class Main {
 
         SearchTree searchTree = new SearchTree(new Node(10));
         ListItem[] nodesToAdd = {
+                new Node(7),
                 new Node(9),
                 new Node(11),
                 new Node(10),
-                new Node(7),
                 new Node(14),
                 new Node(20),
                 new Node(12),
-                new Node(9.5),
                 new Node(8)
-
-
         };
 
         for (ListItem node : nodesToAdd) {
             searchTree.addItem(node);
         }
+
+        searchTree.removeItem(new Node(14));
+        searchTree.removeItem(new Node(10));
+
         searchTree.traverse(searchTree.getRoot());
         System.out.println();
         searchTree.traversePreOrder(searchTree.getRoot());
