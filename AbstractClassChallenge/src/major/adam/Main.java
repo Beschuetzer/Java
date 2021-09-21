@@ -1,9 +1,5 @@
 package major.adam;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -16,15 +12,15 @@ public class Main {
                 new Node("1234.7"),
         };
 
-        for(ListItem item : items) {
+        for (ListItem item : items) {
             linkedList.addItem(item);
-            linkedList.traverse();
+            linkedList.traverse(linkedList.getRoot());
             linkedList.traverseInReverse();
         }
 
         linkedList.removeItem(new Node("1234.7"));
         linkedList.removeItem(new Node("1234.5"));
-        linkedList.traverse();
+        linkedList.traverse(linkedList.getRoot());
         linkedList.traverseInReverse();
 
 
@@ -35,5 +31,30 @@ public class Main {
 //        }
 //        Arrays.sort(stringArrayList.toArray());
 //        System.out.println(stringArrayList.toString());
+
+        SearchTree searchTree = new SearchTree(new Node(10));
+        ListItem[] nodesToAdd = {
+                new Node(9),
+                new Node(11),
+                new Node(10),
+                new Node(7),
+                new Node(14),
+                new Node(20),
+                new Node(12),
+                new Node(9.5),
+                new Node(8)
+
+
+        };
+
+        for (ListItem node : nodesToAdd) {
+            searchTree.addItem(node);
+        }
+        searchTree.traverse(searchTree.getRoot());
+        System.out.println();
+        searchTree.traversePreOrder(searchTree.getRoot());
+        System.out.println();
+        searchTree.traversePostOrder(searchTree.getRoot());
+        System.out.println();
     }
 }

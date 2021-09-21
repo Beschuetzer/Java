@@ -36,11 +36,18 @@ public class Node extends ListItem {
         boolean isThisValueDouble = super.getValue() instanceof Double;
         boolean isItemValueString = item.getValue() instanceof String;
         boolean isItemValueDouble = item.getValue() instanceof Double;
+        boolean isItemInteger = item.getValue() instanceof Integer;
+        boolean isThisInteger = super.getValue() instanceof Integer;
 
         String valueOne = "";
         String valueTwo = "";
 
-        if (isItemValueString && isThisValueString) {
+        if (isItemInteger && isThisInteger) {
+            if ((Integer) super.getValue() < (Integer) item.getValue()) return -1;
+            else if (super.getValue() == item.getValue()) return 0;
+            else return 1;
+        }
+        else if (isItemValueString && isThisValueString) {
             valueOne = (String) super.getValue();
             valueTwo = (String) item.getValue();
         } else if (isItemValueDouble && isThisValueDouble) {
