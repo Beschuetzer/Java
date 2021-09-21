@@ -30,7 +30,7 @@ public class Node extends ListItem {
     @Override
     int compareTo(ListItem item) {
         System.out.println("compareTo-------------------------");
-        if (item.getValue() == super.getValue()) return 1;
+        if (item.getValue() == super.getValue()) return 0;
 
         boolean isThisValueString = super.getValue() instanceof String;
         boolean isThisValueDouble = super.getValue() instanceof Double;
@@ -80,12 +80,12 @@ public class Node extends ListItem {
 //        System.out.println("isItemValueString: " + isItemValueString);
 
         if(item != null) {
-//            System.out.println("valueOne: " + valueOne);
-//            System.out.println("valueTwo: " + valueTwo);
+            System.out.println("valueOne: " + valueOne);
+            System.out.println("valueTwo: " + valueTwo);
             if (valueOne.trim().equals("") || valueTwo.trim().equals("")) return 1;
-//            System.out.println("item: " + item.getValue());
-//            System.out.println("super: " + super.getValue());
-//            System.out.println("result: " + valueOne.compareTo(valueTwo));
+            System.out.println("item: " + item.getValue());
+            System.out.println("super: " + super.getValue());
+            System.out.println("result: " + valueOne.compareTo(valueTwo));
             return (valueOne.compareTo(valueTwo));
         } else {
             return -1;

@@ -7,7 +7,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        MyLinkedList linkedList = new MyLinkedList(new Node(10));
+        MyLinkedList linkedList = new MyLinkedList(new Node(14));
         ListItem[] items = {
                 new Node("1abvcdcd"),
                 new Node(1234.5d),
@@ -19,7 +19,11 @@ public class Main {
         for(ListItem item : items) {
             linkedList.addItem(item);
             linkedList.traverse();
+            linkedList.traverseInReverse();
         }
+
+//        linkedList.removeItem(new Node("1234.7"));
+        linkedList.traverse();
 
 
 //        List<String> stringArrayList = new ArrayList<String>();

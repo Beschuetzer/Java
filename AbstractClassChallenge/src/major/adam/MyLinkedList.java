@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MyLinkedList implements NodeList {
     private ListItem root = null;
+    private ListItem end = null;
     private int size;
 
     public MyLinkedList (ListItem root) {
@@ -26,6 +27,7 @@ public class MyLinkedList implements NodeList {
 
         if (root == null) {
             root = itemToAdd;
+            end = itemToAdd;
             size = 1;
             return true;
         }
@@ -34,21 +36,39 @@ public class MyLinkedList implements NodeList {
         ListItem nextItem = currentItem.next() != null ? currentItem.next() : null;
         ListItem previousItem = root;
 
+        int count = 0;
         while (currentItem != null) {
                 int itemToAddComparison = itemToAdd.compareTo(currentItem);
 
                 if (itemToAddComparison < 0) {
                     //append before current
+                    System.out.println("before current");
+                    System.out.println("Size: " + size);
                     if (size == 1) {
-                        ListItem temp = root;
+                        ListItem temp = new Node(root.getValue());
+                        temp.setPrevious(root);
+                        temp.setNext(null);
+                        end = temp;
+
                         root = itemToAdd;
-                        itemToAdd.setNext(temp);
+                        root.setNext(temp);
+                        root.setPrevious(null);
+
+                        System.out.println(root.getValue());
+                        System.out.println(temp.getValue());
                     } else {
-                        previousItem.setNext(itemToAdd);
+                        boolean isPreviousSameAsCurrent = previousItem.compareTo(currentItem) == 0;
+                        itemToAdd.setPrevious(!isPreviousSameAsCurrent ? previousItem : null);
                         itemToAdd.setNext(currentItem);
+                        currentItem.setPrevious(itemToAdd);
+
+                        if (count == 0) root = itemToAdd;
+                        if (!isPreviousSameAsCurrent) previousItem.setNext(itemToAdd);
+                        if (nextItem == null) end = currentItem;
                     }
 
                     size++;
+                    count++;
                     return true;
                 } else if (itemToAddComparison == 0) {
                     System.out.println("Skipping as is already present");
@@ -57,6 +77,9 @@ public class MyLinkedList implements NodeList {
                     if (nextItem == null) {
                         //when larger than current and at end
                         currentItem.setNext(itemToAdd);
+                        itemToAdd.setPrevious(currentItem);
+                        itemToAdd.setNext(null);
+                        end = itemToAdd;
                         size++;
                         return true;
                     } else {
@@ -65,6 +88,11 @@ public class MyLinkedList implements NodeList {
                             //when larger than current and less than next
                             currentItem.setNext(itemToAdd);
                             itemToAdd.setNext(nextItem);
+                            itemToAdd.setPrevious(currentItem);
+                            nextItem.setPrevious(itemToAdd);
+
+                            if (nextItem.next() == null) end = nextItem;
+
                             size++;
                             return true;
                         }
@@ -123,6 +151,23 @@ public class MyLinkedList implements NodeList {
         while (item != null) {
             System.out.println(item.getValue());
             item = item.next();
+        }
+        System.out.println("-------------------");
+
+    }
+
+    @Override
+    public void traverseInReverse() {
+        System.out.println("Traversing in reverse-------------------");
+        if (end == null) {
+            System.out.println("The list is empty");
+            return;
+        }
+
+        ListItem item = end;
+        while (item != null) {
+            System.out.println(item.getValue());
+            item = item.previous();
         }
         System.out.println("-------------------");
 
