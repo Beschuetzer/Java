@@ -13,6 +13,7 @@ public class Main {
                 new Node(1234.5d),
                 new Node(1234.8d),
                 new Node("1234.5"),
+                new Node("1234.7"),
         };
 
         for(ListItem item : items) {
@@ -21,14 +22,12 @@ public class Main {
         }
 
 
-        List<String> stringArrayList = new ArrayList<String>();
-        String[] strings = {"1abv", "1234.5", "10"};
-        for (String string : strings) {
-            stringArrayList.add(string);
-        }
-        Arrays.sort(stringArrayList.toArray());
-        System.out.println(stringArrayList.toString());
-
-        System.out.println("1abvcdc".compareTo("1234.5"));
+//        List<String> stringArrayList = new ArrayList<String>();
+//        String[] strings = {"1abv", "1234.5", "10"};
+//        for (String string : strings) {
+//            stringArrayList.add(string);
+//        }
+//        Arrays.sort(stringArrayList.toArray());
+//        System.out.println(stringArrayList.toString());
     }
 }

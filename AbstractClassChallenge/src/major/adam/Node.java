@@ -64,12 +64,12 @@ public class Node extends ListItem {
             }
 
             try {
-                valueTwo = (String) super.getValue();
+                valueTwo = (String) item.getValue();
             } catch (Exception e) {
                 try {
-                    valueTwo = Integer.toString((Integer) super.getValue());
+                    valueTwo = Integer.toString((Integer) item.getValue());
                 } catch (Exception e2) {
-                    valueTwo = Double.toString((Double) super.getValue());
+                    valueTwo = Double.toString((Double) item.getValue());
                 }
             }
         }
@@ -77,16 +77,15 @@ public class Node extends ListItem {
 //        System.out.println("isThisValueString: " + isThisValueString);
 //        System.out.println("isThisValueDouble: " + isThisValueDouble);
 //        System.out.println("isItemValueDouble: " + isItemValueDouble);
-//        System.out.println("isThisValueString: " + isThisValueString);
-
+//        System.out.println("isItemValueString: " + isItemValueString);
 
         if(item != null) {
-            if (valueOne.trim().equals("") || valueTwo.trim().equals("") || valueOne.equals(valueTwo)) return 1;
-            System.out.println("item: " + item.getValue());
-            System.out.println("super: " + super.getValue());
-            System.out.println("valueOne: " + valueOne);
-            System.out.println("valueTwo: " + valueTwo);
-            System.out.println("result: " + valueOne.compareTo(valueTwo));
+//            System.out.println("valueOne: " + valueOne);
+//            System.out.println("valueTwo: " + valueTwo);
+            if (valueOne.trim().equals("") || valueTwo.trim().equals("")) return 1;
+//            System.out.println("item: " + item.getValue());
+//            System.out.println("super: " + super.getValue());
+//            System.out.println("result: " + valueOne.compareTo(valueTwo));
             return (valueOne.compareTo(valueTwo));
         } else {
             return -1;

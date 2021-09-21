@@ -1,10 +1,14 @@
 package major.adam;
 
+import java.util.List;
+
 public class MyLinkedList implements NodeList {
     private ListItem root = null;
+    private int size;
 
     public MyLinkedList (ListItem root) {
         this.root = root;
+        this.size = 1;
     }
 
     @Override
@@ -20,71 +24,58 @@ public class MyLinkedList implements NodeList {
             return false;
         }
 
-        System.out.println("itemToAdd.getValue(): " + itemToAdd.getValue());
-        System.out.println("root.getValue(): " + root.getValue());
-        if (root.compareTo(itemToAdd) < 0) {
-            System.out.println("Adding as first item");
-            ListItem temp = root;
+        if (root == null) {
             root = itemToAdd;
-            itemToAdd.setNext(temp);
+            size = 1;
             return true;
         }
-        if (root.next() == null) {
-            System.out.println("Exiting early");
-            root.rightLink = itemToAdd;
-            return true;
-        }
-
 
         ListItem currentItem = root;
-        ListItem nextItem = currentItem.next();
-        int nextItemComparison = -1;
-        int currentItemComparison = -1;
+        ListItem nextItem = currentItem.next() != null ? currentItem.next() : null;
+        ListItem previousItem = root;
 
-        while (nextItem != null) {
-            System.out.println("1--------------");
-            nextItemComparison = nextItem.compareTo(itemToAdd);
-            currentItemComparison = currentItem.compareTo(itemToAdd);
+        while (currentItem != null) {
+                int itemToAddComparison = itemToAdd.compareTo(currentItem);
 
-            if (currentItemComparison == 0 || nextItemComparison == 0) {
-                System.out.println("Skipping as is already present");
-                System.out.println("nextItem: " + nextItem.getValue());
-                System.out.println("itemToAdd: " + itemToAdd.getValue());
-                System.out.println("root: " + root.getValue());
-                System.out.println(currentItem.compareTo(itemToAdd));
-                System.out.println(nextItem.compareTo(itemToAdd));
-                return false;
-            }
-            System.out.println("2---------------");
+                if (itemToAddComparison < 0) {
+                    //append before current
+                    if (size == 1) {
+                        ListItem temp = root;
+                        root = itemToAdd;
+                        itemToAdd.setNext(temp);
+                    } else {
+                        previousItem.setNext(itemToAdd);
+                        itemToAdd.setNext(currentItem);
+                    }
 
-            if (nextItem.next() == null) break;
-            System.out.println("3-----------------");
+                    size++;
+                    return true;
+                } else if (itemToAddComparison == 0) {
+                    System.out.println("Skipping as is already present");
+                    return false;
+                } else {
+                    if (nextItem == null) {
+                        //when larger than current and at end
+                        currentItem.setNext(itemToAdd);
+                        size++;
+                        return true;
+                    } else {
+                        int nextItemComparison = itemToAdd.compareTo(nextItem);
+                        if (nextItemComparison < 0) {
+                            //when larger than current and less than next
+                            currentItem.setNext(itemToAdd);
+                            itemToAdd.setNext(nextItem);
+                            size++;
+                            return true;
+                        }
+                    }
+                }
 
-            int comparison = itemToAdd.compareTo(nextItem.next());
-
-            System.out.println("Comparison: " + comparison);
-            if (comparison < 0) {
-                System.out.println("+++++++++++re routing");
-                currentItem.rightLink = itemToAdd;
-                itemToAdd.rightLink = nextItem;
-                return true;
-            }
-
+            previousItem = currentItem;
             currentItem = currentItem.next();
-            nextItem = currentItem.next();
+            nextItem = currentItem != null ? currentItem.next() : null;
         }
 
-        System.out.println("Current: " + currentItem.value);
-
-        if (nextItemComparison > 0) {
-            ListItem temp = currentItem.next();
-            currentItem.setNext(itemToAdd);
-            itemToAdd.setNext(temp);
-        } else {
-            currentItem.next().setNext(itemToAdd);
-        }
-
-        System.out.println("----------------------------");
         return true;
     }
 
@@ -93,20 +84,28 @@ public class MyLinkedList implements NodeList {
         if (itemToRemove == null || root == null) return false;
         if (root.getValue() == itemToRemove.getValue() ) {
             root = null;
+            size = size <= 1 ? size = 0 : size--;
             return true;
         }
 
         ListItem current = root;
         ListItem previous = root;
-        ListItem next = current.next();
+        ListItem next = current.next() != null ? current.next() : null;
 
-        while (next != null) {
-            if (next.compareTo(itemToRemove) == 0) {
+        while (current != null) {
+            if (current.compareTo(itemToRemove) == 0) {
+                if (size == 1) {
+                    root = null;
+                }
+
                 previous.setNext(next);
+                size = size <= 1 ? size = 0 : size--;
+                return true;
             }
 
             previous = current;
             current = current.next();
+            next = current != null ? current.next() : null;
         }
 
         return false;
