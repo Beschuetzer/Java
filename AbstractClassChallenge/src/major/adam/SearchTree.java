@@ -84,8 +84,9 @@ public class SearchTree implements NodeList {
                     boolean isLeftNull = root.previous() == null;
                     boolean isRightNull = root.next() == null;
                     if (!isLeftNull) {
+                        ListItem next = root.next();
                         root = root.previous();
-
+                        root.setNext(next);
                         if (!isRightNull)
                     } else if (!isRightNull) {
                         root = root.next();
