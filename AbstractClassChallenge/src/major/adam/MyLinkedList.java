@@ -119,14 +119,26 @@ public class MyLinkedList implements NodeList {
         ListItem current = root;
         ListItem previous = root;
         ListItem next = current.next() != null ? current.next() : null;
-
+        int count = 0;
         while (current != null) {
             if (current.compareTo(itemToRemove) == 0) {
                 if (size == 1) {
                     root = null;
+                    end = null;
+                } else {
+//                    boolean previousIsSameAsCurrent = previous.compareTo(current) == 0;
+
+                    if (count == 0) {
+                        root = next;
+                        root.setPrevious(null);
+                        if (size == 2) end = next;
+                    } else {
+                        previous.setNext(next);
+                        next.setPrevious(previous);
+                    }
+//                    if (!previousIsSameAsCurrent) previous.setNext(next);
                 }
 
-                previous.setNext(next);
                 size = size <= 1 ? size = 0 : size--;
                 return true;
             }
@@ -134,6 +146,7 @@ public class MyLinkedList implements NodeList {
             previous = current;
             current = current.next();
             next = current != null ? current.next() : null;
+            count++;
         }
 
         return false;

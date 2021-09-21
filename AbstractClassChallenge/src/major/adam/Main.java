@@ -22,8 +22,10 @@ public class Main {
             linkedList.traverseInReverse();
         }
 
-//        linkedList.removeItem(new Node("1234.7"));
+        linkedList.removeItem(new Node("1234.7"));
+        linkedList.removeItem(new Node("1234.5"));
         linkedList.traverse();
+        linkedList.traverseInReverse();
 
 
 //        List<String> stringArrayList = new ArrayList<String>();
