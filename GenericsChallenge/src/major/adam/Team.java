@@ -1,7 +1,7 @@
 package major.adam;
 
 public class Team<T extends Player> implements Comparable<Team<T>> {
-    private final String name;
+    private String name;
     private int wins;
     private int losses;
     private int ties;
@@ -58,5 +58,10 @@ public class Team<T extends Player> implements Comparable<Team<T>> {
                 ", losses=" + losses +
                 ", ties=" + ties +
                 '}';
+    }
+
+    public void setName(String name) {
+        if (name == "") return;
+        this.name = name;
     }
 }

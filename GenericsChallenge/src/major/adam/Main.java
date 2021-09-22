@@ -20,7 +20,7 @@ public class Main {
         cowboys.play(ravens, 15, 20);
         cowboys.play(patriots, 21, 20);
 
-        List<Team<FootballPlayer>> teamList = new ArrayList<>(
+        List<Team<FootballPlayer>> footballTeams = new ArrayList<>(
                 Arrays.asList(
                         cowboys,
                         ravens,
@@ -28,10 +28,13 @@ public class Main {
                 )
         );
 
-        Collections.sort(teamList);
-        System.out.println(Arrays.toString(teamList.toArray()));
+//        Collections.sort(footballTeams);
+//        System.out.println(Arrays.toString(footballTeams.toArray()));
 
-        League<Team<Player>> nfl = new League<>("National Football League");
-        nfl.addTeam(cowboys);
+        League<Team<FootballPlayer>> nfl = new League<>("National Football League");
+        for (Team<FootballPlayer> team : footballTeams) {
+            nfl.addTeam(team.getName(), Team<FootballPlayer>.class);
+        }
+        nfl.printTeams();
     }
 }
