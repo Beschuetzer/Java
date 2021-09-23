@@ -1,5 +1,3 @@
-package com.timbuchalka;
-
 /**
  * Created by dev on 5/02/2016.
  */

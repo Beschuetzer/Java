@@ -7,11 +7,21 @@ public class HeavenlyBody {
     private String name;
     private double orbitalPeriod;
     private HashSet<HeavenlyBody> satellites;
+    private CelestialBodyType bodyType;
 
-    public HeavenlyBody(String name, double rotationPeriod) {
+    public HeavenlyBody(String name, double orbitalPeriod) {
+        this(name, orbitalPeriod, CelestialBodyType.UNKNOWN);
+    }
+
+    public HeavenlyBody(String name, double orbitalPeriod, CelestialBodyType bodyType) {
         this.name = name;
-        this.orbitalPeriod = rotationPeriod;
+        this.bodyType = bodyType;
+        this.orbitalPeriod = orbitalPeriod;
         this.satellites = new HashSet<>();
+    }
+
+    public String getBodyType() {
+        return bodyType.getName();
     }
 
     public String getName() {
@@ -22,13 +32,11 @@ public class HeavenlyBody {
         return orbitalPeriod;
     }
 
-    public HeavenlyBody(HashSet<HeavenlyBody> satellites) {
-        this.satellites = new HashSet<>(satellites);
-    }
-
     public boolean addSatellite(HeavenlyBody toAdd) {
         if (toAdd != null) {
-            this.satellites.add(new HeavenlyBody(toAdd.getName(), toAdd.orbitalPeriod));
+//            HeavenlyBody temp = new HeavenlyBody();
+//
+//            this.satellites.add(new HeavenlyBody(toAdd.getName(), toAdd.orbitalPeriod));
             return  true;
         }
         return false;
@@ -39,11 +47,15 @@ public class HeavenlyBody {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HeavenlyBody that = (HeavenlyBody) o;
-        return orbitalPeriod == that.orbitalPeriod && Objects.equals(name, that.name) && Objects.equals(satellites, that.satellites);
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        HeavenlyBody that = (HeavenlyBody) obj;
+
+        if (that.name.equals(((HeavenlyBody) obj).getName())) {
+            if (obj.getClass() == that.getClass()) return true;
+        }
+        return false;
     }
 
     @Override
