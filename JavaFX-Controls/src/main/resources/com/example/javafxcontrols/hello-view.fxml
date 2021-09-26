@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.collections.*?>
+<?import java.lang.String?>
+<GridPane
+        gridLinesVisible="true"
+        xmlns:fx="http://javafx.com/fxml"
+        alignment="CENTER"
+        vgap="10"
+        hgap="10"
+>
+    <Button GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <graphic>
+            <ImageView>
+                <Image url="@/toolbarButtonGraphics/general/TipOfTheDay24.gif"/>
+            </ImageView>
+        </graphic>
+        Click Me
+    </Button>
+    <Label wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="0" textFill="blue">
+        <font>
+            <Font name="Arial italic" size="12"/>
+        </font>
+        <graphic>
+            <ImageView>
+                <Image url="@/toolbarButtonGraphics/general/Information24.gif"/>
+            </ImageView>
+        </graphic>
+        This is a label
+    </Label>
+
+    <VBox GridPane.columnIndex="2">
+        <fx:define>
+            <ToggleGroup fx:id="colorToggleGroup"/>
+        </fx:define>
+        <RadioButton GridPane.rowIndex="0" GridPane.columnIndex="0" text="red" toggleGroup="$colorToggleGroup"/>
+        <RadioButton GridPane.rowIndex="0" GridPane.columnIndex="1" text="green" toggleGroup="$colorToggleGroup"/>
+        <RadioButton selected="true" GridPane.rowIndex="0" GridPane.columnIndex="2" text="blue" toggleGroup="$colorToggleGroup"/>
+    </VBox>
+    <FlowPane orientation="HORIZONTAL" GridPane.rowIndex="1" GridPane.columnIndex="1">
+        <ToggleButton>Toggle Me!</ToggleButton>
+        <ToggleButton>Hello!</ToggleButton>
+        <ToggleButton>I am you!</ToggleButton>
+    </FlowPane>
+    <VBox GridPane.rowIndex="1">
+        <CheckBox wrapText="true" indeterminate="false ">Cat</CheckBox>
+        <CheckBox wrapText="true" indeterminate="false ">Dog</CheckBox>
+        <CheckBox wrapText="true" indeterminate="false">Mouse</CheckBox>
+    </VBox>
+
+    <TextField GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+    <PasswordField GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="3"/>
+
+    <ComboBox GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.columnIndex="0" editable="">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="This is Option 1"/>
+                <String fx:value="This is Option 2"/>
+                <String fx:value="This is Option 3"/>
+                <String fx:value="This is Option 4"/>
+                <String fx:value="This is Option 5"/>
+            </FXCollections>
+        </items>
+        <value>
+            <String fx:value="This is Default Option"/>
+        </value>
+    </ComboBox>
+
+<!--    Choice box is only suitable for smaller sets of items-->
+    <ChoiceBox GridPane.columnIndex="0" GridPane.rowIndex="4">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Choice Box 1"/>
+                <String fx:value="Choice Box 2"/>
+                <String fx:value="Choice Box 3"/>
+                <String fx:value="Choice Box 4"/>
+                <String fx:value="Choice Box 5"/>
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+
+</GridPane>

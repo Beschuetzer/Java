@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<GridPane-->
+<!--        gridLinesVisible="true"-->
+<!--        fx:controller="com.adamajor.javafxlayouts.HelloController"-->
+<!--        xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10"-->
+<!--&gt;-->
+<!--    <padding>-->
+<!--        <Insets top="10"/>-->
+<!--    </padding>-->
+
+<!--    <rowConstraints>-->
+<!--        <RowConstraints percentHeight="33.333333"/>-->
+<!--        <RowConstraints percentHeight="33.333333"/>-->
+<!--        <RowConstraints percentHeight="33.333333"/>-->
+<!--    </rowConstraints>-->
+<!--    <columnConstraints>-->
+<!--        <ColumnConstraints percentWidth="50.0"/>-->
+<!--        <ColumnConstraints percentWidth="50.0"/>-->
+<!--    </columnConstraints>-->
+<!--    <Button minWidth="300" GridPane.rowIndex="0" GridPane.columnIndex="0">Button One</Button>-->
+<!--    <Button GridPane.halignment="right" GridPane.rowIndex="0" GridPane.columnIndex="1">Button Two</Button>-->
+<!--    <Button GridPane.rowIndex="1" GridPane.columnIndex="0">Button Three</Button>-->
+<!--    <Button GridPane.rowIndex="1" GridPane.columnIndex="1">Button Four</Button>-->
+<!--    <Button GridPane.rowIndex="2" GridPane.columnSpan="2" GridPane.columnIndex="1">Really Long Button Five</Button>-->
+<!--    -->
+
+<!--</GridPane>-->
+
+<!--fill height is important to determine how the remaining height is used-->
+<!--<BorderPane>-->
+<!--    <center>-->
+<!--        <Label BorderPane.alignment="TOP_LEFT">Center</Label>-->
+<!--    </center>-->
+<!--    <top>-->
+<!--        <Label BorderPane.alignment="CENTER" style="-fx-border-color: red; -fx-border-width: 2; -fx-border-style: dashed" alignment="center">Top</Label>-->
+<!--    </top>-->
+<!--    <left>-->
+<!--        <Label alignment="center">Left</Label>-->
+<!--    </left>-->
+<!--    <right>-->
+<!--        <Label alignment="center">Right</Label>-->
+<!--    </right>-->
+<!--    <bottom>-->
+<!--        <HBox-->
+<!--                alignment="center"-->
+<!--                spacing="10"-->
+<!--                style="-fx-padding: 0 0 10 0;"-->
+<!--        >-->
+<!--            <Button prefWidth="90">Ok</Button>-->
+<!--            <Button prefWidth="90">Cancel</Button>-->
+<!--            <Button prefWidth="90">Help</Button>-->
+<!--        </HBox>-->
+<!--    </bottom>-->
+<!--</BorderPane>-->
+
+<!--<TilePane orientation="HORIZONTAL" alignment="CENTER" vgap="10" hgap="10">-->
+<!--    <Button>Button 1</Button>-->
+<!--    <Button>Button 2</Button>-->
+<!--    <Button>Button 3</Button>-->
+<!--    <Button>Button 4</Button>-->
+<!--    <Button>Button 5</Button>-->
+<!--    <Button>Button 6</Button>-->
+<!--    <Button>Button 7</Button>-->
+<!--    <Button>Button 8</Button>-->
+<!--    <Button>Button 9</Button>-->
+<!--    <Button>Button 10</Button>-->
+<!--</TilePane>-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane alignment="CENTER">
+    <Button>Button 1</Button>
+    <Button>Button 2</Button>
+    <Button>Button 3</Button>
+    <Button>Button 4</Button>
+    <Button>Button 5</Button>
+    <Button>Button 6</Button>
+    <Button>Button 7</Button>
+    <Button>Button 8</Button>
+    <Button>Button 9</Button>
+    <Button>Button 10</Button>
+</StackPane>
