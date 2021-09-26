@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane
+        gridLinesVisible="true"
+        alignment="CENTER"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.example.javafxevents.HelloController"
+        vgap="10"
+        hgap="10"
+>
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <TextField onKeyReleased="#onHandleKeyReleased" fx:id="textField"/>
+        <Button fx:id="helloButton" onAction="#onButtonClick">Say Hello!</Button>
+    </VBox>
+    <Button GridPane.valignment="TOP" fx:id="byeButton" onAction="#onButtonClick" GridPane.rowIndex="0" GridPane.columnIndex="1">Say Bye</Button>
+    <CheckBox fx:id="checkBox" onAction="#handleCheckBoxAction" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2">
+        Clear Field on Button Click
+    </CheckBox>
+    <Label fx:id="label" GridPane.columnIndex="0" GridPane.rowIndex="3">Nothing has happened</Label>
+
+</GridPane>

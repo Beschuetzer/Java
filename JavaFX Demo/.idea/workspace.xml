@@ -4,70 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e1d5f987-dad9-4606-a518-e32f83aa1a12" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../HelloWorldFX/HelloWorldFX.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_7_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_kordamp_bootstrapfx_bootstrapfx_core_0_4_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_base_linux_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_controls_linux_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_fxml_linux_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_openjfx_javafx_graphics_linux_11_0_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/JavaFX Demo.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/major/adam/javafx_demo/HelloApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/major/adam/javafx_demo/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/major/adam/javafx_demo/hello-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/major/adam/javafx_demo/HelloApplication.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/major/adam/javafx_demo/HelloController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/major/adam/javafx_demo/hello-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ShoppingCart Challenge/ShoppingCart Challenge.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ShoppingCart Challenge/src/major/adam/Basket.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ShoppingCart Challenge/src/major/adam/MainChallenge.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ShoppingCart Challenge/src/major/adam/StockItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../ShoppingCart Challenge/src/major/adam/StockList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/copyright/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/project-template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/ShoppingCartChallenge.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/out/production/sortedCollections/com/timbuchalka/Basket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/out/production/sortedCollections/com/timbuchalka/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/out/production/sortedCollections/com/timbuchalka/StockItem.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/out/production/sortedCollections/com/timbuchalka/StockList.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/sortedCollections.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/com/timbuchalka/Basket.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/com/timbuchalka/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/com/timbuchalka/MainChallenge.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/com/timbuchalka/StockItem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/com/timbuchalka/StockList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ShoppingCartChallenge/src/major/adam/Main.java" beforeDir="false" />
-    </list>
+    <list default="true" id="e1d5f987-dad9-4606-a518-e32f83aa1a12" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -86,6 +23,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
   </component>
   <component name="RunManager">
@@ -129,5 +67,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
