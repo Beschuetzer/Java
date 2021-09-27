@@ -57,7 +57,6 @@ public class HelloController {
             public void run() {
                 try {
                     String thread = Platform.isFxApplicationThread() ? "UI thread" : "background thread";
-
                     System.out.println("Sleeping on " + thread);
 
                     Thread.sleep(3000);
