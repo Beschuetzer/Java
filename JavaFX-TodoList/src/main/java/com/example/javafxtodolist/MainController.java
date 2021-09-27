@@ -1,14 +1,15 @@
 package com.example.javafxtodolist;
 
 import com.example.javafxtodolist.dataModel.TodoItem;
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ public class MainController {
     private ListView<TodoItem> todoListView;
     @FXML
     private TextArea todoListDetails;
+    @FXML
+    private Label dueDateLabel;
 
-    private List<TodoItem> todoItems = new ArrayList<>();
+    private final List<TodoItem> todoItems = new ArrayList<>();
 
     public void initialize() {
         TodoItem todoItem1 = new TodoItem("Mail Birthday Card", "Buy a card", LocalDate.of(2021, Month.SEPTEMBER, 30));
@@ -33,16 +36,19 @@ public class MainController {
         this.todoItems.add(todoItem4);
         this.todoItems.add(todoItem5);
 
+        todoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newValue) -> handleListViewChange(newValue));
+
         todoListView.getItems().setAll(todoItems);
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        todoListView.getSelectionModel().selectFirst();
     }
 
-    public void handleClickListView(Event e) {
-        TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
-        StringBuilder sb = new StringBuilder(selectedItem.getDetails());
-        sb.append("\n\n\n");
-        sb.append("Due: ");
-        sb.append(selectedItem.getDeadline());
-        todoListDetails.setText(sb.toString());
+    private void handleListViewChange(TodoItem newValue) {
+        if (newValue != null) {
+            TodoItem item = todoListView.getSelectionModel().getSelectedItem();
+            todoListDetails.setText(item.getDetails());
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/d/yyyy");
+            dueDateLabel.setText(df.format(item.getDeadline()));
+        }
     }
 }

@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <BorderPane
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="com.example.javafxtodolist.MainController"
 >
     <left>
-        <ListView fx:id="todoListView" onMouseClicked="#handleClickListView"></ListView>
+        <ListView fx:id="todoListView" ></ListView>
     </left>
     <center>
-        <TextArea fx:id="todoListDetails">This sis si fd</TextArea>
+        <VBox style="-fx-background-color: white">
+            <TextArea fx:id="todoListDetails" VBox.vgrow="ALWAYS"></TextArea>
+            <HBox>
+                <Label style="-fx-padding: 0 10 0 0; -fx-background-color: white;">Due:
+                    <font>
+                        <Font name="Times New Roman bold" size="20"/>
+                    </font>
+                </Label>
+                <Label fx:id="dueDateLabel" style="-fx-background-color: white;">
+                    <font>
+                        <Font name="Times New Roman bold" size="20"/>
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
     </center>
 
 </BorderPane>
