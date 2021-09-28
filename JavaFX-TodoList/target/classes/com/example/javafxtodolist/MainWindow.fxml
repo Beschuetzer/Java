@@ -32,7 +32,7 @@
     </left>
     <center>
         <VBox style="-fx-background-color: white">
-            <TextArea fx:id="todoListDetails" VBox.vgrow="ALWAYS"></TextArea>
+            <TextArea fx:id="todoListDetails" VBox.vgrow="ALWAYS" wrapText="true"></TextArea>
             <HBox>
                 <Label style="-fx-padding: 0 10 0 0; -fx-background-color: white;">Due:
                     <font>

@@ -6,8 +6,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +43,33 @@ public class MainController {
 //        TodoData.getInstance().setTodoItems(todoItems);
 
         todoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleListViewChange(newValue));
-        todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+        todoListView.setItems(TodoData.getInstance().getTodoItems());
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
+
+        //THIS CHANGES THE STYLING OF ITEMS (CELLS) IN THE LISTVIEW ON THE LEFT
+        todoListView.setCellFactory(new Callback<ListView<TodoItem>, ListCell<TodoItem>>() {
+            @Override
+            public ListCell<TodoItem> call(ListView<TodoItem> todoItemListView) {
+                ListCell<TodoItem> cell = new ListCell<>() {
+                    @Override
+                    protected void updateItem(TodoItem todoItem, boolean b) {
+                        super.updateItem(todoItem, b);
+                        if (isEmpty()) setText(null);
+                        else {
+                            setText(todoItem.getShortDescription());
+                            Color colorToSet = Color.BLACK;
+                            LocalDate now = LocalDate.now();
+                            if (todoItem.getDeadline().isBefore(now)) colorToSet = Color.RED;
+                            else if (todoItem.getDeadline().equals(now)) colorToSet = Color.ORANGERED;
+                            else if (todoItem.getDeadline().equals(now.plusDays(1))) colorToSet = Color.ORANGE;
+                            setTextFill(colorToSet);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
     }
 
     @FXML
@@ -67,14 +94,14 @@ public class MainController {
 
         //generally want show and wait rather than just show
         Optional<ButtonType> result = dialog.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            System.out.println("Ok Pressed");
+
+        if (!result.isPresent()) return;
+        if (result.get() == ButtonType.OK) {
             TodoItemDialogueController controller = fxmlLoader.getController();
             TodoItem newItem = controller.processResults();
-            todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
             todoListView.getSelectionModel().select(newItem);
-        } else {
-            System.out.println("Something Else Pressed");
+        } else if (result.get() == ButtonType.CANCEL){
+            dialog.close();
         }
     }
 
