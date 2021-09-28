@@ -20,7 +20,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApp.class.getResource("MainWindow.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 500);
         stage.setTitle("Todo List");
         stage.setScene(scene);

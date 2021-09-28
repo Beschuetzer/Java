@@ -36,6 +36,13 @@ public class TodoData {
         this.todoItems = todoItems;
     }
 
+    public boolean addTodoItem(TodoItem toAdd) {
+        if (toAdd == null) return false;
+        todoItems.add(toAdd);
+        System.out.println(todoItems.size());
+        return true;
+    }
+
     public void loadToDoItems() throws IOException {
         todoItems = FXCollections.observableArrayList();
         Path path = Paths.get(filename);
@@ -83,4 +90,6 @@ public class TodoData {
             }
         }
     }
+
+
 }

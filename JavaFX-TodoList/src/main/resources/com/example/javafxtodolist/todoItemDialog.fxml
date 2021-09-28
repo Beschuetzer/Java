@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+<DialogPane
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.javafxtodolist.TodoItemDialogueController"
+
+>
+    <header></header>
+    <headerText>
+<!--        <Label>-->
+<!--            <font>-->
+<!--                <Font size="32" value="Time News Roman bold"/>-->
+<!--            </font>-->
+<!--            Enter a new Todo Item:-->
+<!--        </Label>-->
+    </headerText>
+    <content>
+        <GridPane
+                vgap="10"
+                hgap="10"
+        >
+            <Label fx:id="descriptionLabel" GridPane.rowIndex="0" GridPane.columnIndex="0" text="Short Description: "/>
+            <TextField fx:id="shortDescriptionField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <Label fx:id="detailsLabel" GridPane.rowIndex="1" GridPane.columnIndex="0" text="Details: "/>
+            <TextArea fx:id="detailsArea" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="deadlineLabel" GridPane.rowIndex="2" GridPane.columnIndex="0" text="Deadline: "/>
+            <DatePicker fx:id="deadlinePicker" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        </GridPane>
+    </content>
+    <graphic></graphic>
+</DialogPane>

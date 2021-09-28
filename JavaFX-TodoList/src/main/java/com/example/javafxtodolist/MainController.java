@@ -3,16 +3,19 @@ package com.example.javafxtodolist;
 import com.example.javafxtodolist.dataModel.TodoData;
 import com.example.javafxtodolist.dataModel.TodoItem;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextArea;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
+    @FXML
+    private BorderPane mainBorderPane;
     @FXML
     private ListView<TodoItem> todoListView;
     @FXML
@@ -36,13 +39,46 @@ public class MainController {
 //        this.todoItems.add(todoItem5);
 //        TodoData.getInstance().setTodoItems(todoItems);
 
-        todoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newValue) -> handleListViewChange(newValue));
+        todoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleListViewChange(newValue));
         todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
     }
 
-    private void handleListViewChange(TodoItem newValue) {
+    @FXML
+    public void showNewItemDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Add New Todo Item:");
+        dialog.setHeaderText("Use this dialog to create a new todo item");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("todoItemDialog.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        //generally want show and wait rather than just show
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            System.out.println("Ok Pressed");
+            TodoItemDialogueController controller = fxmlLoader.getController();
+            TodoItem newItem = controller.processResults();
+            todoListView.getItems().setAll(TodoData.getInstance().getTodoItems());
+            todoListView.getSelectionModel().select(newItem);
+        } else {
+            System.out.println("Something Else Pressed");
+        }
+    }
+
+    public void handleListViewChange(TodoItem newValue) {
         if (newValue != null) {
             TodoItem item = todoListView.getSelectionModel().getSelectedItem();
             todoListDetails.setText(item.getDetails());
