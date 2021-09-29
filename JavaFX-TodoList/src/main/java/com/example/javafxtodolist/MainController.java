@@ -2,9 +2,16 @@ package com.example.javafxtodolist;
 
 import com.example.javafxtodolist.dataModel.TodoData;
 import com.example.javafxtodolist.dataModel.TodoItem;
+import javafx.application.Platform;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
@@ -15,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class MainController {
     @FXML
@@ -25,8 +33,27 @@ public class MainController {
     private TextArea todoListDetails;
     @FXML
     private Label dueDateLabel;
+    @FXML
+    private ContextMenu listContextMenu;
+    @FXML
+    private ToggleButton filterToggleButton;
 
     private List<TodoItem> todoItems = new ArrayList<>();
+    private FilteredList<TodoItem> filteredList;
+    private Predicate<TodoItem> wantAllItems = new Predicate<TodoItem>() {
+        @Override
+        public boolean test(TodoItem todoItem) {
+            return true;
+        }
+    };
+    private Predicate<TodoItem> wantTodaysITems = new Predicate<TodoItem>() {
+        @Override
+        public boolean test(TodoItem todoItem) {
+            LocalDate today = LocalDate.now();
+            if (todoItem.getDeadline().isEqual(today)) return true;
+            return false;
+        }
+    };
 
     public void initialize() {
 //        TodoItem todoItem1 = new TodoItem("Mail Birthday Card", "Buy a card", LocalDate.of(2021, Month.SEPTEMBER, 30));
@@ -42,8 +69,25 @@ public class MainController {
 //        this.todoItems.add(todoItem5);
 //        TodoData.getInstance().setTodoItems(todoItems);
 
+        listContextMenu = new ContextMenu();
+        MenuItem deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
+                confirmDeleteItem(selectedItem);
+            }
+        });
+        listContextMenu.getItems().addAll(deleteMenuItem);
+
+        filteredList = new FilteredList<TodoItem>(TodoData.getInstance().getTodoItems(), (todoItem -> {
+            return true;
+        }));
+        SortedList<TodoItem> sortedList = new SortedList<TodoItem>(filteredList, (item1, item2) -> {
+                return item1.getDeadline().compareTo(item2.getDeadline());
+        });
         todoListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> handleListViewChange(newValue));
-        todoListView.setItems(TodoData.getInstance().getTodoItems());
+        todoListView.setItems(sortedList);
         todoListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         todoListView.getSelectionModel().selectFirst();
 
@@ -64,9 +108,17 @@ public class MainController {
                             else if (todoItem.getDeadline().equals(now)) colorToSet = Color.ORANGERED;
                             else if (todoItem.getDeadline().equals(now.plusDays(1))) colorToSet = Color.ORANGE;
                             setTextFill(colorToSet);
+
                         }
                     }
                 };
+                cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                    if (isNowEmpty) {
+                        cell.setContextMenu(null);
+                    } else {
+                        cell.setContextMenu(listContextMenu);
+                    }
+                });
                 return cell;
             }
         });
@@ -111,6 +163,58 @@ public class MainController {
             todoListDetails.setText(item.getDetails());
             DateTimeFormatter df = DateTimeFormatter.ofPattern("MM/d/yyyy");
             dueDateLabel.setText(df.format(item.getDeadline()));
+        }
+    }
+
+    @FXML
+    public void handleListViewKeyPress(KeyEvent event) {
+        TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) return;
+
+        if (event.getCode().equals(KeyCode.DELETE)) {
+            confirmDeleteItem(selectedItem);
+        }
+    }
+
+    @FXML
+    public void handleFilterButton(ActionEvent event) {
+        TodoItem selectedItem = todoListView.getSelectionModel().getSelectedItem();
+
+        if (filterToggleButton.isSelected()) {
+            filteredList.setPredicate(wantTodaysITems);
+
+            if (filteredList.isEmpty()) {
+                todoListDetails.clear();
+                dueDateLabel.setText("");
+            } else if (filteredList.contains(selectedItem)){
+                todoListView.getSelectionModel().select(selectedItem);
+            } else {
+                todoListView.getSelectionModel().selectFirst();
+            }
+        } else {
+            filteredList.setPredicate(wantAllItems);
+            todoListView.getSelectionModel().select(selectedItem);
+        }
+
+    }
+
+    @FXML
+    public void handleExit() {
+        Platform.exit();
+    }
+
+    public void confirmDeleteItem(TodoItem itemToDelete) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Todo Item");
+        alert.setHeaderText("Delet Item: " + itemToDelete.getShortDescription());
+        alert.setContentText("Are you sure?  Press OK to confirm or CANCEL to back out.");
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (!result.isPresent()) return;
+        if (result.get() == ButtonType.OK) {
+            TodoData.getInstance().deleteTodoItem(itemToDelete);
+        } else {
+            alert.close();
         }
     }
 }

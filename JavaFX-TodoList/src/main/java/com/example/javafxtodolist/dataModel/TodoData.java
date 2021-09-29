@@ -43,6 +43,12 @@ public class TodoData {
         return true;
     }
 
+    public boolean deleteTodoItem(TodoItem toDelete) {
+        if (toDelete == null) return false;
+        todoItems.remove(toDelete);
+        return true;
+    }
+
     public void loadToDoItems() throws IOException {
         todoItems = FXCollections.observableArrayList();
         Path path = Paths.get(filename);
@@ -90,6 +96,5 @@ public class TodoData {
             }
         }
     }
-
 
 }
