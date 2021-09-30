@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxchallenge.MainWindowController">
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu text="Contacts">
+                    <items>
+                        <MenuItem text="New" />
+                        <MenuItem text="Edit" />
+                        <MenuItem text="Delete" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+        <TableView fx:id="tableView" editable="true">
+            <columns>
+                <TableColumn minWidth="100.0" prefWidth="150.0" text="First Name" />
+                <TableColumn minWidth="100.0" prefWidth="150.0" text="Last Name" />
+                <TableColumn minWidth="133.0" prefWidth="150.0" text="Phone Number" />
+                <TableColumn minWidth="133.0" prefWidth="550" style="-fx-alignment: CENTER-LEFT;" text="Notes" />
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>
