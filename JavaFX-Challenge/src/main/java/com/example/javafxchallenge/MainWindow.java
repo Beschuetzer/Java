@@ -1,6 +1,6 @@
 package com.example.javafxchallenge;
 
-import data.ContactData;
+import com.example.javafxchallenge.Contacts.ContactData;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

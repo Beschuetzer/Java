@@ -1,4 +1,4 @@
-package data;
+package com.example.javafxchallenge.Contacts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

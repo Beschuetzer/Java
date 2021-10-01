@@ -3,15 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxchallenge.MainWindowController">
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxchallenge.MainWindowController">
     <top>
         <MenuBar>
             <menus>
-                <Menu text="Contacts">
+                <Menu text="_Contacts">
                     <items>
-                        <MenuItem text="New" />
-                        <MenuItem text="Edit" />
-                        <MenuItem text="Delete" />
+                        <MenuItem onAction="#handleNew" text="_New" />
+                        <MenuItem onAction="#handleEdit" text="_Edit" />
+                        <MenuItem onAction="#handleDelete" text="_Delete" />
                     </items>
                 </Menu>
             </menus>

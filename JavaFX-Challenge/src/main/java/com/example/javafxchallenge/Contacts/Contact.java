@@ -1,4 +1,4 @@
-package data;
+package com.example.javafxchallenge.Contacts;
 
 import javafx.beans.property.SimpleStringProperty;
 
