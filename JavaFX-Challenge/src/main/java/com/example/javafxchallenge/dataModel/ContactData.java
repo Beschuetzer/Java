@@ -18,7 +18,6 @@ public class ContactData {
     private static final String PHONE_NUMBER = "phone_number";
     private static final String NOTES = "notes";
 
-    private static ContactData instance = new ContactData();
     private ObservableList<Contact> contacts;
 
     public ContactData() {
@@ -41,10 +40,6 @@ public class ContactData {
     public void deleteContact(Contact contactToDelete) {
         if (contactToDelete == null) return;
         contacts.remove(contactToDelete);
-    }
-
-    public static ContactData getInstance() {
-        return instance;
     }
 
     public ObservableList<Contact> getContacts() {

@@ -1,7 +1,6 @@
 package com.example.javafxchallenge;
 
 import com.example.javafxchallenge.dataModel.Contact;
-import com.example.javafxchallenge.dataModel.ContactData;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,7 +15,7 @@ public class NewDialogController {
     @FXML
     private TextArea notesField;
 
-    public Contact processResults() {
+    public Contact getNewContact() {
         //Need to verify fields are good
         Boolean firstNameValid = !firstNameField.getText().isEmpty() && !firstNameField.getText().isBlank();
         Boolean lastNameValid = !lastNameField.getText().isEmpty() && !lastNameField.getText().isBlank();
@@ -30,8 +29,6 @@ public class NewDialogController {
         String phoneNumber = phoneNumberField.getText();
         String notes = notesField.getText();
         Contact newContact = new Contact(firstName, lastName, phoneNumber, notes);
-
-        ContactData.getInstance().addContact(newContact);
 
         //return new Contact
         return  newContact;
