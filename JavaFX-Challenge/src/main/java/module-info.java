@@ -6,5 +6,6 @@ module com.example.javafxchallenge {
     requires java.xml;
 
     opens com.example.javafxchallenge to javafx.fxml;
+    opens com.example.javafxchallenge.dataModel to javafx.base;
     exports com.example.javafxchallenge;
 }
