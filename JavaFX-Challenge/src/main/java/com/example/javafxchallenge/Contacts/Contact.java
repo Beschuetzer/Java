@@ -27,7 +27,7 @@ public class Contact {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName.set(firstName);
+        this.firstName = new SimpleStringProperty(firstName);
     }
 
     public String getLastName() {
@@ -39,7 +39,7 @@ public class Contact {
     }
 
     public void setLastName(String lastName) {
-        this.lastName.set(lastName);
+        this.lastName = new SimpleStringProperty(lastName);
     }
 
     public String getPhoneNumber() {
@@ -51,7 +51,7 @@ public class Contact {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber.set(phoneNumber);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
     }
 
     public String getNotes() {
@@ -63,6 +63,6 @@ public class Contact {
     }
 
     public void setNotes(String notes) {
-        this.notes.set(notes);
+        this.notes = new SimpleStringProperty(notes);
     }
 }

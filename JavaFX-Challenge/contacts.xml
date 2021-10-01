@@ -1,3 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <contacts>
+<contact>
+	<first_name>test</first_name>
+	<last_name>test</last_name>
+	<phone_number>ets</phone_number>
+	<notes>etstes</notes>
+</contact>
+<contact>
+	<first_name>rrrr</first_name>
+	<last_name>rrrrrr</last_name>
+	<phone_number>r</phone_number>
+	<notes>rrr</notes>
+</contact>
 </contacts>

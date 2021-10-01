@@ -34,6 +34,7 @@ public class ContactData {
 
         if (firstNameValid && lastNameValid && phoneNumberValid && notesValid) {
             contacts.add(contactToAdd);
+            System.out.println(contacts.size());
         }
     }
 
@@ -47,7 +48,7 @@ public class ContactData {
     }
 
     public ObservableList<Contact> getContacts() {
-        return FXCollections.observableArrayList(contacts);
+        return contacts;
     }
 
     public void loadContacts() {
@@ -76,7 +77,8 @@ public class ContactData {
                         if (event.asStartElement().getName().getLocalPart()
                                 .equals(FIRST_NAME)) {
                             event = eventReader.nextEvent();
-                            contact.setFirstName(event.asCharacters().getData());
+                            String firstName = event.asCharacters().getData();
+                            contact.setFirstName(firstName);
                             continue;
                         }
                     }
@@ -115,7 +117,7 @@ public class ContactData {
             //e.printStackTrace();
         }
         catch (XMLStreamException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

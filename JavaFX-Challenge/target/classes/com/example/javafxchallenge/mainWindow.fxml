@@ -23,7 +23,7 @@
                 <TableColumn minWidth="100.0" prefWidth="150.0" text="First Name" />
                 <TableColumn minWidth="100.0" prefWidth="150.0" text="Last Name" />
                 <TableColumn minWidth="133.0" prefWidth="150.0" text="Phone Number" />
-                <TableColumn minWidth="133.0" prefWidth="550" style="-fx-alignment: CENTER-LEFT;" text="Notes" />
+                <TableColumn minWidth="133.0" prefWidth="550" text="Notes" />
             </columns>
         </TableView>
     </center>
