@@ -1,4 +1,4 @@
-package com.example.javafxchallenge.Contacts;
+package com.example.javafxchallenge.dataModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -19,7 +19,7 @@ public class ContactData {
     private static final String NOTES = "notes";
 
     private static ContactData instance = new ContactData();
-    private static ObservableList<Contact> contacts;
+    private ObservableList<Contact> contacts;
 
     public ContactData() {
         contacts = FXCollections.observableArrayList();
@@ -199,5 +199,4 @@ public class ContactData {
         eventWriter.add(eElement);
         eventWriter.add(end);
     }
-
 }

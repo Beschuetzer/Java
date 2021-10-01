@@ -1,11 +1,14 @@
 package com.example.javafxchallenge;
 
-import com.example.javafxchallenge.Contacts.Contact;
-import com.example.javafxchallenge.Contacts.ContactData;
+import com.example.javafxchallenge.dataModel.Contact;
+import com.example.javafxchallenge.dataModel.ContactData;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
@@ -17,10 +20,24 @@ public class MainWindowController {
     private BorderPane mainBorderPane;
     @FXML
     private TableView<Contact> tableView;
+    @FXML private TableColumn<Contact, SimpleStringProperty> firstNameColumn;
+    @FXML private TableColumn<Contact,SimpleStringProperty> lastNameColumn;
+    @FXML private TableColumn<Contact,SimpleStringProperty> phoneNumberColumn;
+    @FXML private TableColumn<Contact,SimpleStringProperty> notesColumn;
 
     public void initialize() {
         System.out.println("Starting Controller");
-        tableView.setItems(ContactData.getInstance().getContacts());
+//        firstNameColumn.setCellValueFactory(
+//                new PropertyValueFactory<>("firstName"));
+//        lastNameColumn.setCellValueFactory(
+//                new PropertyValueFactory<>("lastName"));
+//        phoneNumberColumn.setCellValueFactory(
+//                new PropertyValueFactory<>("phoneNumber"));
+//        notesColumn.setCellValueFactory(
+//                new PropertyValueFactory<>("notes"));
+
+        ObservableList<Contact> contacts = ContactData.getInstance().getContacts();
+        tableView.setItems(contacts);
     }
 
     @FXML

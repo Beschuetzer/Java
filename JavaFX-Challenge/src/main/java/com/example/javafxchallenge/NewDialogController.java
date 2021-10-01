@@ -1,8 +1,7 @@
 package com.example.javafxchallenge;
 
-import com.example.javafxchallenge.Contacts.Contact;
-import com.example.javafxchallenge.Contacts.ContactData;
-import javafx.beans.property.SimpleStringProperty;
+import com.example.javafxchallenge.dataModel.Contact;
+import com.example.javafxchallenge.dataModel.ContactData;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -26,10 +25,10 @@ public class NewDialogController {
         if (!firstNameValid || !lastNameValid || !phoneNumberValid || !notesValid) return null;
 
         //Create a new Contact and add it to the ContactData contacts list
-        SimpleStringProperty firstName = new SimpleStringProperty(firstNameField.getText());
-        SimpleStringProperty lastName = new SimpleStringProperty(lastNameField.getText());
-        SimpleStringProperty phoneNumber = new SimpleStringProperty(phoneNumberField.getText());
-        SimpleStringProperty notes = new SimpleStringProperty(notesField.getText());
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String notes = notesField.getText();
         Contact newContact = new Contact(firstName, lastName, phoneNumber, notes);
 
         ContactData.getInstance().addContact(newContact);

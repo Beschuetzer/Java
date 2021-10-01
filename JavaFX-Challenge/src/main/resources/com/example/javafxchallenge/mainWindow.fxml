@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxchallenge.MainWindowController">
     <top>
         <MenuBar>
@@ -20,10 +21,26 @@
     <center>
         <TableView fx:id="tableView" editable="true">
             <columns>
-                <TableColumn minWidth="100.0" prefWidth="150.0" text="First Name" />
-                <TableColumn minWidth="100.0" prefWidth="150.0" text="Last Name" />
-                <TableColumn minWidth="133.0" prefWidth="150.0" text="Phone Number" />
-                <TableColumn minWidth="133.0" prefWidth="550" text="Notes" />
+                <TableColumn fx:id="firstNameColumn" minWidth="100.0" prefWidth="150.0" text="First Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="firstName"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="lastNameColumn" minWidth="100.0" prefWidth="150.0" text="Last Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="lastName"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="phoneNumberColumn" minWidth="133.0" prefWidth="150.0" text="Phone Number">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="phoneNumber"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="notesColumn" minWidth="133.0" prefWidth="550" text="Notes">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="notes"/>
+                    </cellValueFactory>
+                </TableColumn>
             </columns>
         </TableView>
     </center>
