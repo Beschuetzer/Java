@@ -28,7 +28,6 @@ public class MainWindow extends Application {
         stage.setTitle("My Contacts");
         stage.getIcons().add(new Image("/toolbarButtonGraphics/development/Application16.gif"));
         stage.setScene(scene);
-        stage.setResizable(false);
         stage.show();
     }
 

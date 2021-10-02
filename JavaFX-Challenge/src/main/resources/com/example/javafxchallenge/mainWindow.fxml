@@ -20,6 +20,9 @@
     </top>
     <center>
         <TableView fx:id="tableView" editable="true" onKeyPressed="#handleTableViewKeyPress">
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
             <columns>
                 <TableColumn fx:id="firstNameColumn" minWidth="100.0" prefWidth="150.0" text="First Name">
                     <cellValueFactory>
