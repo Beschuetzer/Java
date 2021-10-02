@@ -17,6 +17,7 @@ public class NewDialogController {
     private TextArea notesField;
 
     public Contact processResults() {
+        System.out.println("Processing Results");
         //Need to verify fields are good
         Boolean firstNameValid = !firstNameField.getText().isEmpty() && !firstNameField.getText().isBlank();
         Boolean lastNameValid = !lastNameField.getText().isEmpty() && !lastNameField.getText().isBlank();
@@ -32,8 +33,14 @@ public class NewDialogController {
         Contact newContact = new Contact(firstName, lastName, phoneNumber, notes);
 
         ContactData.getInstance().addContact(newContact);
-
-        //return new Contact
         return  newContact;
+
+    }
+
+    public void populateFields(Contact contactToLoad) {
+        firstNameField.setText(contactToLoad.getFirstName());
+        lastNameField.setText(contactToLoad.getLastName());
+        phoneNumberField.setText(contactToLoad.getPhoneNumber());
+        notesField.setText(contactToLoad.getNotes());
     }
 }

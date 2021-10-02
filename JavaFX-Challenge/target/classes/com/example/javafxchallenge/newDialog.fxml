@@ -5,10 +5,7 @@
 <?import javafx.scene.layout.GridPane?>
 <DialogPane prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafxchallenge.NewDialogController">
     <header>
-      <Label alignment="CENTER" contentDisplay="CENTER" text="Add a Contact" textAlignment="CENTER">
-         <font>
-            <Font name="FreeMono Bold" size="24.0" />
-         </font></Label>
+
     </header>
     <content>
         <GridPane vgap="10" hgap="10">
