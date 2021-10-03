@@ -1,55 +1,41 @@
 package com.timbuchalka;
 
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
  * Created by timbuchalka on 2/04/2016.
  */
-public class Locations implements Map<Integer, Location> {
+public class Locations implements Map<Integer, Location>{
     private static final Map<Integer, Location> locations = new HashMap<Integer, Location>();
 
     static {
         System.out.println("Running static in locations");
-        Scanner scanner = null;
 
         //reading exits
         Map<Integer, Map<String,Integer>> tempExitsMap = new HashMap<>();
-        try {
-            scanner = new Scanner(new BufferedReader(new FileReader("directions.txt")));
-            scanner.useDelimiter(",");
-            while (scanner.hasNextLine()) {
-//                int loc = scanner.nextInt();
-//                scanner.skip(scanner.delimiter());
-//                String exits = scanner.nextLine();
-                String nextLine = scanner.nextLine();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("directions.txt"))) {
+            String nextLine;
+            while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] split = nextLine.split(",", 2);
                 tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
             }
-        }catch (IOException e ) {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            scanner.close();
         }
 
-        try {
-            scanner = new Scanner(new FileReader("locations.txt"));
-            scanner.useDelimiter(",");
-            while (scanner.hasNext()) {
-                int location = scanner.nextInt();
-                scanner.skip(scanner.delimiter());
-                String description = scanner.nextLine();
-
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("locations.txt"))) {
+            String nextLine;
+            while ((nextLine = bufferedReader.readLine()) != null)  {
+                String[] splitLine = nextLine.split(",");
+                Integer location = Integer.parseInt(splitLine[0]);
+                String description = splitLine[1];
                 locations.put(location, new Location(location, description, tempExitsMap.get(location)));
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (scanner != null) scanner.close();
         }
 //
 //
