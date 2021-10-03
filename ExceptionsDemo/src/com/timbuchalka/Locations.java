@@ -20,6 +20,12 @@ public class Locations implements Map<Integer, Location>{
         LOCATIONS_SERIALIZED,
     }
 
+    //Random Access File Layout
+    //bytes 0-3 = number of locations
+    //bytes 4-7 = start offset of the locations section
+    //bytes 8-1699 = index (which bytes correspond to which locations' start offset)
+    //bytes 1700+ = location records
+
     static {
         System.out.println("Running static in locations");
 

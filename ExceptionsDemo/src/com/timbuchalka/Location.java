@@ -8,7 +8,7 @@ import java.util.Map;
  * Created by dev on 8/12/2015.
  */
 public class Location implements Serializable {
-    private  final long serialVersionUID = 1L;
+    private final long serialVersionUID = 1L;
     private final int locationID;
     private final String description;
     private final Map<String, Integer> exits;
@@ -16,7 +16,7 @@ public class Location implements Serializable {
     public Location(int locationID, String description, Map<String, Integer> exits) {
         this.locationID = locationID;
         this.description = description;
-        if(exits != null) {
+        if (exits != null) {
             this.exits = new HashMap<String, Integer>(exits);
         } else {
             this.exits = new HashMap<String, Integer>();
