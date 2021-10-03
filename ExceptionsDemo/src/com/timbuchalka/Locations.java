@@ -23,10 +23,12 @@ public class Locations implements Map<Integer, Location> {
             scanner = new Scanner(new BufferedReader(new FileReader("directions.txt")));
             scanner.useDelimiter(",");
             while (scanner.hasNextLine()) {
-                int loc = scanner.nextInt();
-                scanner.skip(scanner.delimiter());
-                String exits = scanner.nextLine();
-                tempExitsMap.put(loc, createMapFromDirections(exits));
+//                int loc = scanner.nextInt();
+//                scanner.skip(scanner.delimiter());
+//                String exits = scanner.nextLine();
+                String nextLine = scanner.nextLine();
+                String[] split = nextLine.split(",", 2);
+                tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
             }
         }catch (IOException e ) {
             e.printStackTrace();
@@ -81,7 +83,7 @@ public class Locations implements Map<Integer, Location> {
 
     }
 
-    private static Map<String, Integer> createMapFromDirections(String mapAsString) {
+    private static Map<String, Integer> createMapFromExits(String mapAsString) {
         Map<String, Integer> toReturn = new HashMap<>();
         String leftRemoved = mapAsString.replace('{', ' ');
         String bothRemoved = leftRemoved.replace('}', ' ');
@@ -89,7 +91,7 @@ public class Locations implements Map<Integer, Location> {
 
         for (String keyValuePair : split) {
             String[] splitKeyValuePair = keyValuePair.split("=");
-            toReturn.put(splitKeyValuePair[0], Integer.parseInt(splitKeyValuePair[1]));
+            toReturn.put(splitKeyValuePair[0].trim(), Integer.parseInt(splitKeyValuePair[1].trim()));
         }
 
         return toReturn;
