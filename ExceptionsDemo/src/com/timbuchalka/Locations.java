@@ -3,6 +3,7 @@ package com.timbuchalka;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Created by timbuchalka on 2/04/2016.
@@ -13,30 +14,63 @@ public class Locations implements Map<Integer, Location>{
     static {
         System.out.println("Running static in locations");
 
-        //reading exits
-        Map<Integer, Map<String,Integer>> tempExitsMap = new HashMap<>();
+        //region Byte Stream Reading
+        try (DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream("locations_binary.dat")))) {
+            boolean eof = false;
+            while (!eof) {
+                try {
+                    Map<String, Integer> exits = new LinkedHashMap<>();
+                    int locId = dataInputStream.readInt();
+                    String description = dataInputStream.readUTF();
+                    int numExits = dataInputStream.readInt();
+                    System.out.println("Read location " + locId + ": " + description);
+                    System.out.println("Found " + numExits + " exits");
+//                exits.put("Q", 0);
+                    for (int i = 0; i < numExits; i++) {
+                        String direction = dataInputStream.readUTF();
+                        int destination = dataInputStream.readInt();
+                        exits.put(direction, destination);
+                        System.out.println("\t\t" + direction + "," + destination);
+                    }
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("directions.txt"))) {
-            String nextLine;
-            while ((nextLine = bufferedReader.readLine()) != null) {
-                String[] split = nextLine.split(",", 2);
-                tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
+                    locations.put(locId, new Location(locId, description, exits));
+                } catch (EOFException e) {
+                    eof = true;
+                }
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("locations.txt"))) {
-            String nextLine;
-            while ((nextLine = bufferedReader.readLine()) != null)  {
-                String[] splitLine = nextLine.split(",");
-                Integer location = Integer.parseInt(splitLine[0]);
-                String description = splitLine[1];
-                locations.put(location, new Location(location, description, tempExitsMap.get(location)));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //endregion
+
+////        region Character Stream Reading
+//        Map<Integer, Map<String,Integer>> tempExitsMap = new HashMap<>();
+//
+//        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("directions.txt"))) {
+//            String nextLine;
+//            while ((nextLine = bufferedReader.readLine()) != null) {
+//                String[] split = nextLine.split(",", 2);
+//                tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("locations.txt"))) {
+//            String nextLine;
+//            while ((nextLine = bufferedReader.readLine()) != null)  {
+//                String[] splitLine = nextLine.split(",");
+//                Integer location = Integer.parseInt(splitLine[0]);
+//                String description = splitLine[1];
+//                locations.put(location, new Location(location, description, tempExitsMap.get(location)));
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+////        endregion
 //
 //
 //        Map<String, Integer> tempExit = new HashMap<String, Integer>();
@@ -86,15 +120,35 @@ public class Locations implements Map<Integer, Location>{
     public static void main(String[] args) throws IOException {
         System.out.println("Running main in locations");
 
+        //region Write Binary Data
         try (
-                FileWriter locFile = new FileWriter("locations.txt");
-                FileWriter dirFile = new FileWriter("directions.txt")
-        ) {
-                for(Location location : locations.values()) {
-                    locFile.write(location.getLocationID() + ", " + location.getDescription() + "\n");
-                    dirFile.write(location.getLocationID() + ", " + location.getExits() + "\n");
+                DataOutputStream locFile = new DataOutputStream(new BufferedOutputStream(new FileOutputStream("locations_binary.dat")))
+                ) {
+            for (Location location : locations.values()) {
+                locFile.writeInt(location.getLocationID());
+                locFile.writeUTF(location.getDescription());
+                locFile.writeInt(location.getExits().size() - 1);
+                for (String direction : location.getExits().keySet()) {
+                    if (direction.equalsIgnoreCase("Q")) continue;
+                    System.out.println("\t\t" + direction + "," + location.getExits().get(direction));
+                    locFile.writeUTF(direction);
+                    locFile.writeInt(location.getExits().get(direction));
                 }
+            }
         }
+        //endregion
+
+        //region Write Non-binary data
+//        try (
+//                BufferedWriter locFile = new BufferedWriter(new FileWriter("locations.txt"));
+//                BufferedWriter dirFile = new BufferedWriter(new FileWriter("directions.txt"))
+//        ) {
+//            for (Location location : locations.values()) {
+//                locFile.write(location.getLocationID() + ", " + location.getDescription() + "\n");
+//                dirFile.write(location.getLocationID() + ", " + location.getExits() + "\n");
+//            }
+//        }
+        //endregion
     }
 
     @Override
@@ -156,5 +210,13 @@ public class Locations implements Map<Integer, Location>{
     @Override
     public Set<Entry<Integer, Location>> entrySet() {
         return locations.entrySet();
+    }
+
+    @Override
+    public String toString() {
+        for (Location location : locations.values()) {
+            System.out.println(location.toString());
+        }
+        return "";
     }
 }
