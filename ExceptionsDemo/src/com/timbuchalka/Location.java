@@ -1,12 +1,14 @@
 package com.timbuchalka;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by dev on 8/12/2015.
  */
-public class Location {
+public class Location implements Serializable {
+    private  final long serialVersionUID = 1L;
     private final int locationID;
     private final String description;
     private final Map<String, Integer> exits;

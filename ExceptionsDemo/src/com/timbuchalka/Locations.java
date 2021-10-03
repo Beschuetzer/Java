@@ -9,7 +9,16 @@ import java.util.stream.Stream;
  * Created by timbuchalka on 2/04/2016.
  */
 public class Locations implements Map<Integer, Location>{
+    private static final LocationsToUse locationToUse = LocationsToUse.LOCATIONS_SERIALIZED;
     private static final Map<Integer, Location> locations = new HashMap<Integer, Location>();
+    private static final Map<Integer, Location> locationsBinary = new HashMap<Integer, Location>();
+    private static final Map<Integer, Location> locationsSerialized = new HashMap<Integer, Location>();
+
+    public enum LocationsToUse {
+        LOCATIONS,
+        LOCATIONS_BINARY,
+        LOCATIONS_SERIALIZED,
+    }
 
     static {
         System.out.println("Running static in locations");
@@ -33,7 +42,7 @@ public class Locations implements Map<Integer, Location>{
                         System.out.println("\t\t" + direction + "," + destination);
                     }
 
-                    locations.put(locId, new Location(locId, description, exits));
+                    locationsBinary.put(locId, new Location(locId, description, exits));
                 } catch (EOFException e) {
                     eof = true;
                 }
@@ -46,31 +55,52 @@ public class Locations implements Map<Integer, Location>{
 
         //endregion
 
-////        region Character Stream Reading
-//        Map<Integer, Map<String,Integer>> tempExitsMap = new HashMap<>();
-//
-//        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("directions.txt"))) {
-//            String nextLine;
-//            while ((nextLine = bufferedReader.readLine()) != null) {
-//                String[] split = nextLine.split(",", 2);
-//                tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("locations.txt"))) {
-//            String nextLine;
-//            while ((nextLine = bufferedReader.readLine()) != null)  {
-//                String[] splitLine = nextLine.split(",");
-//                Integer location = Integer.parseInt(splitLine[0]);
-//                String description = splitLine[1];
-//                locations.put(location, new Location(location, description, tempExitsMap.get(location)));
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-////        endregion
+        //region Character Stream Reading
+        Map<Integer, Map<String,Integer>> tempExitsMap = new HashMap<>();
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("directions.txt"))) {
+            String nextLine;
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                String[] split = nextLine.split(",", 2);
+                tempExitsMap.put(Integer.parseInt(split[0]), createMapFromExits(split[1]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader("locations.txt"))) {
+            String nextLine;
+            while ((nextLine = bufferedReader.readLine()) != null)  {
+                String[] splitLine = nextLine.split(",");
+                Integer location = Integer.parseInt(splitLine[0]);
+                String description = splitLine[1];
+                locations.put(location, new Location(location, description, tempExitsMap.get(location)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // endregion
+
+        //region De-serializing Data
+        try (ObjectInputStream locFile = new ObjectInputStream(new BufferedInputStream(new FileInputStream("locations-serialized.dat")))) {
+            boolean eof = false;
+            while (!eof) {
+                try {
+                    Location location = (Location) locFile.readObject();
+                    locationsSerialized.put(location.getLocationID(), location);
+                } catch (EOFException e) {
+                    eof = true;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //endregion
+
 //
 //
 //        Map<String, Integer> tempExit = new HashMap<String, Integer>();
@@ -149,6 +179,15 @@ public class Locations implements Map<Integer, Location>{
 //            }
 //        }
         //endregion
+
+        //region Write Serializable Object
+        try (ObjectOutputStream locFile = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream("locations-serialized.dat")))) {
+            for (Location location : locationsSerialized.values()) {
+                locFile.writeObject(location);
+            }
+        }
+
+        //endregion
     }
 
     @Override
@@ -173,6 +212,8 @@ public class Locations implements Map<Integer, Location>{
 
     @Override
     public Location get(Object key) {
+        if (locationToUse.equals(LocationsToUse.LOCATIONS_BINARY)) return locationsBinary.get(key);
+        else if (locationToUse.equals(LocationsToUse.LOCATIONS_SERIALIZED)) return locationsSerialized.get(key);
         return locations.get(key);
     }
 
