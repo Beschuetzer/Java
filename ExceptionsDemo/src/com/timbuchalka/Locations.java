@@ -1,6 +1,8 @@
 package com.timbuchalka;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
@@ -13,18 +15,14 @@ public class Locations implements Map<Integer, Location>{
     private static final Map<Integer, Location> locations = new HashMap<Integer, Location>();
     private static final Map<Integer, Location> locationsBinary = new HashMap<Integer, Location>();
     private static final Map<Integer, Location> locationsSerialized = new HashMap<Integer, Location>();
+    private static final Map<Integer, IndexRecord> index = new LinkedHashMap<>();
+    private static final RandomAccessFile randomAccessFile;
 
     public enum LocationsToUse {
         LOCATIONS,
         LOCATIONS_BINARY,
         LOCATIONS_SERIALIZED,
     }
-
-    //Random Access File Layout
-    //bytes 0-3 = number of locations
-    //bytes 4-7 = start offset of the locations section
-    //bytes 8-1699 = index (which bytes correspond to which locations' start offset)
-    //bytes 1700+ = location records
 
     static {
         System.out.println("Running static in locations");
@@ -107,6 +105,26 @@ public class Locations implements Map<Integer, Location>{
         }
         //endregion
 
+        //region Random File Access Index generation based on file layout in main
+        //this approach assumes that the locations are not all just loaded into memory and accessed upon player input
+        try {
+            randomAccessFile = new RandomAccessFile("locations_rand.dat", "rwd");
+            int numOfLocations = randomAccessFile.readInt();
+            int offsetOfFirstLocation = randomAccessFile.readInt();
+
+            while (randomAccessFile.getFilePointer() < offsetOfFirstLocation) {
+                int locationId = randomAccessFile.readInt();
+                int locationStart = randomAccessFile.readInt();
+                int locationLength = randomAccessFile.readInt();
+
+                IndexRecord indexRecord = new IndexRecord(locationStart, locationLength);
+                index.put(locationId, indexRecord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //endregion
 //
 //
 //        Map<String, Integer> tempExit = new HashMap<String, Integer>();
@@ -136,21 +154,6 @@ public class Locations implements Map<Integer, Location>{
 //        tempExit.put("S", 1);
 //        tempExit.put("W", 2);
 //        locations.put(5, new Location(5, "You are in the forest", tempExit));
-
-    }
-
-    private static Map<String, Integer> createMapFromExits(String mapAsString) {
-        Map<String, Integer> toReturn = new HashMap<>();
-        String leftRemoved = mapAsString.replace('{', ' ');
-        String bothRemoved = leftRemoved.replace('}', ' ');
-        String[] split = bothRemoved.trim().split(",");
-
-        for (String keyValuePair : split) {
-            String[] splitKeyValuePair = keyValuePair.split("=");
-            toReturn.put(splitKeyValuePair[0].trim(), Integer.parseInt(splitKeyValuePair[1].trim()));
-        }
-
-        return toReturn;
     }
 
     public static void main(String[] args) throws IOException {
@@ -193,6 +196,64 @@ public class Locations implements Map<Integer, Location>{
             }
         }
 
+        //endregion
+
+        //region Create random Access File
+        //Random Access File Layout
+        //bytes 0-3 = number of locations
+        //bytes 4-7 = start offset of the first location record (used in index buidling while loop)
+        //bytes 8-1699 = index (which bytes correspond to which locations' start offset)
+        //bytes 1700+ = location records
+
+        //"rwd" is mode that has RandomAccessFile handle file synchronization (good practice)
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile("locations_rand.dat", "rwd")) {
+
+            //writing number of locations as int (4 bytes)
+            randomAccessFile.writeInt(locations.size());
+
+            //each index record contains three ints corresponding to
+            //location ID
+            //location offset
+            //size of location record
+            int indexSize = locations.size() * 3 * Integer.BYTES;
+            int locationStart = (int) (indexSize + randomAccessFile.getFilePointer() + Integer.BYTES);
+            randomAccessFile.writeInt(locationStart);
+
+            long indexStart = randomAccessFile.getFilePointer();
+
+            //build index in memory to minimize read/write operations
+            int startPointer = locationStart;
+            for (Location location : locations.values()) {
+                randomAccessFile.writeInt(location.getLocationID());
+                randomAccessFile.writeUTF(location.getDescription());
+                StringBuilder builder = new StringBuilder();
+
+                for (String direction : location.getExits().keySet()) {
+                    if (!direction.equalsIgnoreCase("Q")) {
+                        builder.append(direction);
+                        builder.append(",");
+                        builder.append(location.getExits().get(direction));
+                        builder.append(",");
+                    }
+                }
+                randomAccessFile.writeUTF(builder.toString());
+
+                IndexRecord record = new IndexRecord(startPointer, (int) randomAccessFile.getFilePointer() - startPointer);
+                index.put(location.getLocationID(), record);
+
+                startPointer = (int) randomAccessFile.getFilePointer();
+            }
+
+            //writing the index all in one go
+            randomAccessFile.seek(indexStart);
+            for (Integer locationID : index.keySet()) {
+                randomAccessFile.writeInt(locationID);
+                randomAccessFile.writeInt(index.get(locationID).getStartByte());
+                randomAccessFile.writeInt(index.get(locationID).getLength());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //endregion
     }
 
@@ -266,4 +327,19 @@ public class Locations implements Map<Integer, Location>{
         }
         return "";
     }
+
+    private static Map<String, Integer> createMapFromExits(@NotNull String mapAsString) {
+        Map<String, Integer> toReturn = new HashMap<>();
+        String leftRemoved = mapAsString.replace('{', ' ');
+        String bothRemoved = leftRemoved.replace('}', ' ');
+        String[] split = bothRemoved.trim().split(",");
+
+        for (String keyValuePair : split) {
+            String[] splitKeyValuePair = keyValuePair.split("=");
+            toReturn.put(splitKeyValuePair[0].trim(), Integer.parseInt(splitKeyValuePair[1].trim()));
+        }
+
+        return toReturn;
+    }
+
 }
