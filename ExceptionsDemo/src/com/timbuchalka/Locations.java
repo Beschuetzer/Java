@@ -16,7 +16,7 @@ public class Locations implements Map<Integer, Location>{
     private static final Map<Integer, Location> locationsBinary = new HashMap<Integer, Location>();
     private static final Map<Integer, Location> locationsSerialized = new HashMap<Integer, Location>();
     private static final Map<Integer, IndexRecord> index = new LinkedHashMap<>();
-    private static final RandomAccessFile randomAccessFile;
+    private static RandomAccessFile randomAccessFile;
 
     public enum LocationsToUse {
         LOCATIONS,
@@ -222,7 +222,8 @@ public class Locations implements Map<Integer, Location>{
             long indexStart = randomAccessFile.getFilePointer();
 
             //build index in memory to minimize read/write operations
-            int startPointer = locationStart;
+            randomAccessFile.seek(locationStart);
+
             for (Location location : locations.values()) {
                 randomAccessFile.writeInt(location.getLocationID());
                 randomAccessFile.writeUTF(location.getDescription());
@@ -238,10 +239,11 @@ public class Locations implements Map<Integer, Location>{
                 }
                 randomAccessFile.writeUTF(builder.toString());
 
-                IndexRecord record = new IndexRecord(startPointer, (int) randomAccessFile.getFilePointer() - startPointer);
+                int currentPointLocation = (int) randomAccessFile.getFilePointer();
+                IndexRecord record = new IndexRecord(locationStart, currentPointLocation - locationStart);
                 index.put(location.getLocationID(), record);
 
-                startPointer = (int) randomAccessFile.getFilePointer();
+                locationStart = (int) randomAccessFile.getFilePointer();
             }
 
             //writing the index all in one go
@@ -255,6 +257,40 @@ public class Locations implements Map<Integer, Location>{
             e.printStackTrace();
         }
         //endregion
+    }
+
+    public Location getLocation(int idToGet) throws IOException {
+        if (idToGet < 0) throw new IOException("Invalid idToGet in getLocation");
+
+        IndexRecord record = index.get(idToGet);
+        randomAccessFile.seek(record.getStartByte());
+
+        //is same as idToGet (could have seeked one extra byte)
+        int locationId = randomAccessFile.readInt();
+        String description = randomAccessFile.readUTF();
+        String exitsString = randomAccessFile.readUTF();
+        String[] exitParts = new String(exitsString).split(",");
+        Map<String, Integer> exits = new LinkedHashMap<>();
+
+        String exitKey = null;
+        int exitValue = -1;
+
+        assert exitParts.length % 2 == 0;
+        for (int i = 0; i < exitParts.length; i++) {
+            String exitPart = exitParts[i];
+            if (i % 2 == 0) {
+                exitKey = exitPart;
+            } else {
+                exitValue = Integer.parseInt(exitPart);
+            }
+
+            if (exitKey != null && exitValue != -1) {
+                exits.put(exitKey, exitValue);
+                exitKey = null;
+                exitValue = -1;
+            }
+        }
+        return new Location(locationId, description, exits);
     }
 
     @Override
@@ -326,6 +362,10 @@ public class Locations implements Map<Integer, Location>{
             System.out.println(location.toString());
         }
         return "";
+    }
+
+    public void close() throws IOException {
+        randomAccessFile.close();
     }
 
     private static Map<String, Integer> createMapFromExits(@NotNull String mapAsString) {
