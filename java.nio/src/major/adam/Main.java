@@ -6,10 +6,12 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.Pipe;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class Main {
@@ -33,10 +35,20 @@ public class Main {
             FileChannel fileChannel = fileOutputStream.getChannel();
             byte[] stringToWriteInBytes = "This is string to output.".getBytes(StandardCharsets.UTF_8);
 
-            //if you have a byte array, you can use the .wrap convenience method
-            //to set the buffer length and reset the position to 0
-            ByteBuffer byteBuffer = ByteBuffer.wrap(stringToWriteInBytes);
-            fileChannel.write(byteBuffer);
+            //if you have a byte array, you can use the .wrap() convenience method
+            //to set the buffer length, put the byte array into buffer and reset the buffer position to 0
+            //USING .WRAP() MEANS THAT THE BYTE[] YOU PUT IN IS BACKING THE BUFFER (ANY CHANGES TO BYTE[])
+            //ARE REFLECTED IN THE BUFFER
+            ByteBuffer byteBufferWrapped = ByteBuffer.wrap(stringToWriteInBytes);
+
+            //the alternative to using .wrap()
+            ByteBuffer byteBufferNotWrapped = ByteBuffer.allocate(stringToWriteInBytes.length);
+            byteBufferNotWrapped.put(stringToWriteInBytes);
+            byteBufferNotWrapped.flip();
+
+
+            //writing buffer to channel (remember to .flip() before)
+            fileChannel.write(byteBufferWrapped);
 
             //when writing numeric value though, you have to use .putInt() and .allocate()
             //.putInt() doesn't reset the head like .wrap(), so you have to reset the head
@@ -49,6 +61,16 @@ public class Main {
                 fileChannel.write(intBuffer);
                 intBuffer.flip();
             }
+
+
+            //writing all in one go
+            ByteBuffer intBufferOneGo = ByteBuffer.allocate(Integer.BYTES * 3);
+            for (int intToWrite : intsToWrite) {
+                intBufferOneGo.putInt(intToWrite);
+                intBufferOneGo.flip();
+            }
+            fileChannel.write(intBufferOneGo);
+
 
 //            //Reading using java.io's RandomAccessFile
 //            RandomAccessFile randomAccessFile = new RandomAccessFile("data_binary.dat", "rwd");
@@ -64,23 +86,105 @@ public class Main {
 //            System.out.println(int1);
 //            System.out.println(int2);
 
-            //Reading using java.nio
+            //Relative Reading using java.nio
             RandomAccessFile randomAccessFile = new RandomAccessFile("data_binary.dat", "rwd");
             FileChannel channel = randomAccessFile.getChannel();
 
             stringToWriteInBytes[0] = 'a';
             stringToWriteInBytes[1] = 'b';
-            byteBuffer.flip();
+            byteBufferWrapped.flip();
 
-            long numBytesRead = channel.read(byteBuffer);
-            if (byteBuffer.hasArray()) {
-                System.out.println("byte buffer: " + new String(byteBuffer.array()));
+            long numBytesRead = channel.read(byteBufferWrapped);
+            if (byteBufferWrapped.hasArray()) {
+                System.out.println("byte buffer: " + new String(byteBufferWrapped.array()));
             }
+
+            //Absolute read using .getInt(index) (reads at index)
+            //absolute vs relative applies to all types as well as
+            //the put equivalent method (e.g. .putLong(0))
+            //absolute reads don't change buffer's position unlike relative reads
+            //basically stick with one approach and be consistent
+            intBuffer.flip();
+            numBytesRead = channel.read(intBuffer);
+//            System.out.println(intBuffer.getInt(0));
+
+
+            try (
+                    RandomAccessFile copyFile = new RandomAccessFile("data-copy.dat", "rw");
+                    FileChannel copyChannel = copyFile.getChannel()
+            ) {
+                long numTransferredTo = channel.transferTo(0, channel.size(), copyChannel);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            channel.close();
+
+            pipeDemo();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void pipeDemo() {
+        try {
+            Pipe pipe = Pipe.open();
+
+            //Writer thread
+            Runnable writer = () -> {
+                try {
+                    Pipe.SinkChannel sinkChannel = pipe.sink();
+                    ByteBuffer buffer = ByteBuffer.allocate(56);
+
+                    for (int i = 0; i < 10; i++) {
+                        String currentTime = "The time is " + System.currentTimeMillis();
+                        buffer.put(currentTime.getBytes(StandardCharsets.UTF_8));
+                        buffer.flip();
+
+                        while (buffer.hasRemaining()) {
+                            sinkChannel.write(buffer);
+                        }
+
+                        buffer.flip();
+                        Thread.sleep(100);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+
+            Runnable reader = () -> {
+              try {
+                  Pipe.SourceChannel sourceChannel = pipe.source();
+                  ByteBuffer buffer = ByteBuffer.allocate(56);
+
+                  for (int i = 0; i < 10; i++) {
+                      int bytesRad = sourceChannel.read(buffer);
+                      byte[] timeString = new byte[bytesRad];
+                      buffer.flip();
+                      buffer.get(timeString);
+                      System.out.println("Reader thread: " + new String(timeString));
+                      buffer.flip();
+                      Thread.sleep(100);
+                  }
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+            };
+
+            new Thread(writer).start();
+            new Thread(reader).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //relative
+        //returns a working directory set to the current user's directory or when run in an IDE, the project directory (as that is the IDE's working directory)
+        Path relativePath = FileSystems.getDefault().getPath("file.txt");
+
+        //absolute
+        Path absolutePath = Paths.get("c:\\somePath\\to\\file.txt");
     }
 }
