@@ -38,6 +38,14 @@ public class Main {
             System.out.println(path);
         }
 
+        //Relativized path
+        Path sourcePath = FileSystems.getDefault().getPath("FileTree", "Dir2", "Dir3", "file1.txt");
+        Path sourceRoot = FileSystems.getDefault().getPath("FileTree");
+        Path relativizedPath = sourceRoot.relativize(sourcePath);
+        System.out.println("relativizedPath = " + relativizedPath);
+        Path targetRoot = FileSystems.getDefault().getPath("FileTree", "Dir4", "Dir2Copy");
+        Path resolvedPathForCopy = targetRoot.resolve(relativizedPath);
+        System.out.println("resolvedPathForCopy = " + resolvedPathForCopy);
 
         walkDirectoryTree(directory);
     }
@@ -79,9 +87,57 @@ public class Main {
         System.out.println("Walking tree for path " + path.toAbsolutePath());
 
         try {
-            Files.walkFileTree(path, new ExtendedSimpleFileVisitor());
+            Path targetRoot = FileSystems.getDefault().getPath("CopiedPath");
+            Path sourceRoot = FileSystems.getDefault().getPath("FileTree", "Dir2");
+            Files.walkFileTree(path, new CopyFiles(sourceRoot, targetRoot));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
+        //mapping io to nio (important because some IO instances require File instances)
+        String columns = System.getenv("LINES");
+        System.out.println("-".repeat(50));
+        String examplesRoot = "Examples";
+        String childPath = "dir" + File.separator + "file.txt";
+
+        File file = new File(File.separator + examplesRoot + File.separator + childPath);
+        Path convertedPath = file.toPath();
+        System.out.println("convertedPath = " + convertedPath);
+
+        //File special constructor
+        File parent = new File(File.separator + examplesRoot);
+        File resolvedFile = new File(parent, childPath);
+        System.out.println(resolvedFile.toPath());
+
+        //File 2nd special constructor
+        resolvedFile = new File(File.separator + examplesRoot, childPath);
+        System.out.println(resolvedFile.toPath());
+
+        Path parentPath = Paths.get(File.separator + examplesRoot);
+        Path childRelativePath = Paths.get(childPath);
+        System.out.println(parentPath.resolve(childRelativePath));
+
+        File workingDir = new File("").getAbsoluteFile();
+        System.out.println("workingDir = " + workingDir.getAbsolutePath());
+
+        //Using java.io to view dir contents
+        System.out.println("-".repeat(50));
+        File dir2File = new File(workingDir, File.separator + "FileTree" + File.separator + "Dir2");
+        System.out.println("Printing direct contents of '" + dir2File.getAbsolutePath() + "' using java.io.File.list()");
+        String[] dir2Contents = dir2File.list();
+        for (int i = 0; i < dir2Contents.length; i++) {
+            System.out.println("i = " + i + ": " + dir2Contents[i]);
+        }
+
+        System.out.println("-".repeat(50));
+        System.out.println("Printing direct contents of '" + dir2File.getAbsolutePath() + "' using java.io.File.listFiles()");
+        File[] dir2Files = dir2File.listFiles();
+        for (int i = 0; i < dir2Files.length; i++) {
+            System.out.println("i = " + i + ": " + dir2Files[i].getAbsolutePath());
+        }
+
+
     }
 }
