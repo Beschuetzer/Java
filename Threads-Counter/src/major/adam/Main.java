@@ -21,7 +21,13 @@ public class Main {
         //can synchronize a block of statements that work with an object by forcing the
         //block to acquire the object's lock before executing the statement block
         //have to synchronize on an object that the threads share, so they are competing for the same lock (i.e. not local variables)
-        //can synchronize static objects
+        //can synchronize static objects and static methods (lock is owned by class of the instance)
+        //re-entrant = thread can acquire a lock it already owns (when a synchronized method calls another synchronized method)
+        //critical section = code that references a shared resource (only one thread at a time should be able to execute a critical section)
+        //thread-safe = all of the critical sections of the code have been synchronized (basically have to synchronize methods that are not thread-safe our self)
+        //only synchronize the code that MUST-BE synchronized (to prevent unnecessary thread blocking)
+
+
     }
 }
 
