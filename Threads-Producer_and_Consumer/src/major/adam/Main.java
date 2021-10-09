@@ -1,5 +1,6 @@
 package major.adam;
 
+import java.util.Collections;
 import java.util.Random;
 
 public class Main {
@@ -19,19 +20,33 @@ class Message {
     public synchronized String read() {
         while (empty) {
             System.out.println("reading...");
+            try {
+                wait();
+            } catch (InterruptedException exception) {
+
+            }
         }
 
         empty = true;
+        notifyAll();
         return message;
     }
 
     public synchronized void write(String message) {
         while (!empty) {
             System.out.println("writing...");
+            try {
+                wait();
+            } catch (InterruptedException exception) {
+
+            }
         }
 
         empty = false;
+        notifyAll();
         this.message = message;
+
+        Collections.synchronizedList()
     }
 }
 
