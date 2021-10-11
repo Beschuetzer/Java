@@ -1,7 +1,9 @@
 package major.adam;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 public class Main {
-    private static Object lock = new Object();
+    private static final ReentrantLock lock = new ReentrantLock(true);
 
     public static void main(String[] args) {
         Thread t1 = new Thread(new Worker(ThreadColor.ANSI_PURPLE), "Priority 1");
@@ -11,11 +13,11 @@ public class Main {
         Thread t5 = new Thread(new Worker(ThreadColor.ANSI_CYAN), "Priority 5");
 
         //priority is more of a suggestion (but possibly less so for more computationally-complex tasks)
-//        t1.setPriority(1);
-//        t2.setPriority(2);
-//        t3.setPriority(3);
-//        t4.setPriority(4);
-//        t5.setPriority(5);
+        t1.setPriority(1);
+        t2.setPriority(2);
+        t3.setPriority(3);
+        t4.setPriority(4);
+        t5.setPriority(5);
 
         t1.start();
         t2.start();
@@ -25,8 +27,8 @@ public class Main {
     }
 
     private static class Worker implements Runnable {
+        private final String threadColor;
         private int runCount = 0;
-        private String threadColor;
 
         public Worker(String threadColor) {
             this.threadColor = threadColor;
@@ -35,10 +37,15 @@ public class Main {
         @Override
         public void run() {
             for (int i = 0; i < 100; i++) {
-                synchronized (lock) {
+                lock.lock();
+                try {
                     runCount++;
                     System.out.printf(threadColor + "%s: runCount = %d\n", Thread.currentThread().getName(), runCount);
                     //execute critical section of code
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
                 }
             }
         }
