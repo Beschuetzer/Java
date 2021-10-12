@@ -20,6 +20,20 @@ public class User {
         return bankAccounts;
     }
 
+    public boolean deposit(double amount) {
+        if (amount == 0 ) return false;
+
+        this.bankAccounts.get(0).deposit(amount);
+        return true;
+    }
+
+    public boolean withdraw(double amount) {
+        if (amount == 0 ) return false;
+
+        this.bankAccounts.get(0).withdraw(amount);
+        return true;
+    }
+
     private boolean addBankAccount(BankAccount bankAccount) {
         if (bankAccounts != null && bankAccounts.contains(bankAccount)) return false;
 
