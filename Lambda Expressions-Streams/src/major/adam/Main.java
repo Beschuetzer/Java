@@ -133,5 +133,50 @@ public class Main {
             System.out.println("People aged " + age);
             employeeList.forEach(employee -> System.out.println(employee.getName()));
         });
+
+
+        System.out.println("-".repeat(50));
+        System.out.println("Last Person with youngest age");
+        //.reduce()
+        //three versions
+        //without identity and combiner
+        departments.stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .reduce((e1, e2) -> e1.getAge() < e2.getAge() ? e1 : e2)
+                .ifPresent(System.out::println);
+
+        //like js (with identity [initial value] and accumulator)
+        //getting total age of all employees in all departments
+        Integer result = departments.stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .distinct()
+                .map(employee -> employee.getAge())
+//                .reduce(0, (totalAge, currentEmployeeAge) -> totalAge + currentEmployeeAge);
+                .reduce(0, Integer::sum);
+
+        //using in parallel
+        Integer resultParallel = departments.stream()
+                .flatMap(department -> department.getEmployees().parallelStream())
+                .distinct()
+                .map(employee -> employee.getAge())
+                        .reduce(0, (a, b) -> a + b, Integer::sum);
+
+        System.out.println(result);
+        System.out.println(resultParallel);
+
+
+        //storing intermediate stream, then executing later using a terminal operator
+        Stream<String> distinctLengthThree = Stream.of("A", "C","DDA","ACCA","ABBA")
+                .filter(s -> {
+                    System.out.println(s);
+                    return s.length() <= 3;
+                })
+                .distinct();
+
+        System.out.println(distinctLengthThree.count());
+
+        //this throws an exception as stream has already been terminated
+        System.out.println(distinctLengthThree.count());
+
     }
 }
