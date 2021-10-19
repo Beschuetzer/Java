@@ -38,7 +38,6 @@ public class Datasource {
     public static final int INDEX_SONG_TITLE = 3;
     public static final int INDEX_SONG_ALBUM = 4;
 
-
     public enum SortOrders {
         NONE(""),
         ASCENDING("ASC"),
@@ -46,10 +45,22 @@ public class Datasource {
 
         public final String value;
 
-        private SortOrders(String value) {
+        SortOrders(String value) {
             this.value = value;
         }
 
+    }
+
+    public enum JoinTypes {
+        INNER("INNER"),
+        OUTER("OUTER"),
+        CROSS("CROSS");
+
+        public String value;
+
+        JoinTypes(String value) {
+            this.value = value;
+        }
     }
 
     private Connection conn;
@@ -111,19 +122,15 @@ public class Datasource {
 
         return toReturn;
     }
-
     public List<Album> getAlbums(String artist) {
         return getAlbums(artist, SortOrders.NONE);
     }
-
     public List<Album> getAlbums(String artist, SortOrders sortOrder) {
         List<Album> toReturn = new ArrayList<>();
         String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
-        String joinClause = String.format("INNER JOIN %s ON %s.%s = %s.%s ", TABLE_ARTISTS, TABLE_ARTISTS, COLUMN_ARTIST_ID, TABLE_ALBUMS, COLUMN_ALBUM_ARTIST);
+        String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST));
         String whereClause = String.format("WHERE %s.%s LIKE '%s' ", TABLE_ARTISTS, COLUMN_ARTIST_NAME, artist);
         String orderByClause = getOrderByClause(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME), sortOrder);
-
-
         String collateClause = "COLLATE NOCASE ";
 
         String query = selectClause +
@@ -149,6 +156,7 @@ public class Datasource {
         return toReturn;
     }
 
+
     public String getSelectClause(List<String> columns, String tableName) {
         StringBuilder columnString = new StringBuilder();
         for (int i = 0; i < columns.size(); i++) {
@@ -157,19 +165,19 @@ public class Datasource {
             if (columns.size() > 1 && i != columns.size() - 1) suffix = ", ";
             columnString.append(column.trim() + suffix);
         }
-        return String.format("SELECT %s FROM %s ",  columnString, tableName);
+        return String.format(" SELECT %s FROM %s ",  columnString, tableName);
     }
-
     public String getOrderByClause(String sortOn, SortOrders sortOrder) {
         if (sortOrder.equals(SortOrders.NONE)) return "";
 
         String sortOrderString = "DESC";
         if (sortOrder == SortOrders.ASCENDING) sortOrderString = "ASC";
 
-        return String.format("ORDER BY %s %s ", sortOn, sortOrderString);
+        return String.format(" ORDER BY %s %s ", sortOn, sortOrderString);
     }
-    private String getJoinClause(String tableToJoin) {
-        return "";
+    public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
+        return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
+
     }
 }
 

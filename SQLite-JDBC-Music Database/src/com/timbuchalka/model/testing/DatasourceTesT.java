@@ -25,19 +25,21 @@ class DatasourceTesT {
 
     @AfterAll
     static void tearDownDataSource() {
+        System.out.println("Closing Connection");
         datasource.close();
     }
 
     @BeforeEach
     void setupDataSource() {
-        System.out.println("Opening...");
         if (isInitialized) return;
+        System.out.println("Opening Connection...");
         datasource.open();
         isInitialized = true;
     }
 
     @org.junit.jupiter.api.Test
     void queryArtists() {
+        fail("Implement me");
     }
 
     @ParameterizedTest
@@ -50,8 +52,6 @@ class DatasourceTesT {
     @ParameterizedTest
     @MethodSource
     void getOrderByClause(String sortOn, SortOrders sortOrder, String expected) {
-        System.out.println("sortOn = " + sortOn);
-        System.out.println("sortOrder = " + sortOrder);
         String received = datasource.getOrderByClause(sortOn, sortOrder);
         assertEquals(expected.trim(), received.trim());
     }
