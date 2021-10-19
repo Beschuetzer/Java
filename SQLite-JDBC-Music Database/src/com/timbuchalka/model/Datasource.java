@@ -1,6 +1,7 @@
 package com.timbuchalka.model;
 
 import java.sql.*;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -166,6 +167,22 @@ public class Datasource {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        return toReturn;
+    }
+
+    public List<Object> getSongDetails(String songName) {
+        //return artist name, album name, and track number for the song of the album
+        List<Object> toReturn = new ArrayList<>();
+        String selectClause = getSelectClause(Arrays.asList(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME),
+                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME),
+                        String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_TRACK)
+            ),
+            TABLE_SONGS
+        );
+        String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ALBUMS, String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ID), String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_ALBUM));
+        String whereClause = getWhereClause("")
 
         return toReturn;
     }

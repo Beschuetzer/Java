@@ -32,7 +32,7 @@ public class Main {
         //Getting Albums by Artist
         System.out.println("-".repeat(50));
         List<Album> albumsByZZTop = new ArrayList<>();
-        albumsByZZTop = datasource.getAlbums("zz top", Datasource.SortOrders.ASCENDING, false);
+        albumsByZZTop = datasource.getAlbums("pink floyd", Datasource.SortOrders.ASCENDING, false);
         albumsByZZTop.forEach(album -> System.out.println(album.toString()));
 
         datasource.close();
