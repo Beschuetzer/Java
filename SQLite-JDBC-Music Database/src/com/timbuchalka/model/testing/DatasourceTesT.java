@@ -65,8 +65,21 @@ class DatasourceTesT {
 
     @ParameterizedTest
     @MethodSource
-    void getAlbums(String artistName, SortOrders sortOrder, List<Album> expected) {
-        List<Album> retrievedAlbums = datasource.getAlbums(artistName, sortOrder);
+    void getWhereClauseExact(String searchIn, String searchFor, boolean isExact, String expected) {
+        String received = datasource.getWhereClause(searchIn, searchFor, isExact);
+        assertEquals(expected.trim(), received.trim());
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void getWhereClauseOperators(String leftOperand, String rightOperand, WhereClauseOperators operator, String expected) {
+        String received = datasource.getWhereClause(leftOperand, rightOperand, operator);
+        assertEquals(expected.trim(), received.trim());
+    }
+    @ParameterizedTest
+    @MethodSource
+    void getAlbums(String artistName, SortOrders sortOrder, boolean isCaseSensitive, List<Album> expected) {
+        List<Album> retrievedAlbums = datasource.getAlbums(artistName, sortOrder, isCaseSensitive);
         for (int i = 0; i < expected.size(); i++) {
             boolean isValid = false;
             Album expectedAlbum = expected.get(i);
@@ -94,6 +107,7 @@ class DatasourceTesT {
                 Arguments.of(
                         "ZZ top",
                         SortOrders.ASCENDING,
+                        false,
                         Arrays.asList(
                                 new Album(114, "Antenna", 23),
                                 new Album(392, "Degüello", 23),
@@ -106,6 +120,7 @@ class DatasourceTesT {
                 Arguments.of(
                         "ZZ top",
                         SortOrders.NONE,
+                        false,
                         Arrays.asList(
                                 new Album(22, "Rio Grande Mud", 23),
                                 new Album(114, "Antenna", 23),
@@ -118,6 +133,7 @@ class DatasourceTesT {
                 Arguments.of(
                         "ZZ top",
                         SortOrders.DESCENDING,
+                        false,
                         Arrays.asList(
                                 new Album(309, "Tres Hombres", 23),
                                 new Album(22, "Rio Grande Mud", 23),
@@ -126,6 +142,12 @@ class DatasourceTesT {
                                 new Album(392, "Degüello", 23),
                                 new Album(114, "Antenna", 23)
                         )
+                ),
+                Arguments.of(
+                        "ZZ top",
+                        SortOrders.DESCENDING,
+                        true,
+                        Arrays.asList()
                 )
         );
     }
@@ -206,6 +228,87 @@ class DatasourceTesT {
         );
     }
 
+    public Stream<Arguments> getWhereClauseExact() {
+        return Stream.of(
+//          getWhereClause(String searchIn, String searchFor, boolean isExact, String expected) {
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        true,
+                        String.format("WHERE %s %s '%s'",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.EQUALS.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        false,
+                        String.format("WHERE %s %s '%s'",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.LIKE.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                )
+        );
+    }
+
+    public Stream<Arguments> getWhereClauseOperators() {
+        return Stream.of(
+//              getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        WhereClauseOperators.EQUALS,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.EQUALS.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        WhereClauseOperators.LIKE,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.LIKE.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        WhereClauseOperators.LESS_THAN,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.LESS_THAN.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        WhereClauseOperators.NOT_EQUALS,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.NOT_EQUALS.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        WhereClauseOperators.GREATER_THAN,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.GREATER_THAN.value,
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                )
+        );
+    }
 
     //endregion
 }

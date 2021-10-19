@@ -62,6 +62,20 @@ public class Datasource {
             this.value = value;
         }
     }
+    public enum WhereClauseOperators {
+        EQUALS("="),
+        GREATER_THAN(">"),
+        LESS_THAN("<"),
+        NOT_EQUALS("<>"),
+        LIKE("LIKE");
+
+        public String value;
+
+        WhereClauseOperators(String value) {
+            this.value = value;
+        }
+    }
+
 
     private Connection conn;
     private String CONNECTION_STRING;
@@ -123,15 +137,15 @@ public class Datasource {
         return toReturn;
     }
     public List<Album> getAlbums(String artist) {
-        return getAlbums(artist, SortOrders.NONE);
+        return getAlbums(artist, SortOrders.NONE, false);
     }
-    public List<Album> getAlbums(String artist, SortOrders sortOrder) {
+    public List<Album> getAlbums(String artist, SortOrders sortOrder, boolean isCaseSensitive) {
         List<Album> toReturn = new ArrayList<>();
         String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
         String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST));
-        String whereClause = String.format("WHERE %s.%s LIKE '%s' ", TABLE_ARTISTS, COLUMN_ARTIST_NAME, artist);
+        String whereClause = getWhereClause(String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME), artist, true);
         String orderByClause = getOrderByClause(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME), sortOrder);
-        String collateClause = "COLLATE NOCASE ";
+        String collateClause =  isCaseSensitive ? "" : "COLLATE NOCASE ";
 
         String query = selectClause +
                 joinClause +
@@ -157,6 +171,7 @@ public class Datasource {
     }
 
 
+    //region Helpers
     public String getSelectClause(List<String> columns, String tableName) {
         StringBuilder columnString = new StringBuilder();
         for (int i = 0; i < columns.size(); i++) {
@@ -178,6 +193,24 @@ public class Datasource {
     public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
         return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
     }
+
+    public String getWhereClause(String searchIn, String searchFor) {
+        /**Exact match**/
+        return getWhereClause(searchIn, searchFor, true);
+    }
+    public String getWhereClause(String searchIn, String searchFor, boolean isExact) {
+        /**Exact or LIKE match**/
+
+        String searchMethod = WhereClauseOperators.EQUALS.value;
+        if (!isExact) searchMethod = WhereClauseOperators.LIKE.value;
+        return String.format(" WHERE %s %s '%s' ", searchIn, searchMethod, searchFor);
+    }
+    public String getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
+        /**When using with operator**/
+        return String.format(" WHERE %s %s %s ", leftOperand, operator.value, rightOperand);
+    }
+
+    //endregion
 }
 
 
