@@ -1,7 +1,8 @@
 package com.timbuchalka.model;
 
+import com.timbuchalka.queryReturns.SongDetail;
+
 import java.sql.*;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,48 +39,8 @@ public class Datasource {
     public static final int INDEX_SONG_TRACK = 2;
     public static final int INDEX_SONG_TITLE = 3;
     public static final int INDEX_SONG_ALBUM = 4;
-
-    public enum SortOrders {
-        NONE(""),
-        ASCENDING("ASC"),
-        DESCENDING("DESC");
-
-        public final String value;
-
-        SortOrders(String value) {
-            this.value = value;
-        }
-
-    }
-
-    public enum JoinTypes {
-        INNER("INNER"),
-        OUTER("OUTER"),
-        CROSS("CROSS");
-
-        public String value;
-
-        JoinTypes(String value) {
-            this.value = value;
-        }
-    }
-    public enum WhereClauseOperators {
-        EQUALS("="),
-        GREATER_THAN(">"),
-        LESS_THAN("<"),
-        NOT_EQUALS("<>"),
-        LIKE("LIKE");
-
-        public String value;
-
-        WhereClauseOperators(String value) {
-            this.value = value;
-        }
-    }
-
-
+    private final String CONNECTION_STRING;
     private Connection conn;
-    private String CONNECTION_STRING;
 
     public Datasource(String CONNECTION_STRING) {
         this.CONNECTION_STRING = CONNECTION_STRING;
@@ -89,7 +50,7 @@ public class Datasource {
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
             return true;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Couldn't connect to database: " + e.getMessage());
             return false;
         }
@@ -97,12 +58,66 @@ public class Datasource {
 
     public void close() {
         try {
-            if(conn != null) {
+            if (conn != null) {
                 conn.close();
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
+    }
+
+    public List<Artist> queryArtists() {
+        List<Artist> toReturn = new ArrayList<>();
+
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)
+        ) {
+            while (resultSet.next()) {
+                String name = resultSet.getString(INDEX_ARTIST_NAME);
+                int id = resultSet.getInt(INDEX_ARTIST_ID);
+                Artist newArtist = new Artist(name, id);
+                if (!toReturn.contains(newArtist)) toReturn.add(newArtist);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return toReturn;
+    }
+
+    public List<Album> getAlbums(String artist) {
+        return getAlbums(artist, SortOrders.NONE, false);
+    }
+
+    public List<Album> getAlbums(String artist, SortOrders sortOrder, boolean isCaseSensitive) {
+        List<Album> toReturn = new ArrayList<>();
+        String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
+        String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST));
+        String whereClause = getWhereClause(String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME), artist, true);
+        String orderByClause = getOrderByClause(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME), sortOrder);
+        String collateClause = isCaseSensitive ? "" : "COLLATE NOCASE ";
+
+        String query = selectClause +
+                joinClause +
+                whereClause +
+                collateClause +
+                orderByClause;
+
+        System.out.println(query);
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)
+        ) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String name = resultSet.getString(2);
+                int artistId = resultSet.getInt(3);
+                toReturn.add(new Album(id, name, artistId));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return toReturn;
     }
 
     //it is not recommended to return a ResultSet as that is implementation specific
@@ -119,50 +134,41 @@ public class Datasource {
 //        return null;
 //    }
 
-    public List<Artist> queryArtists() {
-        List<Artist> toReturn = new ArrayList<>();
+    public List<SongDetail> getSongDetails(String songName) {
+        return getSongDetails(songName, -1, true);
+    }
+    public List<SongDetail> getSongDetails(String songName, boolean isExact) {
+        return getSongDetails(songName, -1, isExact);
+    }
+    public List<SongDetail> getSongDetails(String songName, Integer albumId, boolean isExact) {
+        //return artist name, album name, and track number for the song of the album
+        if (albumId <= 0) throw new IllegalArgumentException("albumId must be larger than 0");
+        List<SongDetail> toReturn = new ArrayList<>();
+        String selectClause = getSelectClause(Arrays.asList(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME),
+                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME),
+                        String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_TRACK)
+                ),
+                TABLE_SONGS
+        );
+        String joinAlbumsClause = getJoinClause(JoinTypes.INNER, TABLE_ALBUMS, String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ID), String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_ALBUM));
+        String joinArtistsClause = getJoinClause(JoinTypes.INNER, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST));
+        String whereClause = getWhereClause(String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_TITLE), songName, isExact);
+        String whereAlbumIdCondition = getWhereCondition(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ID), String.format("%s", albumId), WhereClauseOperators.EQUALS);
+        String orderByClause = getOrderByClause(String.format("%s.%s, %s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME, TABLE_ALBUMS, COLUMN_ALBUM_NAME), SortOrders.ASCENDING);
 
-        try (Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)
+        String query = selectClause + joinAlbumsClause + joinArtistsClause + whereClause + (albumId > 0 ? " and " + whereAlbumIdCondition : "") + orderByClause;
+        System.out.println("query = " + query);
+
+        try (
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(query.trim())
         ) {
             while (resultSet.next()) {
-                String name = resultSet.getString(INDEX_ARTIST_NAME);
-                int id = resultSet.getInt(INDEX_ARTIST_ID);
-                Artist newArtist = new Artist(name, id);
-                if (!toReturn.contains(newArtist)) toReturn.add(newArtist);
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-
-        return toReturn;
-    }
-    public List<Album> getAlbums(String artist) {
-        return getAlbums(artist, SortOrders.NONE, false);
-    }
-    public List<Album> getAlbums(String artist, SortOrders sortOrder, boolean isCaseSensitive) {
-        List<Album> toReturn = new ArrayList<>();
-        String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
-        String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST));
-        String whereClause = getWhereClause(String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME), artist, true);
-        String orderByClause = getOrderByClause(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME), sortOrder);
-        String collateClause =  isCaseSensitive ? "" : "COLLATE NOCASE ";
-
-        String query = selectClause +
-                joinClause +
-                whereClause +
-                collateClause +
-                orderByClause;
-
-        System.out.println(query);
-        try(Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-        ) {
-            while(resultSet.next()) {
-                int id = resultSet.getInt(1);
-                String name = resultSet.getString(2);
-                int artistId = resultSet.getInt(3);
-                toReturn.add(new Album(id, name, artistId));
+                String artistName = resultSet.getString(1);
+                String albumName = resultSet.getString(2);
+                int trackNumber = resultSet.getInt(3);
+                toReturn.add(new SongDetail(songName, artistName, albumName, trackNumber));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -170,23 +176,6 @@ public class Datasource {
 
         return toReturn;
     }
-
-    public List<Object> getSongDetails(String songName) {
-        //return artist name, album name, and track number for the song of the album
-        List<Object> toReturn = new ArrayList<>();
-        String selectClause = getSelectClause(Arrays.asList(
-                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME),
-                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME),
-                        String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_TRACK)
-            ),
-            TABLE_SONGS
-        );
-        String joinClause = getJoinClause(JoinTypes.INNER, TABLE_ALBUMS, String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ID), String.format("%s.%s", TABLE_SONGS, COLUMN_SONG_ALBUM));
-        String whereClause = getWhereClause("")
-
-        return toReturn;
-    }
-
 
     //region Helpers
     public String getSelectClause(List<String> columns, String tableName) {
@@ -197,8 +186,9 @@ public class Datasource {
             if (columns.size() > 1 && i != columns.size() - 1) suffix = ", ";
             columnString.append(column.trim() + suffix);
         }
-        return String.format(" SELECT %s FROM %s ",  columnString, tableName);
+        return String.format(" SELECT %s FROM %s ", columnString, tableName);
     }
+
     public String getOrderByClause(String sortOn, SortOrders sortOrder) {
         if (sortOrder.equals(SortOrders.NONE)) return "";
 
@@ -207,6 +197,7 @@ public class Datasource {
 
         return String.format(" ORDER BY %s %s ", sortOn, sortOrderString);
     }
+
     public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
         return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
     }
@@ -215,16 +206,60 @@ public class Datasource {
         /**Exact match**/
         return getWhereClause(searchIn, searchFor, true);
     }
+
     public String getWhereClause(String searchIn, String searchFor, boolean isExact) {
         /**Exact or LIKE match**/
 
-        String searchMethod = WhereClauseOperators.EQUALS.value;
-        if (!isExact) searchMethod = WhereClauseOperators.LIKE.value;
-        return String.format(" WHERE %s %s '%s' ", searchIn, searchMethod, searchFor);
+        WhereClauseOperators searchMethod = WhereClauseOperators.EQUALS;
+        if (!isExact) searchMethod = WhereClauseOperators.LIKE;
+        return String.format(" WHERE %s ", getWhereCondition(searchIn, String.format("'%s'", searchFor), searchMethod));
     }
+
     public String getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
         /**When using with operator**/
-        return String.format(" WHERE %s %s %s ", leftOperand, operator.value, rightOperand);
+        return String.format(" WHERE %s ", getWhereCondition(leftOperand, rightOperand, operator));
+    }
+
+    public String getWhereCondition(String leftOperand, String rightOperand, WhereClauseOperators operator) {
+        return String.format("%s %s %s", leftOperand, operator.value, rightOperand);
+    }
+
+    public enum SortOrders {
+        NONE(""),
+        ASCENDING("ASC"),
+        DESCENDING("DESC");
+
+        public final String value;
+
+        SortOrders(String value) {
+            this.value = value;
+        }
+    }
+
+    public enum JoinTypes {
+        INNER("INNER"),
+        OUTER("OUTER"),
+        CROSS("CROSS");
+
+        public String value;
+
+        JoinTypes(String value) {
+            this.value = value;
+        }
+    }
+
+    public enum WhereClauseOperators {
+        EQUALS("="),
+        GREATER_THAN(">"),
+        LESS_THAN("<"),
+        NOT_EQUALS("<>"),
+        LIKE("LIKE");
+
+        public String value;
+
+        WhereClauseOperators(String value) {
+            this.value = value;
+        }
     }
 
     //endregion

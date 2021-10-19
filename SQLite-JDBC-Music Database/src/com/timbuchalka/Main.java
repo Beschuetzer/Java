@@ -3,6 +3,7 @@ package com.timbuchalka;
 import com.timbuchalka.model.Album;
 import com.timbuchalka.model.Artist;
 import com.timbuchalka.model.Datasource;
+import com.timbuchalka.queryReturns.SongDetail;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,6 +36,17 @@ public class Main {
         albumsByZZTop = datasource.getAlbums("pink floyd", Datasource.SortOrders.ASCENDING, false);
         albumsByZZTop.forEach(album -> System.out.println(album.toString()));
 
-        datasource.close();
+        
+        //Getting Song Details
+        System.out.println("-".repeat(50));
+        List<SongDetail> wishYouWereHereSongDetails = datasource.getSongDetails("black Dog", false);
+        for(SongDetail song : wishYouWereHereSongDetails) {
+            System.out.println("song = " + song);
+        }
+        
+        
+        
+        
+        datasource.close();        
     }
 }
