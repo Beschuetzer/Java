@@ -2,7 +2,7 @@ package com.timbuchalka.model.testing;
 
 import com.timbuchalka.Main;
 import com.timbuchalka.model.Album;
-import com.timbuchalka.model.*;
+import com.timbuchalka.model.Datasource;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -58,6 +58,13 @@ class DatasourceTesT {
 
     @ParameterizedTest
     @MethodSource
+    void getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2, String expected) {
+        String received = datasource.getJoinClause(joinType, tableToJoin, joinOn1, joinOn2);
+        assertEquals(expected.trim(), received.trim());
+    }
+
+    @ParameterizedTest
+    @MethodSource
     void getAlbums(String artistName, SortOrders sortOrder, List<Album> expected) {
         List<Album> retrievedAlbums = datasource.getAlbums(artistName, sortOrder);
         for (int i = 0; i < expected.size(); i++) {
@@ -75,7 +82,7 @@ class DatasourceTesT {
                 String albumsString = retrievedAlbums.stream().map(album -> "\n" + tabs + "\t" + album.toString()).reduce("", (last, current) -> {
                     return last + tabs + current;
                 });
-                fail("\n" + tabs + "Expected album: " + expectedAlbum.toString() + "\n" + tabs + "Got: " + retrievedAlbum.toString());
+                fail("\n" + tabs + "Expected album: " + expectedAlbum + "\n" + tabs + "Got: " + retrievedAlbum);
             }
         }
     }
@@ -88,12 +95,12 @@ class DatasourceTesT {
                         "ZZ top",
                         SortOrders.ASCENDING,
                         Arrays.asList(
-                            new Album(114, "Antenna", 23),
-                            new Album(392, "Degüello", 23),
-                            new Album(301, "Mescalero", 23),
-                            new Album(263, "Recycler", 23),
-                            new Album(22, "Rio Grande Mud", 23),
-                            new Album(309, "Tres Hombres", 23)
+                                new Album(114, "Antenna", 23),
+                                new Album(392, "Degüello", 23),
+                                new Album(301, "Mescalero", 23),
+                                new Album(263, "Recycler", 23),
+                                new Album(22, "Rio Grande Mud", 23),
+                                new Album(309, "Tres Hombres", 23)
                         )
                 ),
                 Arguments.of(
@@ -138,7 +145,7 @@ class DatasourceTesT {
                                 String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST)
                         ),
                         TABLE_ALBUMS,
-                        String.format("SELECT %s.%s, %s.%s FROM %s",  TABLE_ALBUMS, COLUMN_ALBUM_NAME,TABLE_ALBUMS, COLUMN_ALBUM_ARTIST, TABLE_ALBUMS)
+                        String.format("SELECT %s.%s, %s.%s FROM %s", TABLE_ALBUMS, COLUMN_ALBUM_NAME, TABLE_ALBUMS, COLUMN_ALBUM_ARTIST, TABLE_ALBUMS)
                 ),
                 Arguments.of(
                         Arrays.asList(
@@ -147,7 +154,7 @@ class DatasourceTesT {
                                 String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST)
                         ),
                         TABLE_ALBUMS,
-                        String.format("SELECT %s.%s, %s.%s, %s.%s FROM %s",  TABLE_ALBUMS, COLUMN_ALBUM_NAME, TABLE_ALBUMS, COLUMN_ALBUM_ID,TABLE_ALBUMS, COLUMN_ALBUM_ARTIST, TABLE_ALBUMS)
+                        String.format("SELECT %s.%s, %s.%s, %s.%s FROM %s", TABLE_ALBUMS, COLUMN_ALBUM_NAME, TABLE_ALBUMS, COLUMN_ALBUM_ID, TABLE_ALBUMS, COLUMN_ALBUM_ARTIST, TABLE_ALBUMS)
                 )
         );
     }
@@ -171,5 +178,34 @@ class DatasourceTesT {
                 )
         );
     }
+
+    public Stream<Arguments> getJoinClause() {
+        return Stream.of(
+//          getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
+                Arguments.of(
+                        JoinTypes.INNER,
+                        TABLE_ARTISTS,
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST),
+                        String.format("%s JOIN %s ON %s = %s", JoinTypes.INNER.value, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST))
+                ),
+                Arguments.of(
+                        JoinTypes.OUTER,
+                        TABLE_ARTISTS,
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST),
+                        String.format("%s JOIN %s ON %s = %s", JoinTypes.OUTER.value, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST))
+                ),
+                Arguments.of(
+                        JoinTypes.CROSS,
+                        TABLE_ARTISTS,
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST),
+                        String.format("%s JOIN %s ON %s = %s", JoinTypes.CROSS.value, TABLE_ARTISTS, String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID), String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_ARTIST))
+                )
+        );
+    }
+
+
     //endregion
 }

@@ -177,7 +177,6 @@ public class Datasource {
     }
     public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
         return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
-
     }
 }
 
