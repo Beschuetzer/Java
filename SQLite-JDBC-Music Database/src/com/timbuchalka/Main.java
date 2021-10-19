@@ -15,11 +15,14 @@ public class Main {
     public static String sqliteConnectionString = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQLite-JDBC-Music Database/music.db";
 
     public static void main(String[] args) {
-        Datasource datasource = new Datasource(Main.sqliteConnectionString);
-        if(!datasource.open()) {
-            System.out.println("Can't open datasource");
+        Datasource datasource;
+        try {
+            datasource = new Datasource(Main.sqliteConnectionString);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
             return;
         }
+        System.out.println("Datasource successfully opened!");
 
         //Getting artists
         List<Artist> artists = datasource.queryArtists();
@@ -29,24 +32,24 @@ public class Main {
         }
         artists.forEach(artist -> System.out.println(artist.toString()));
 
-
         //Getting Albums by Artist
         System.out.println("-".repeat(50));
         List<Album> albumsByZZTop = new ArrayList<>();
         albumsByZZTop = datasource.getAlbums("pink floyd", Datasource.SortOrders.ASCENDING, false);
         albumsByZZTop.forEach(album -> System.out.println(album.toString()));
 
-        
         //Getting Song Details
         System.out.println("-".repeat(50));
-        List<SongDetail> wishYouWereHereSongDetails = datasource.getSongDetails("black Dog", false);
+        List<SongDetail> wishYouWereHereSongDetails = datasource.getSongDetails("She's on fire", false);
         for(SongDetail song : wishYouWereHereSongDetails) {
             System.out.println("song = " + song);
         }
-        
-        
-        
-        
-        datasource.close();        
+
+
+
+
+
+
+        datasource.close();
     }
 }

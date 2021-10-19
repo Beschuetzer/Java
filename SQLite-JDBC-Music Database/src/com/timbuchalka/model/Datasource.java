@@ -2,10 +2,14 @@ package com.timbuchalka.model;
 
 import com.timbuchalka.queryReturns.SongDetail;
 
+import javax.swing.plaf.nimbus.State;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by timbuchalka on 9/12/16.
@@ -42,18 +46,16 @@ public class Datasource {
     private final String CONNECTION_STRING;
     private Connection conn;
 
-    public Datasource(String CONNECTION_STRING) {
+    public Datasource(String CONNECTION_STRING) throws SQLException {
         this.CONNECTION_STRING = CONNECTION_STRING;
+        open();
+        queryTableMetaData(TABLE_SONGS);
+        queryTableMetaData(TABLE_ALBUMS);
+        queryTableMetaData(TABLE_ARTISTS);
     }
 
-    public boolean open() {
-        try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Couldn't connect to database: " + e.getMessage());
-            return false;
-        }
+    public void open() throws SQLException {
+        conn = DriverManager.getConnection(CONNECTION_STRING);
     }
 
     public void close() {
@@ -63,6 +65,21 @@ public class Datasource {
             }
         } catch (SQLException e) {
             System.out.println("Couldn't close connection: " + e.getMessage());
+        }
+    }
+
+    public void queryTableMetaData(String tableName) {
+        String sql = "SELECT * FROM " + tableName;
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql);
+        ) {
+            ResultSetMetaData meta = resultSet.getMetaData();
+            int numColumns = meta.getColumnCount();
+            for (int i = 1; i <= numColumns; i++) {
+                System.out.printf("Column %d in the '%s' table is named '%s'\n", i, tableName, meta.getColumnName(i));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
     }
 
@@ -142,7 +159,7 @@ public class Datasource {
     }
     public List<SongDetail> getSongDetails(String songName, Integer albumId, boolean isExact) {
         //return artist name, album name, and track number for the song of the album
-        if (albumId <= 0) throw new IllegalArgumentException("albumId must be larger than 0");
+        if (albumId <= 0 && albumId != -1) throw new IllegalArgumentException("albumId must be larger than 0");
         List<SongDetail> toReturn = new ArrayList<>();
         String selectClause = getSelectClause(Arrays.asList(
                         String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_NAME),
@@ -168,7 +185,7 @@ public class Datasource {
                 String artistName = resultSet.getString(1);
                 String albumName = resultSet.getString(2);
                 int trackNumber = resultSet.getInt(3);
-                toReturn.add(new SongDetail(songName, artistName, albumName, trackNumber));
+                toReturn.add(new SongDetail(songName.substring(0, 1).toUpperCase() + songName.substring(1), artistName, albumName, trackNumber));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -209,10 +226,9 @@ public class Datasource {
 
     public String getWhereClause(String searchIn, String searchFor, boolean isExact) {
         /**Exact or LIKE match**/
-
         WhereClauseOperators searchMethod = WhereClauseOperators.EQUALS;
         if (!isExact) searchMethod = WhereClauseOperators.LIKE;
-        return String.format(" WHERE %s ", getWhereCondition(searchIn, String.format("'%s'", searchFor), searchMethod));
+        return String.format(" WHERE %s ", getWhereCondition(searchIn, String.format("\"%s\"", searchFor), searchMethod));
     }
 
     public String getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
@@ -262,7 +278,24 @@ public class Datasource {
         }
     }
 
+    public String getEscapedString(String strToEscape) {
+        List<Integer> charsToEscape = Arrays.asList(39);
+        StringBuilder escaped = new StringBuilder("");
+        char[] strToEscapeChars = strToEscape.toCharArray();
+
+        for(int i = 0; i < strToEscapeChars.length; i++) {
+            int currentCharCode = (int) strToEscapeChars[i];
+            if (charsToEscape.contains(currentCharCode)) {
+                escaped.append("\\" + (char) currentCharCode);
+            }
+            else escaped.append((char) currentCharCode);
+        }
+
+        return escaped.toString();
+    }
     //endregion
+
+
 }
 
 

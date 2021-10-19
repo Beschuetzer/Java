@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DatasourceTesT {
-    private static final Datasource datasource = new Datasource(Main.sqliteConnectionString);
+    private static Datasource datasource;
     private static boolean isInitialized = false;
 
     @AfterAll
@@ -33,7 +34,11 @@ class DatasourceTesT {
     void setupDataSource() {
         if (isInitialized) return;
         System.out.println("Opening Connection...");
-        datasource.open();
+        try {
+            datasource = new Datasource(Main.sqliteConnectionString);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         isInitialized = true;
     }
 
@@ -98,6 +103,12 @@ class DatasourceTesT {
                 fail("\n" + tabs + "Expected album: " + expectedAlbum + "\n" + tabs + "Got: " + retrievedAlbum);
             }
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void getEscapedString(String toEscape, String expected) {
+        assertEquals(expected, datasource.getEscapedString(toEscape));
     }
 
     //region Test Argument Factories
@@ -235,7 +246,7 @@ class DatasourceTesT {
                         String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                         String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                         true,
-                        String.format("WHERE %s %s '%s'",
+                        String.format("WHERE %s %s \"%s\"",
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                                 WhereClauseOperators.EQUALS.value,
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
@@ -245,7 +256,7 @@ class DatasourceTesT {
                         String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                         String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                         false,
-                        String.format("WHERE %s %s '%s'",
+                        String.format("WHERE %s %s \"%s\"",
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                                 WhereClauseOperators.LIKE.value,
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
@@ -310,5 +321,11 @@ class DatasourceTesT {
         );
     }
 
+    public Stream<Arguments> getEscapedString() {
+        return Stream.of(
+                Arguments.of("ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz", "ABCDEFGHIJKLMOPQRSTUVWXYZabcdefghijklmopqrstuvwxyz"),
+                Arguments.of("She's On Fire", "She\\'s On Fire")
+        );
+    }
     //endregion
 }
