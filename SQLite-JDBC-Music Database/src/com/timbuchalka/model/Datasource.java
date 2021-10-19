@@ -3,7 +3,6 @@ package com.timbuchalka.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -11,10 +10,9 @@ import java.util.List;
  */
 public class Datasource {
 
-    public static final String DB_NAME = "music.db";
+//    public static final String DB_NAME = "music.db";
+//public static final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQLite-JDBC-Music Database/" + DB_NAME;
 
-//    public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
-    public static final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQLite-JDBC-Music Database/" + DB_NAME;
 
     public static final String TABLE_ALBUMS = "albums";
     public static final String COLUMN_ALBUM_ID = "_id";
@@ -41,7 +39,25 @@ public class Datasource {
     public static final int INDEX_SONG_ALBUM = 4;
 
 
+    public enum SortOrders {
+        NONE(""),
+        ASCENDING("ASC"),
+        DESCENDING("DESC");
+
+        public final String value;
+
+        private SortOrders(String value) {
+            this.value = value;
+        }
+
+    }
+
     private Connection conn;
+    private String CONNECTION_STRING;
+
+    public Datasource(String CONNECTION_STRING) {
+        this.CONNECTION_STRING = CONNECTION_STRING;
+    }
 
     public boolean open() {
         try {
@@ -97,14 +113,26 @@ public class Datasource {
     }
 
     public List<Album> getAlbums(String artist) {
+        return getAlbums(artist, SortOrders.NONE);
+    }
+
+    public List<Album> getAlbums(String artist, SortOrders sortOrder) {
         List<Album> toReturn = new ArrayList<>();
         String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
         String joinClause = String.format("INNER JOIN %s ON %s.%s = %s.%s ", TABLE_ARTISTS, TABLE_ARTISTS, COLUMN_ARTIST_ID, TABLE_ALBUMS, COLUMN_ALBUM_ARTIST);
         String whereClause = String.format("WHERE %s.%s LIKE '%s' ", TABLE_ARTISTS, COLUMN_ARTIST_NAME, artist);
-        String orderByClause = String.format("ORDER BY %s.%s ", TABLE_ALBUMS, COLUMN_ALBUM_NAME);
-        String collateClause = "COLLATE NOCASE ";
-        String query = selectClause + joinClause + whereClause + orderByClause + collateClause;
+        String orderByClause = getOrderByClause(String.format("%s.%s", TABLE_ALBUMS, COLUMN_ALBUM_NAME), sortOrder);
 
+
+        String collateClause = "COLLATE NOCASE ";
+
+        String query = selectClause +
+                joinClause +
+                whereClause +
+                collateClause +
+                orderByClause;
+
+        System.out.println(query);
         try(Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
         ) {
@@ -129,9 +157,17 @@ public class Datasource {
             if (columns.size() > 1 && i != columns.size() - 1) suffix = ", ";
             columnString.append(column.trim() + suffix);
         }
-        return String.format("SELECT %s FROM %s ",  columnString.toString(), tableName);
+        return String.format("SELECT %s FROM %s ",  columnString, tableName);
     }
 
+    public String getOrderByClause(String sortOn, SortOrders sortOrder) {
+        if (sortOrder.equals(SortOrders.NONE)) return "";
+
+        String sortOrderString = "DESC";
+        if (sortOrder == SortOrders.ASCENDING) sortOrderString = "ASC";
+
+        return String.format("ORDER BY %s %s ", sortOn, sortOrderString);
+    }
     private String getJoinClause(String tableToJoin) {
         return "";
     }
