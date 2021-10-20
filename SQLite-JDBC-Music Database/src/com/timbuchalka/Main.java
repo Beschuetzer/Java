@@ -48,7 +48,12 @@ public class Main {
         //Using a function and retrieving result
         int numberOfSongs = datasource.getCount(Datasource.TABLE_SONGS);
 
-
+        //Using a View and PreparedStatement to Query
+        System.out.println("\n"+"-".repeat(50));
+        List<SongDetail> songDetails = datasource.querySongsFullView("Wish You Were Here");
+        for (SongDetail songDetail : songDetails) {
+            System.out.println("songDetail = " + songDetail);
+        }
 
 
 

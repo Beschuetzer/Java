@@ -39,12 +39,20 @@ public class Datasource {
     public static final String COLUMN_SONG_TRACK = "track";
     public static final String COLUMN_SONG_TITLE = "title";
     public static final String COLUMN_SONG_ALBUM = "album";
+
+    public static final String VIEW_SONGS_FULL = "songsFull";
+    public static final String COLUMN_SONGS_FULL_TITLE = "title";
+    public static final String COLUMN_SONGS_FULL_ALBUM = "album";
+    public static final String COLUMN_SONGS_FULL_ARTIST = "artist";
+    public static final String COLUMN_SONGS_FULL_TRACK = "track";
+
     public static final int INDEX_SONG_ID = 1;
     public static final int INDEX_SONG_TRACK = 2;
     public static final int INDEX_SONG_TITLE = 3;
     public static final int INDEX_SONG_ALBUM = 4;
     private final String CONNECTION_STRING;
     private Connection conn;
+    private PreparedStatement querySongFullView;
 
     public Datasource(String CONNECTION_STRING) throws SQLException {
         this.CONNECTION_STRING = CONNECTION_STRING;
@@ -56,10 +64,24 @@ public class Datasource {
 
     public void open() throws SQLException {
         conn = DriverManager.getConnection(CONNECTION_STRING);
+        createSongsFullView();
+        String selectClause = getSelectClause(Arrays.asList(
+                "*"
+        ), VIEW_SONGS_FULL);
+        //the '?' is a placeholder for the preparedStatment
+        String whereClause = "WHERE " + COLUMN_SONGS_FULL_TITLE + " = ?";
+        String preparedSqlQuery = selectClause + whereClause;
+        System.out.println("preparedSqlQuery = " + preparedSqlQuery);
+        querySongFullView = conn.prepareStatement(preparedSqlQuery);
     }
 
     public void close() {
         try {
+            //must close Statements before connections (close resources in reverse order in which they are opened
+            if (querySongFullView != null) {
+                querySongFullView.close();
+            }
+            //close connection last
             if (conn != null) {
                 conn.close();
             }
@@ -137,6 +159,23 @@ public class Datasource {
         return toReturn;
     }
 
+    public boolean createSongsFullView() {
+        String CREATE_SONGS_FULL =
+                "CREATE VIEW IF NOT EXISTS " + VIEW_SONGS_FULL + " AS\n" +
+                "SELECT songs.title as title, artists.name AS artist,\n" +
+                "albums.name AS album, songs.track AS track FROM songs\n" +
+                "INNER JOIN albums ON songs.album = albums._id\n" +
+                "INNER JOIN artists ON artists._id = albums.artist\n" +
+                "ORDER BY LOWER(songs.title), artists.name, albums.name";
+        try {
+            conn.createStatement().execute(CREATE_SONGS_FULL);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     //it is not recommended to return a ResultSet as that is implementation specific
     // (if returning a list, then any changes to how data is stored doesn't reflect working outside of this class)
 //    public ResultSet executeQuery(String query) {
@@ -193,7 +232,26 @@ public class Datasource {
 
         return toReturn;
     }
+    public List<SongDetail> querySongsFullView(String songTitle) {
+        List<SongDetail> toReturn = null;
+        try {
+            querySongFullView.setString(1, songTitle);
+            ResultSet resultSet = querySongFullView.executeQuery();
 
+            toReturn = new ArrayList<>();
+            while (resultSet.next()) {
+                String name = resultSet.getString(COLUMN_SONGS_FULL_TITLE);
+                String artist = resultSet.getString(COLUMN_SONGS_FULL_ARTIST);
+                String album = resultSet.getString(COLUMN_SONGS_FULL_ALBUM);
+                Integer track = resultSet.getInt(COLUMN_SONGS_FULL_TRACK);
+                toReturn.add(new SongDetail(name, artist, album, track));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return toReturn;
+    }
     public int getCount(String tableName) {
         String sql = "SELECT COUNT(*) AS count, MIN(_id) AS minId FROM " + tableName;
         try (
