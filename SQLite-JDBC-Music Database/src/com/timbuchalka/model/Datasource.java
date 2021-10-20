@@ -194,6 +194,29 @@ public class Datasource {
         return toReturn;
     }
 
+    public int getCount(String tableName) {
+        String sql = "SELECT COUNT(*) AS count, MIN(_id) AS minId FROM " + tableName;
+        try (
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                ) {
+
+            //getting column values of functions
+            int count = resultSet.getInt(1);
+            int minId = resultSet.getInt(2);
+            System.out.printf("Using column indexes: count = %s and minId = %s", count, minId);
+
+            //can use column alias to get values
+            count = resultSet.getInt("count");
+            minId = resultSet.getInt("minId");
+            System.out.printf("\nUsing labels: count = %s and minId = %s", count, minId);
+
+            return count;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
     //region Helpers
     public String getSelectClause(List<String> columns, String tableName) {
         StringBuilder columnString = new StringBuilder();

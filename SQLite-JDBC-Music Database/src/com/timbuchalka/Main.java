@@ -45,6 +45,8 @@ public class Main {
             System.out.println("song = " + song);
         }
 
+        //Using a function and retrieving result
+        int numberOfSongs = datasource.getCount(Datasource.TABLE_SONGS);
 
 
 
