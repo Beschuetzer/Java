@@ -6,6 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by timbuchalka on 9/12/16.
@@ -50,6 +51,11 @@ public class Datasource {
     private final String CONNECTION_STRING;
     private Connection conn;
     private PreparedStatement querySongFullView;
+    private PreparedStatement queryArtist;
+    private PreparedStatement queryAlbum;
+    private PreparedStatement insertIntoArtists;
+    private PreparedStatement insertIntoAlbums;
+    private PreparedStatement insertIntoSongs;
 
     public Datasource(String CONNECTION_STRING) throws SQLException {
         this.CONNECTION_STRING = CONNECTION_STRING;
@@ -71,6 +77,39 @@ public class Datasource {
         String preparedSqlQuery = selectClause + whereClause;
         System.out.println("preparedSqlQuery = " + preparedSqlQuery);
         querySongFullView = conn.prepareStatement(preparedSqlQuery);
+
+
+
+        //Preparing PreparedStatements for insertion using helper function
+        insertIntoArtists = getPreparedInsertStatement(TABLE_ARTISTS, Arrays.asList(
+                COLUMN_ARTIST_NAME
+        ), Statement.RETURN_GENERATED_KEYS);
+        insertIntoAlbums = getPreparedInsertStatement(TABLE_ALBUMS, Arrays.asList(
+                COLUMN_ALBUM_NAME,
+                COLUMN_ALBUM_ARTIST
+        ), Statement.RETURN_GENERATED_KEYS);
+        insertIntoSongs = getPreparedInsertStatement(TABLE_SONGS, Arrays.asList(
+                COLUMN_SONG_TRACK,
+                COLUMN_SONG_TITLE,
+                COLUMN_SONG_ALBUM
+        ));
+
+        selectClause = getSelectClause(Arrays.asList(COLUMN_ARTIST_ID), TABLE_ARTISTS);
+        whereClause = getWhereClause(COLUMN_ARTIST_NAME, "?", false);
+        preparedSqlQuery = selectClause + whereClause;
+        queryArtist = conn.prepareStatement(preparedSqlQuery);
+
+        selectClause = getSelectClause(Arrays.asList(COLUMN_ALBUM_ID), TABLE_ALBUMS);
+        whereClause = getWhereClause(COLUMN_ALBUM_NAME, "?", false);
+        String secondWhereCondition = getWhereCondition(COLUMN_ALBUM_ARTIST, "?", WhereClauseOperators.EQUALS);
+        preparedSqlQuery = selectClause + whereClause + " and " + secondWhereCondition;
+        queryAlbum = conn.prepareStatement(preparedSqlQuery);
+
+        int pinkFloyId = insertArtist("Pink Floyd5");
+        System.out.println("pinkFloyId = " + pinkFloyId);
+
+        int darkSide = insertAlbum("Dark Side of The Moon", 130);
+        System.out.println("darkSide = " + darkSide);
     }
     public void close() {
         try {
@@ -78,6 +117,11 @@ public class Datasource {
             if (querySongFullView != null) {
                 querySongFullView.close();
             }
+            if (insertIntoSongs != null) insertIntoSongs.close();
+            if (insertIntoAlbums != null) insertIntoAlbums.close();
+            if (insertIntoArtists != null) insertIntoArtists.close();
+            if (queryArtist != null) queryArtist.close();
+            if (queryAlbum != null) queryAlbum.close();
             //close connection last
             if (conn != null) {
                 conn.close();
@@ -87,6 +131,22 @@ public class Datasource {
         }
     }
 
+    public boolean createSongsFullView() {
+        String CREATE_SONGS_FULL =
+                "CREATE VIEW IF NOT EXISTS " + VIEW_SONGS_FULL + " AS\n" +
+                        "SELECT songs.title as title, artists.name AS artist,\n" +
+                        "albums.name AS album, songs.track AS track FROM songs\n" +
+                        "INNER JOIN albums ON songs.album = albums._id\n" +
+                        "INNER JOIN artists ON artists._id = albums.artist\n" +
+                        "ORDER BY LOWER(songs.title), artists.name, albums.name";
+        try {
+            conn.createStatement().execute(CREATE_SONGS_FULL);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public void queryTableMetaData(String tableName) {
         String sql = "SELECT * FROM " + tableName;
         try (Statement statement = conn.createStatement();
@@ -100,24 +160,6 @@ public class Datasource {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-    }
-    public List<Artist> queryArtists() {
-        List<Artist> toReturn = new ArrayList<>();
-
-        try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)
-        ) {
-            while (resultSet.next()) {
-                String name = resultSet.getString(INDEX_ARTIST_NAME);
-                int id = resultSet.getInt(INDEX_ARTIST_ID);
-                Artist newArtist = new Artist(name, id);
-                if (!toReturn.contains(newArtist)) toReturn.add(newArtist);
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-
-        return toReturn;
     }
     public List<Album> getAlbums(String artist) {
         return getAlbums(artist, SortOrders.NONE, false);
@@ -152,21 +194,41 @@ public class Datasource {
 
         return toReturn;
     }
-    public boolean createSongsFullView() {
-        String CREATE_SONGS_FULL =
-                "CREATE VIEW IF NOT EXISTS " + VIEW_SONGS_FULL + " AS\n" +
-                "SELECT songs.title as title, artists.name AS artist,\n" +
-                "albums.name AS album, songs.track AS track FROM songs\n" +
-                "INNER JOIN albums ON songs.album = albums._id\n" +
-                "INNER JOIN artists ON artists._id = albums.artist\n" +
-                "ORDER BY LOWER(songs.title), artists.name, albums.name";
+    public int getCount(String tableName) {
+        String sql = "SELECT COUNT(*) AS count, MIN(_id) AS minId FROM " + tableName;
+        try (
+                Statement statement = conn.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+        ) {
+
+            //getting column values of functions
+            int count = resultSet.getInt(1);
+            int minId = resultSet.getInt(2);
+            System.out.printf("Using column indexes: count = %s and minId = %s", count, minId);
+
+            //can use column alias to get values
+            count = resultSet.getInt("count");
+            minId = resultSet.getInt("minId");
+            System.out.printf("\nUsing labels: count = %s and minId = %s", count, minId);
+
+            return count;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+    public PreparedStatement getPreparedInsertStatement(String table, List<String> columnHeaderNames) {
+        return getPreparedInsertStatement(table, columnHeaderNames, -1);
+    }
+    public PreparedStatement getPreparedInsertStatement(String table, List<String> columnHeaderNames, int statementOption) {
+        String withoutValues = String.format("INSERT INTO %s(%s) VALUES(%s)", table, getCommaSeparatedList(columnHeaderNames), getCommaSeparatedList(columnHeaderNames.stream().map(item -> "?").collect(Collectors.toList())));
         try {
-            conn.createStatement().execute(CREATE_SONGS_FULL);
-            return true;
+            if (statementOption != -1) return  conn.prepareStatement(withoutValues, statementOption);
+            return conn.prepareStatement(withoutValues);
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return null;
     }
     public List<SongDetail> getSongDetails(String songName) {
         return getSongDetails(songName, -1, true);
@@ -210,6 +272,24 @@ public class Datasource {
 
         return toReturn;
     }
+    public List<Artist> queryArtists() {
+        List<Artist> toReturn = new ArrayList<>();
+
+        try (Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)
+        ) {
+            while (resultSet.next()) {
+                String name = resultSet.getString(INDEX_ARTIST_NAME);
+                int id = resultSet.getInt(INDEX_ARTIST_ID);
+                Artist newArtist = new Artist(name, id);
+                if (!toReturn.contains(newArtist)) toReturn.add(newArtist);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return toReturn;
+    }
     public List<SongDetail> querySongsFullView(String songTitle) {
         List<SongDetail> toReturn = null;
         try {
@@ -229,29 +309,6 @@ public class Datasource {
         }
 
         return toReturn;
-    }
-    public int getCount(String tableName) {
-        String sql = "SELECT COUNT(*) AS count, MIN(_id) AS minId FROM " + tableName;
-        try (
-                Statement statement = conn.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql);
-                ) {
-
-            //getting column values of functions
-            int count = resultSet.getInt(1);
-            int minId = resultSet.getInt(2);
-            System.out.printf("Using column indexes: count = %s and minId = %s", count, minId);
-
-            //can use column alias to get values
-            count = resultSet.getInt("count");
-            minId = resultSet.getInt("minId");
-            System.out.printf("\nUsing labels: count = %s and minId = %s", count, minId);
-
-            return count;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return -1;
     }
     //endregion
     //region Query Helpers
@@ -276,9 +333,13 @@ public class Datasource {
     }
     public String getWhereClause(String searchIn, String searchFor, boolean isExact) {
         /**Exact or LIKE match**/
+        boolean shouldAddQuotes = true;
         WhereClauseOperators searchMethod = WhereClauseOperators.EQUALS;
         if (!isExact) searchMethod = WhereClauseOperators.LIKE;
-        return String.format(" WHERE %s ", getWhereCondition(searchIn, String.format("\"%s\"", searchFor), searchMethod));
+
+        if (searchFor.trim().equalsIgnoreCase("?")) shouldAddQuotes = false;
+        String searchForFinal = shouldAddQuotes ? String.format("\"%s\"", searchFor) : String.format("%s", searchFor);
+        return String.format(" WHERE %s ", getWhereCondition(searchIn, searchForFinal, searchMethod));
     }
     public String getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
         /**When using with operator**/
@@ -286,10 +347,6 @@ public class Datasource {
     }
     public String getWhereCondition(String leftOperand, String rightOperand, WhereClauseOperators operator) {
         return String.format("%s %s %s", leftOperand, operator.value, rightOperand);
-    }
-    public String getInsertClause(String table, List<String> columnHeaderNames, List<String> values ) {
-        if (columnHeaderNames.size() != values.size()) throw new IllegalArgumentException("columnHeaderNames and values must be same size");
-        return String.format("INSERT INTO %s(%s) VALUES(%s)", table, getCommaSeparatedList(columnHeaderNames), getCommaSeparatedList(values));
     }
     //endregion
     //region Helpers
@@ -354,6 +411,37 @@ public class Datasource {
         WhereClauseOperators(String value) {
             this.value = value;
         }
+    }
+    //endregion
+
+    //region Private Methods
+    private int insertArtist(String artistName) throws SQLException {
+        queryArtist.setString(1, artistName);
+        ResultSet resultSet = queryArtist.executeQuery();
+
+        if(resultSet.next()) {
+            //already present, so just return _id
+            return resultSet.getInt(1);
+        } else {
+            //no result found, so need to insert and return auto-generated _id
+            insertIntoArtists.setString(1, artistName);
+            int numberRowsAffected = insertIntoArtists.executeUpdate();
+
+            if (numberRowsAffected != 1) throw new SQLException("Couldn't insert Artist");
+
+            ResultSet generatedKeys = insertIntoArtists.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                //returning the generated row ID
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Couldn't get _id for artist");
+            }
+        }
+    }
+
+    private int insertAlbum(String name, int artistId) {
+
+        return -1;
     }
     //endregion
 

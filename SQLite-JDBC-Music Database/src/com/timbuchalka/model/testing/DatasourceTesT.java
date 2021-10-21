@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
@@ -73,19 +74,19 @@ class DatasourceTesT {
     }
     //endregion
     //region Query Helper Tests
-    @ParameterizedTest
-    @MethodSource
-    void getInsertClause(String table, List<String> columnHeaderNames, List<String> values, Object expected) {
-        if (expected instanceof String) {
-            assertEquals(((String) expected).trim(), ((String) datasource.getInsertClause(table, columnHeaderNames, values)).trim());
-            return;
-        } else {
-            assertThrows((Class) expected, () -> {
-                datasource.getInsertClause(table, columnHeaderNames, values);
-                return;
-            });
-        }
-    }
+//    @ParameterizedTest
+//    @MethodSource
+//    void getPreparedStatement(String table, List<String> columnHeaderNames, List<String> values, Object expected) {
+//        if (expected instanceof String) {
+//            assertEquals(expected, datasource.getPreparedStatement(, table, columnHeaderNames, values));
+//            return;
+//        } else {
+//            assertThrows((Class) expected, () -> {
+//                datasource.getPreparedStatement(, table, columnHeaderNames, values);
+//                return;
+//            });
+//        }
+//    }
     @ParameterizedTest
     @MethodSource
     void getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2, String expected) {
@@ -181,7 +182,7 @@ class DatasourceTesT {
                 Arguments.of("She's On Fire", "She\\'s On Fire")
         );
     }
-    public Stream<Arguments> getInsertClause() {
+    public Stream<Arguments> getPreparedStatement() {
         return Stream.of(
                 Arguments.of(TABLE_ARTISTS, Arrays.asList("1"), Arrays.asList("1", "2"), IllegalArgumentException.class),
                 Arguments.of(TABLE_ARTISTS, Arrays.asList("name"), Arrays.asList("Adam"), String.format("INSERT INTO %s(%s) VALUES(%s)", TABLE_ARTISTS, "name", "Adam")),
@@ -283,6 +284,16 @@ class DatasourceTesT {
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
                                 WhereClauseOperators.LIKE.value,
                                 String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID)
+                        )
+                ),
+                Arguments.of(
+                        String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                        "?",
+                        false,
+                        String.format("WHERE %s %s %s",
+                                String.format("%s.%s", TABLE_ARTISTS, COLUMN_ARTIST_ID),
+                                WhereClauseOperators.LIKE.value,
+                                "?"
                         )
                 )
         );
