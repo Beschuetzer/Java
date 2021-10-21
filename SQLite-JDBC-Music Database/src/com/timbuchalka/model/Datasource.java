@@ -134,26 +134,32 @@ public class Datasource {
         }
     }
 
-    public int addSong(int track, String title, String albumName, String artistName) {
+    public boolean addSong(int track, String title, String albumName, String artistName) {
+        boolean toReturn = true;
         try {
             conn.setAutoCommit(false);
             int artistId = insertArtist(artistName);
             int albumId = insertAlbum(albumName, artistId);
             int songId = insertSong(track, title, albumId);
 
-            if (songId != -1) {
-                //TODO: commit changes
+            if (songId > 0 && artistId > 0 && songId > 0) {
+                conn.commit();
+            } else toReturn = false;
+        } catch (Exception sqlException) {
+            System.out.println("Error adding song: " + sqlException.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException throwables) {
+                System.out.println("Error rolling back changes: " + sqlException.getMessage());
             }
-            return -1;
-        } catch (SQLException throwables) {
+        } finally {
             try {
                 conn.setAutoCommit(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            throwables.printStackTrace();
         }
-        return -1;
+        return toReturn;
     }
     public boolean createSongsFullView() {
         String CREATE_SONGS_FULL =
@@ -487,7 +493,7 @@ public class Datasource {
         querySong.setInt(3, track);
         ResultSet resultSet = querySong.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(1);
+            return -1;
         } else {
             insertIntoSongs.setInt(1, track);
             insertIntoSongs.setString(2, title);

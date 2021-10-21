@@ -56,8 +56,12 @@ public class Main {
         }
 
         //Using a transaction approach to
-
-
+        boolean shouldBeFalse = datasource.addSong(4, "Wish you were here", "Wish you were here", "pink floyd");
+        System.out.println("shouldBeFalse = " + shouldBeFalse);
+        boolean shouldBeTrue = datasource.addSong(5, "Wish you were here", "Wish you were here remake", "pink floyd cover band");
+        System.out.println("shouldBeTrue = " + shouldBeTrue);
+        shouldBeTrue = datasource.addSong(1, "first song", "My first album", "Adam");
+        System.out.println("shouldBeTrue = " + shouldBeTrue);
 
         datasource.close();
     }
