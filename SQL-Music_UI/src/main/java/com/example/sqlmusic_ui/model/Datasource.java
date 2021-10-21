@@ -49,7 +49,7 @@ public class Datasource {
     public static final int INDEX_SONG_ALBUM = 4;
     //endregion
 
-    private final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQLite-JDBC-Music Database/music.db";
+    private final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQL-Music_UI/music.db";
     private Connection conn;
     private PreparedStatement querySongFullView;
     private PreparedStatement queryArtist;
@@ -60,14 +60,10 @@ public class Datasource {
     private PreparedStatement insertIntoSongs;
 
     private static final Datasource instance = new Datasource();
-
-    private Datasource() {
-    }
-
+    private Datasource() {}
     public static Datasource getInstance() {
         return instance;
     }
-        //Datasource.getInstance().methodName();
     //region Main Methods
     public void open() throws SQLException {
         System.out.println("Opening db");
