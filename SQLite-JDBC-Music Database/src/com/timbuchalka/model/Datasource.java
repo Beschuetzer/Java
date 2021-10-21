@@ -2,24 +2,19 @@ package com.timbuchalka.model;
 
 import com.timbuchalka.queryReturns.SongDetail;
 
-import javax.swing.plaf.nimbus.State;
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by timbuchalka on 9/12/16.
  */
 public class Datasource {
 
+    //region Public Fields
 //    public static final String DB_NAME = "music.db";
 //public static final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQLite-JDBC-Music Database/" + DB_NAME;
-
-
     public static final String TABLE_ALBUMS = "albums";
     public static final String COLUMN_ALBUM_ID = "_id";
     public static final String COLUMN_ALBUM_NAME = "name";
@@ -50,6 +45,8 @@ public class Datasource {
     public static final int INDEX_SONG_TRACK = 2;
     public static final int INDEX_SONG_TITLE = 3;
     public static final int INDEX_SONG_ALBUM = 4;
+    //endregion
+
     private final String CONNECTION_STRING;
     private Connection conn;
     private PreparedStatement querySongFullView;
@@ -62,6 +59,7 @@ public class Datasource {
         queryTableMetaData(TABLE_ARTISTS);
     }
 
+    //region Main Methods
     public void open() throws SQLException {
         conn = DriverManager.getConnection(CONNECTION_STRING);
         createSongsFullView();
@@ -74,7 +72,6 @@ public class Datasource {
         System.out.println("preparedSqlQuery = " + preparedSqlQuery);
         querySongFullView = conn.prepareStatement(preparedSqlQuery);
     }
-
     public void close() {
         try {
             //must close Statements before connections (close resources in reverse order in which they are opened
@@ -104,7 +101,6 @@ public class Datasource {
             throwables.printStackTrace();
         }
     }
-
     public List<Artist> queryArtists() {
         List<Artist> toReturn = new ArrayList<>();
 
@@ -123,11 +119,9 @@ public class Datasource {
 
         return toReturn;
     }
-
     public List<Album> getAlbums(String artist) {
         return getAlbums(artist, SortOrders.NONE, false);
     }
-
     public List<Album> getAlbums(String artist, SortOrders sortOrder, boolean isCaseSensitive) {
         List<Album> toReturn = new ArrayList<>();
         String selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
@@ -158,7 +152,6 @@ public class Datasource {
 
         return toReturn;
     }
-
     public boolean createSongsFullView() {
         String CREATE_SONGS_FULL =
                 "CREATE VIEW IF NOT EXISTS " + VIEW_SONGS_FULL + " AS\n" +
@@ -175,21 +168,6 @@ public class Datasource {
             return false;
         }
     }
-
-    //it is not recommended to return a ResultSet as that is implementation specific
-    // (if returning a list, then any changes to how data is stored doesn't reflect working outside of this class)
-//    public ResultSet executeQuery(String query) {
-//        Statement statement = null;
-//        try {
-//            statement = conn.createStatement();
-//            return statement.executeQuery(query);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
     public List<SongDetail> getSongDetails(String songName) {
         return getSongDetails(songName, -1, true);
     }
@@ -275,18 +253,12 @@ public class Datasource {
         }
         return -1;
     }
-    //region Helpers
+    //endregion
+    //region Query Helpers
     public String getSelectClause(List<String> columns, String tableName) {
-        StringBuilder columnString = new StringBuilder();
-        for (int i = 0; i < columns.size(); i++) {
-            String column = columns.get(i);
-            String suffix = "";
-            if (columns.size() > 1 && i != columns.size() - 1) suffix = ", ";
-            columnString.append(column.trim() + suffix);
-        }
+        String columnString = getCommaSeparatedList(columns);
         return String.format(" SELECT %s FROM %s ", columnString, tableName);
     }
-
     public String getOrderByClause(String sortOn, SortOrders sortOrder) {
         if (sortOrder.equals(SortOrders.NONE)) return "";
 
@@ -295,70 +267,42 @@ public class Datasource {
 
         return String.format(" ORDER BY %s %s ", sortOn, sortOrderString);
     }
-
     public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
         return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
     }
-
     public String getWhereClause(String searchIn, String searchFor) {
         /**Exact match**/
         return getWhereClause(searchIn, searchFor, true);
     }
-
     public String getWhereClause(String searchIn, String searchFor, boolean isExact) {
         /**Exact or LIKE match**/
         WhereClauseOperators searchMethod = WhereClauseOperators.EQUALS;
         if (!isExact) searchMethod = WhereClauseOperators.LIKE;
         return String.format(" WHERE %s ", getWhereCondition(searchIn, String.format("\"%s\"", searchFor), searchMethod));
     }
-
     public String getWhereClause(String leftOperand, String rightOperand, WhereClauseOperators operator) {
         /**When using with operator**/
         return String.format(" WHERE %s ", getWhereCondition(leftOperand, rightOperand, operator));
     }
-
     public String getWhereCondition(String leftOperand, String rightOperand, WhereClauseOperators operator) {
         return String.format("%s %s %s", leftOperand, operator.value, rightOperand);
     }
-
-    public enum SortOrders {
-        NONE(""),
-        ASCENDING("ASC"),
-        DESCENDING("DESC");
-
-        public final String value;
-
-        SortOrders(String value) {
-            this.value = value;
-        }
+    public String getInsertClause(String table, List<String> columnHeaderNames, List<String> values ) {
+        if (columnHeaderNames.size() != values.size()) throw new IllegalArgumentException("columnHeaderNames and values must be same size");
+        return String.format("INSERT INTO %s(%s) VALUES(%s)", table, getCommaSeparatedList(columnHeaderNames), getCommaSeparatedList(values));
     }
-
-    public enum JoinTypes {
-        INNER("INNER"),
-        OUTER("OUTER"),
-        CROSS("CROSS");
-
-        public String value;
-
-        JoinTypes(String value) {
-            this.value = value;
+    //endregion
+    //region Helpers
+    public String getCommaSeparatedList(List<String> items) {
+        StringBuilder columnString = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            String column = items.get(i);
+            String suffix = "";
+            if (items.size() > 1 && i != items.size() - 1) suffix = ", ";
+            columnString.append(column.trim() + suffix);
         }
+        return columnString.toString();
     }
-
-    public enum WhereClauseOperators {
-        EQUALS("="),
-        GREATER_THAN(">"),
-        LESS_THAN("<"),
-        NOT_EQUALS("<>"),
-        LIKE("LIKE");
-
-        public String value;
-
-        WhereClauseOperators(String value) {
-            this.value = value;
-        }
-    }
-
     public String getEscapedString(String strToEscape) {
         List<Integer> charsToEscape = Arrays.asList(39);
         StringBuilder escaped = new StringBuilder("");
@@ -375,8 +319,59 @@ public class Datasource {
         return escaped.toString();
     }
     //endregion
+    //region Enums
+    public enum SortOrders {
+        NONE(""),
+        ASCENDING("ASC"),
+        DESCENDING("DESC");
 
+        public final String value;
 
+        SortOrders(String value) {
+            this.value = value;
+        }
+    }
+    public enum JoinTypes {
+        INNER("INNER"),
+        OUTER("OUTER"),
+        CROSS("CROSS");
+
+        public String value;
+
+        JoinTypes(String value) {
+            this.value = value;
+        }
+    }
+    public enum WhereClauseOperators {
+        EQUALS("="),
+        GREATER_THAN(">"),
+        LESS_THAN("<"),
+        NOT_EQUALS("<>"),
+        LIKE("LIKE");
+
+        public String value;
+
+        WhereClauseOperators(String value) {
+            this.value = value;
+        }
+    }
+    //endregion
+
+    //region What not to do
+    // it is not recommended to return a ResultSet as that is implementation specific
+    // (if returning a list, then any changes to how data is stored doesn't reflect working outside of this class)
+//    public ResultSet executeQuery(String query) {
+//        Statement statement = null;
+//        try {
+//            statement = conn.createStatement();
+//            return statement.executeQuery(query);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
+    //endregion
 }
 
 
