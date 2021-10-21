@@ -53,6 +53,7 @@ public class Datasource {
     private PreparedStatement querySongFullView;
     private PreparedStatement queryArtist;
     private PreparedStatement queryAlbum;
+    private PreparedStatement querySong;
     private PreparedStatement insertIntoArtists;
     private PreparedStatement insertIntoAlbums;
     private PreparedStatement insertIntoSongs;
@@ -105,11 +106,12 @@ public class Datasource {
         preparedSqlQuery = selectClause + whereClause + " and " + secondWhereCondition;
         queryAlbum = conn.prepareStatement(preparedSqlQuery);
 
-        int pinkFloyId = insertArtist("Pink Floyd5");
-        System.out.println("pinkFloyId = " + pinkFloyId);
-
-        int darkSide = insertAlbum("Dark Side of The Moon", 130);
-        System.out.println("darkSide = " + darkSide);
+        selectClause = getSelectClause(Arrays.asList(COLUMN_SONG_ID), TABLE_SONGS);
+        whereClause = getWhereClause(COLUMN_SONG_TITLE, "?", false);
+        secondWhereCondition = getWhereCondition(COLUMN_SONG_ALBUM, "?", WhereClauseOperators.EQUALS);
+        String thirdWhereCondition = getWhereCondition(COLUMN_SONG_TRACK, "?", WhereClauseOperators.EQUALS);
+        preparedSqlQuery = selectClause + whereClause + " and " +secondWhereCondition + " and " + thirdWhereCondition;
+        querySong = conn.prepareStatement(preparedSqlQuery);
     }
     public void close() {
         try {
@@ -122,6 +124,7 @@ public class Datasource {
             if (insertIntoArtists != null) insertIntoArtists.close();
             if (queryArtist != null) queryArtist.close();
             if (queryAlbum != null) queryAlbum.close();
+            if (querySong != null) querySong.close();
             //close connection last
             if (conn != null) {
                 conn.close();
@@ -131,6 +134,27 @@ public class Datasource {
         }
     }
 
+    public int addSong(int track, String title, String albumName, String artistName) {
+        try {
+            conn.setAutoCommit(false);
+            int artistId = insertArtist(artistName);
+            int albumId = insertAlbum(albumName, artistId);
+            int songId = insertSong(track, title, albumId);
+
+            if (songId != -1) {
+                //TODO: commit changes
+            }
+            return -1;
+        } catch (SQLException throwables) {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
     public boolean createSongsFullView() {
         String CREATE_SONGS_FULL =
                 "CREATE VIEW IF NOT EXISTS " + VIEW_SONGS_FULL + " AS\n" +
@@ -413,10 +437,9 @@ public class Datasource {
         }
     }
     //endregion
-
     //region Private Methods
     private int insertArtist(String artistName) throws SQLException {
-        queryArtist.setString(1, artistName);
+        queryArtist.setString(1, artistName.trim());
         ResultSet resultSet = queryArtist.executeQuery();
 
         if(resultSet.next()) {
@@ -438,10 +461,44 @@ public class Datasource {
             }
         }
     }
+    private int insertAlbum(String name, int artistId) throws SQLException {
+        //check if album already present by executing preparedStatement for querying Albums
+        queryAlbum.setString(1, name.trim());
+        queryAlbum.setInt(2, artistId);
+        ResultSet resultSet = queryAlbum.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        } else {
+            insertIntoAlbums.setString(1, name);
+            insertIntoAlbums.setInt(2, artistId);
+            int numberOfAffectedColumns = insertIntoAlbums.executeUpdate();
+            if (numberOfAffectedColumns != 1) throw new SQLException("Unable to insert album " + "'" + name + "'");
+            ResultSet generatedKeys = insertIntoArtists.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Unable to get generated keys for insertIntoArtists");
+            }
+        }
+    }
+    private int insertSong(int track, String title, int album) throws SQLException {
+        querySong.setString(1, title.trim());
+        querySong.setInt(2, album);
+        querySong.setInt(3, track);
+        ResultSet resultSet = querySong.executeQuery();
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
+        } else {
+            insertIntoSongs.setInt(1, track);
+            insertIntoSongs.setString(2, title);
+            insertIntoSongs.setInt(3, album);
+            int numberOfColumnsAffected = insertIntoSongs.executeUpdate();
+            if (numberOfColumnsAffected != 1) throw new SQLException("Unable to update insertIntoSongs");
 
-    private int insertAlbum(String name, int artistId) {
-
-        return -1;
+            ResultSet generatedKeys = insertIntoSongs.getGeneratedKeys();
+            if (generatedKeys.next()) return generatedKeys.getInt(1);
+            throw new SQLException("Unable to get generatedKeys from insertIntoSongs");
+        }
     }
     //endregion
 
