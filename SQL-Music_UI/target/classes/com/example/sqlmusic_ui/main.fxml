@@ -11,16 +11,27 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import com.example.sqlmusic_ui.custom.PercentColumn?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.sqlmusic_ui.MainController">
     <center>
         <TableView fx:id="artistTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn prefWidth="${artistTable.width}" text="Name">
+                <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".1" text="Id">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id"/>
+                    </cellValueFactory>
+                </PercentColumn>
+                <PercentColumn percentageWidth=".9" text="Name">
                     <cellValueFactory>
                         <PropertyValueFactory property="name"/>
                     </cellValueFactory>
-                </TableColumn>
+                </PercentColumn>
+<!--                <TableColumn prefWidth="${artistTable.width}" text="Name">-->
+<!--                    <cellValueFactory>-->
+<!--                        <PropertyValueFactory property="name"/>-->
+<!--                    </cellValueFactory>-->
+<!--                </TableColumn>-->
             </columns>
             <BorderPane.margin>
                 <Insets right="10.0"/>

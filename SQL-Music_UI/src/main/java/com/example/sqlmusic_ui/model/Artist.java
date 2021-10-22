@@ -4,8 +4,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Artist {
-    private SimpleStringProperty name = new SimpleStringProperty();
-    private SimpleIntegerProperty id = new SimpleIntegerProperty();
+    private final SimpleStringProperty name;
+    private final SimpleIntegerProperty id;
 
     public Artist(String name, int id) {
         this.name = new SimpleStringProperty(name);
