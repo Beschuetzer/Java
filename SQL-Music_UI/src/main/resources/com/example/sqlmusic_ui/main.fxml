@@ -38,12 +38,12 @@
                             <PropertyValueFactory property="id" />
                         </cellValueFactory>
                     </PercentColumn>
-                    <PercentColumn percentageWidth=".80">
+                    <PercentColumn percentageWidth=".8" text="Name">
                         <cellValueFactory>
                             <PropertyValueFactory property="name" />
                         </cellValueFactory>
                     </PercentColumn>
-                    <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".1" text="Artist Id">
+                    <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".10" text="Artist Id">
                         <cellValueFactory>
                             <PropertyValueFactory property="artistId" />
                         </cellValueFactory>
@@ -58,9 +58,9 @@
     <right>
         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="170.0" spacing="20.0" BorderPane.alignment="CENTER">
             <children>
-                <Button onAction="#handleListArtists" maxWidth="Infinity" mnemonicParsing="true" text="_List Artists" disable="true"/>
-                <Button onAction="#handleShowAlbumsForArtist" disable="true" maxWidth="Infinity" mnemonicParsing="true" text="_Show Albums (artist)" />
-                <Button onAction="#handleUpdateArtists" maxWidth="Infinity" mnemonicParsing="true" text="_Update Artist" disable="true"/>
+                <Button fx:id="listArtistsButton" onAction="#handleListArtists" maxWidth="Infinity" mnemonicParsing="true" text="_List Artists" disable="true"/>
+                <Button fx:id="showAlbumsForArtistButton" onAction="#handleShowAlbumsForArtist"  maxWidth="Infinity" mnemonicParsing="true" text="_Show Albums (artist)" disable="true"/>
+                <Button fx:id="updateArtistsbutton" onAction="#handleUpdateArtists" maxWidth="Infinity" mnemonicParsing="true" text="_Update Artist" disable="true"/>
             </children>
             <BorderPane.margin>
                 <Insets right="10.0" />

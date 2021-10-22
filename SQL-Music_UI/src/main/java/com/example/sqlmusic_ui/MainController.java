@@ -8,16 +8,29 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 
 public class MainController {
     @FXML
     public TableView<Album> albumsByArtistTable;
     @FXML
+    public Button listArtistsButton;
+    @FXML
+    public Button showAlbumsForArtistButton;
+    @FXML
+    public Button updateArtistsbutton;
+    @FXML
     private TableView<Artist> artistTable;
 
     public void initialize() {
         System.out.println("Initializing main controller...");
+
+        artistTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, artist, t1) -> {
+            System.out.println("Cell clicked");
+            showAlbumsForArtistButton.setDisable(false);
+            updateArtistsbutton.setDisable(false);
+        }));
 
     }
 
@@ -37,14 +50,32 @@ public class MainController {
         Task<ObservableList<Album>> task = new GetAlbumsByArtistIdTask(artistId);
         albumsByArtistTable.itemsProperty().bind(task.valueProperty());
         new Thread(task).start();
+
+        toggleTableVisibility(albumsByArtistTable, true, 1000, 1000);
+        toggleTableVisibility(artistTable, false, 0, 0);
+        listArtistsButton.setDisable(false);
+        showAlbumsForArtistButton.setDisable(true);
+    }
+
+    private void toggleTableVisibility(TableView tableView, boolean isVisible, double preferredWidth, double preferredHeight ) {
+        tableView.setVisible(isVisible);
+        tableView.setPrefWidth(preferredWidth);
+        tableView.setPrefHeight(preferredHeight);
     }
 
     public void handleListArtists(ActionEvent actionEvent) {
         System.out.println("click list artists");
+        toggleTableVisibility(artistTable, true, 1000, 1000);
+        toggleTableVisibility(albumsByArtistTable, false, 0, 0);
+        listArtistsButton.setDisable(true);
+        showAlbumsForArtistButton.setDisable(false);
     }
 
     public void handleShowAlbumsForArtist(ActionEvent actionEvent) {
         System.out.println("click show albums");
+        Artist selectedArtist = artistTable.getSelectionModel().getSelectedItem();
+        if (selectedArtist == null) return;
+        listAlbumsByArtistId(selectedArtist.getId());
 
     }
 
