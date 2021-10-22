@@ -19,6 +19,7 @@ public class MainWindow extends Application {
         //loading the artists on startup
         MainController mainController = fxmlLoader.getController();
         mainController.listArtists();
+        mainController.listAlbumsByArtistId(30);
 
         stage.setTitle("SQL Music App!");
         stage.setScene(scene);
@@ -30,7 +31,6 @@ public class MainWindow extends Application {
         super.init();
         try {
             Datasource.getInstance().open();
-
         } catch (SQLException sqlException) {
             System.out.println("Unable to connect to Database;  need to implement UI message");
         }

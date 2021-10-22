@@ -55,6 +55,7 @@ public class Datasource {
     private PreparedStatement queryArtist;
     private PreparedStatement queryAlbum;
     private PreparedStatement querySong;
+    private PreparedStatement queryAlbumsByArtistId;
     private PreparedStatement insertIntoArtists;
     private PreparedStatement insertIntoAlbums;
     private PreparedStatement insertIntoSongs;
@@ -111,6 +112,13 @@ public class Datasource {
         String thirdWhereCondition = getWhereCondition(COLUMN_SONG_TRACK, "?", WhereClauseOperators.EQUALS);
         preparedSqlQuery = selectClause + whereClause + " and " +secondWhereCondition + " and " + thirdWhereCondition;
         querySong = conn.prepareStatement(preparedSqlQuery);
+
+        selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
+        whereClause = getWhereClause(COLUMN_ALBUM_ARTIST, "?", true);
+        String collateClause = " COLLATE NOCASE";
+        String orderByClause = getOrderByClause(COLUMN_ALBUM_NAME, SortOrders.ASCENDING);
+        preparedSqlQuery = selectClause + whereClause + collateClause + orderByClause;
+        queryAlbumsByArtistId = conn.prepareStatement(preparedSqlQuery);
     }
     public void close() {
         try {
@@ -123,6 +131,7 @@ public class Datasource {
             if (insertIntoArtists != null) insertIntoArtists.close();
             if (queryArtist != null) queryArtist.close();
             if (queryAlbum != null) queryAlbum.close();
+            if (queryAlbumsByArtistId != null) queryAlbumsByArtistId.close();
             if (querySong != null) querySong.close();
             //close connection last
             if (conn != null) {
@@ -189,6 +198,24 @@ public class Datasource {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    public List<Album> getAlbums(int artistId) {
+        try {
+            queryAlbumsByArtistId.setInt(1, artistId);
+            ResultSet resultSet = queryAlbumsByArtistId.executeQuery();
+
+            List<Album> toReturn = new ArrayList<>();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt(COLUMN_ALBUM_ID);
+                String name = resultSet.getString(COLUMN_ALBUM_NAME);
+                toReturn.add(new Album(id, name, artistId));
+            }
+
+            return toReturn;
+        } catch (SQLException e) {
+            System.out.println("Unable to getAlbums by artistId: " + e.getMessage() );
+        }
+        return null;
     }
     public List<Album> getAlbums(String artist) {
         return getAlbums(artist, SortOrders.NONE, false);
@@ -305,7 +332,7 @@ public class Datasource {
         List<Artist> toReturn = new ArrayList<>();
 
         try (Statement statement = conn.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS)
+             ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS + " ORDER BY " + COLUMN_ARTIST_NAME + " COLLATE NOCASE")
         ) {
             while (resultSet.next()) {
                 String name = resultSet.getString(INDEX_ARTIST_NAME);
