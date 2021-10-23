@@ -134,7 +134,14 @@ public class MainController {
                 Boolean taskResult = (Boolean) updateArtistNameTask.getValue();
                 if (taskResult) {
                     System.out.println("Artist name updated successfully!");
-                    artistTable.getItems().get(selectedArtistIndex).setName(newArtist.getName());
+
+                    //Since TableView artistsTable is bound to the values of artistList and selectedArtist is part of artistList, any changes are automatically observed/updated
+                    selectedArtist.setName(newArtist.getName());
+
+                    //there is a bug in older version of JavaFX causing update not to happen in some cases
+                    //this fixes that (may not be needed on new versions of JavaFX)
+                    artistTable.refresh();
+
                 } else {
                     System.out.println("Unable to update artist name.  Try again.");
                 }
