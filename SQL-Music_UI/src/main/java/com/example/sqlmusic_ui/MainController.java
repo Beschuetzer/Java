@@ -128,8 +128,22 @@ public class MainController {
             selectedArtist = controller.processResults();
             UpdateArtistNameTask updateArtistNameTask = new UpdateArtistNameTask();
             System.out.println(artistTable.getItems());
-//            updateArtistNameTask.setOnSucceeded(e -> artistTable.getItems());
-//            updateArtistNameTask.setOnFailed(e -> ...);
+            updateArtistNameTask.setOnSucceeded(e -> {
+                Boolean taskResult = (Boolean) updateArtistNameTask.getValue();
+                if (taskResult) {
+
+                    //Need to figure out how to update the UI here
+
+
+                    System.out.println("Artist name updated successfully!");
+                    Artist artistToUpdate = artistTable.getItems().get(selectedArtist.getId());
+                    artistTable.getItems().remove(selectedArtist.getId());
+                    artistTable.getItems().add(selectedArtist.getId(), selectedArtist);
+                } else {
+                    System.out.println("Unable to update artist name.  Try again.");
+                }
+            });
+            updateArtistNameTask.setOnFailed(e -> System.out.println("Unable to update artist name.  Try again."));
             new Thread(updateArtistNameTask).start();
 
 
@@ -172,7 +186,7 @@ public class MainController {
 
     class UpdateArtistNameTask extends Task {
         @Override
-        protected Object call() throws Exception {
+        protected Boolean call() throws Exception {
             return Datasource.getInstance().updateArtistName(selectedArtist);
         }
     }
