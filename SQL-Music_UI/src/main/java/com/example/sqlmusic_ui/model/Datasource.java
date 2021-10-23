@@ -59,12 +59,17 @@ public class Datasource {
     private PreparedStatement insertIntoArtists;
     private PreparedStatement insertIntoAlbums;
     private PreparedStatement insertIntoSongs;
+    private PreparedStatement updateArtist;
 
     private static final Datasource instance = new Datasource();
-    private Datasource() {}
+
+    private Datasource() {
+    }
+
     public static Datasource getInstance() {
         return instance;
     }
+
     //region Main Methods
     public void open() throws SQLException {
         System.out.println("Opening db");
@@ -78,8 +83,6 @@ public class Datasource {
         String preparedSqlQuery = selectClause + whereClause;
         System.out.println("preparedSqlQuery = " + preparedSqlQuery);
         querySongFullView = conn.prepareStatement(preparedSqlQuery);
-
-
 
         //Preparing PreparedStatements for insertion using helper function
         insertIntoArtists = getPreparedInsertStatement(TABLE_ARTISTS, Arrays.asList(
@@ -110,7 +113,7 @@ public class Datasource {
         whereClause = getWhereClause(COLUMN_SONG_TITLE, "?", false);
         secondWhereCondition = getWhereCondition(COLUMN_SONG_ALBUM, "?", WhereClauseOperators.EQUALS);
         String thirdWhereCondition = getWhereCondition(COLUMN_SONG_TRACK, "?", WhereClauseOperators.EQUALS);
-        preparedSqlQuery = selectClause + whereClause + " and " +secondWhereCondition + " and " + thirdWhereCondition;
+        preparedSqlQuery = selectClause + whereClause + " and " + secondWhereCondition + " and " + thirdWhereCondition;
         querySong = conn.prepareStatement(preparedSqlQuery);
 
         selectClause = getSelectClause(Arrays.asList("*"), TABLE_ALBUMS);
@@ -119,7 +122,13 @@ public class Datasource {
         String orderByClause = getOrderByClause(COLUMN_ALBUM_NAME, SortOrders.ASCENDING);
         preparedSqlQuery = selectClause + whereClause + collateClause + orderByClause;
         queryAlbumsByArtistId = conn.prepareStatement(preparedSqlQuery);
+
+        String updateClause = getUpdateClause(TABLE_ARTISTS, COLUMN_ARTIST_NAME, "?");
+        whereClause = getWhereClause(COLUMN_ARTIST_ID, "?");
+        preparedSqlQuery = updateClause + whereClause;
+        updateArtist = conn.prepareStatement(preparedSqlQuery);
     }
+
     public void close() {
         try {
             //must close Statements before connections (close resources in reverse order in which they are opened
@@ -133,6 +142,7 @@ public class Datasource {
             if (queryAlbum != null) queryAlbum.close();
             if (queryAlbumsByArtistId != null) queryAlbumsByArtistId.close();
             if (querySong != null) querySong.close();
+            if (updateArtist != null) updateArtist.close();
             //close connection last
             if (conn != null) {
                 conn.close();
@@ -372,6 +382,36 @@ public class Datasource {
 
         return toReturn;
     }
+    public boolean updateArtistName(Artist newArtist) {
+        try {
+            conn.setAutoCommit(false);
+            updateArtist.setString(1, newArtist.getName());
+            updateArtist.setInt(2, newArtist.getId());
+            int numberOfColumnsAffected = updateArtist.executeUpdate();
+            if (numberOfColumnsAffected != 1) {
+                conn.rollback();
+                conn.setAutoCommit(true);
+                return false;
+            }
+
+            conn.commit();
+            return true;
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
     //endregion
     //region Query Helpers
     public String getSelectClause(List<String> columns, String tableName) {
@@ -388,6 +428,11 @@ public class Datasource {
     }
     public String getJoinClause(JoinTypes joinType, String tableToJoin, String joinOn1, String joinOn2) {
         return String.format(" %s JOIN %s ON %s = %s ", joinType, tableToJoin, joinOn1, joinOn2);
+    }
+    public String getUpdateClause(String tableName, String tableProperty, String newValue) {
+        String newValueToUse = String.format("'%s'", newValue);
+        if (newValue.trim().equalsIgnoreCase("?")) newValueToUse = "?";
+        return String.format(" UPDATE %s SET %s %s %s", tableName, tableProperty, WhereClauseOperators.EQUALS.value, newValueToUse);
     }
     public String getWhereClause(String searchIn, String searchFor) {
         /**Exact match**/

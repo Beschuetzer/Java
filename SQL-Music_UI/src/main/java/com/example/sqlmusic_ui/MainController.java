@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class MainController {
+    private Artist selectedArtist;
+
     @FXML
     public TableView<Album> albumsByArtistTable;
     @FXML
@@ -116,15 +118,20 @@ public class MainController {
 
         //generally want show and wait rather than just show
         ModifySongDialogPaneController controller = fxmlLoader.getController();
-        Artist selectedArtist = artistTable.getSelectionModel().getSelectedItem();
+        selectedArtist = artistTable.getSelectionModel().getSelectedItem();
         controller.initData(selectedArtist);
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (!result.isPresent()) return;
         if (result.get() == ButtonType.OK) {
 
-            Artist newArtist = controller.processResults();
-            System.out.println(newArtist.getId());
+            selectedArtist = controller.processResults();
+            UpdateArtistNameTask updateArtistNameTask = new UpdateArtistNameTask();
+            System.out.println(artistTable.getItems());
+//            updateArtistNameTask.setOnSucceeded(e -> artistTable.getItems());
+//            updateArtistNameTask.setOnFailed(e -> ...);
+            new Thread(updateArtistNameTask).start();
+
 
             //need to send update query to SQL via background Task
             //on success should update UI
@@ -160,6 +167,13 @@ public class MainController {
             return FXCollections.observableArrayList(
                     Datasource.getInstance().getAlbums(this.artistId)
             );
+        }
+    }
+
+    class UpdateArtistNameTask extends Task {
+        @Override
+        protected Object call() throws Exception {
+            return Datasource.getInstance().updateArtistName(selectedArtist);
         }
     }
 }
