@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<DialogPane
+        fx:id="modifySongDialogPane"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.example.sqlmusic_ui.ModifySongDialogPaneController"
+
+>
+    <header></header>
+    <headerText>
+        <!--        <Label>-->
+        <!--            <font>-->
+        <!--                <Font size="32" value="Time News Roman bold"/>-->
+        <!--            </font>-->
+        <!--            Enter a new Todo Item:-->
+        <!--        </Label>-->
+    </headerText>
+    <content>
+        <GridPane
+                vgap="10"
+                hgap="10"
+        >
+            <HBox GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                <Label text="Current Name: "/>
+                <Label fx:id="currentNameLabel" text="N/A"/>
+            </HBox>
+            <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                <Label text="Desired Name: "/>
+                <TextField fx:id="desiredNameTextField"/>
+            </HBox>
+        </GridPane>
+    </content>
+    <graphic></graphic>
+</DialogPane>

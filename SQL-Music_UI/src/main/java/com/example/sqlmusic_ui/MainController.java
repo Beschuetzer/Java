@@ -8,9 +8,12 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class MainController {
     @FXML
@@ -23,6 +26,8 @@ public class MainController {
     public Button updateArtistsButton;
     @FXML
     public ProgressBar progressBar;
+    @FXML
+    public BorderPane mainBorderPane;
     @FXML
     private TableView<Artist> artistTable;
 
@@ -70,6 +75,7 @@ public class MainController {
         tableView.setPrefHeight(preferredHeight);
     }
 
+    @FXML
     public void handleListArtists(ActionEvent actionEvent) {
         System.out.println("click list artists");
         toggleTableVisibility(artistTable, true, 1000, 1000);
@@ -78,6 +84,7 @@ public class MainController {
         showAlbumsForArtistButton.setDisable(false);
     }
 
+    @FXML
     public void handleShowAlbumsForArtist(ActionEvent actionEvent) {
         System.out.println("click show albums");
         Artist selectedArtist = artistTable.getSelectionModel().getSelectedItem();
@@ -86,8 +93,47 @@ public class MainController {
 
     }
 
+    @FXML
     public void handleUpdateArtists(ActionEvent actionEvent) {
         System.out.println("click update artists");
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        dialog.setTitle("Modify Song:");
+
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(MainWindow.class.getResource("modifySongDialogPane.fxml"));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
+
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
+
+        //generally want show and wait rather than just show
+        ModifySongDialogPaneController controller = fxmlLoader.getController();
+        Artist selectedArtist = artistTable.getSelectionModel().getSelectedItem();
+        controller.initData(selectedArtist);
+        Optional<ButtonType> result = dialog.showAndWait();
+
+        if (!result.isPresent()) return;
+        if (result.get() == ButtonType.OK) {
+
+            Artist newArtist = controller.processResults();
+            System.out.println(newArtist.getId());
+
+            //need to send update query to SQL via background Task
+            //on success should update UI
+            //on fail, display error msg
+
+//            artistTable.getSelectionModel().select(newArtist).getSelectionModel().select(newItem);
+        } else if (result.get() == ButtonType.CANCEL){
+            dialog.close();
+        }
 
     }
 
