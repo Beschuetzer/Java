@@ -24,6 +24,10 @@ public class Artist {
         return id.get();
     }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
     public SimpleIntegerProperty idProperty() {
         return id;
     }

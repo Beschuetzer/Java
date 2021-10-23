@@ -119,26 +119,22 @@ public class MainController {
         //generally want show and wait rather than just show
         ModifySongDialogPaneController controller = fxmlLoader.getController();
         selectedArtist = artistTable.getSelectionModel().getSelectedItem();
+        int selectedArtistIndex = artistTable.getSelectionModel().getSelectedIndex();
+
+        //using a public method to pass data directly to ModifySongDialogPaneController
         controller.initData(selectedArtist);
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (!result.isPresent()) return;
         if (result.get() == ButtonType.OK) {
-
-            selectedArtist = controller.processResults();
+            Artist newArtist = controller.processResults();
             UpdateArtistNameTask updateArtistNameTask = new UpdateArtistNameTask();
             System.out.println(artistTable.getItems());
             updateArtistNameTask.setOnSucceeded(e -> {
                 Boolean taskResult = (Boolean) updateArtistNameTask.getValue();
                 if (taskResult) {
-
-                    //Need to figure out how to update the UI here
-
-
                     System.out.println("Artist name updated successfully!");
-                    Artist artistToUpdate = artistTable.getItems().get(selectedArtist.getId());
-                    artistTable.getItems().remove(selectedArtist.getId());
-                    artistTable.getItems().add(selectedArtist.getId(), selectedArtist);
+                    artistTable.getItems().get(selectedArtistIndex).setName(newArtist.getName());
                 } else {
                     System.out.println("Unable to update artist name.  Try again.");
                 }
@@ -146,16 +142,9 @@ public class MainController {
             updateArtistNameTask.setOnFailed(e -> System.out.println("Unable to update artist name.  Try again."));
             new Thread(updateArtistNameTask).start();
 
-
-            //need to send update query to SQL via background Task
-            //on success should update UI
-            //on fail, display error msg
-
-//            artistTable.getSelectionModel().select(newArtist).getSelectionModel().select(newItem);
         } else if (result.get() == ButtonType.CANCEL){
             dialog.close();
         }
-
     }
 
     //REMEMBER JAVAFX REQUIRES ALL NON-UI RELATED CODE TO BE RUN ON A SEPARATE THREAD FROM MAIN THREAD
