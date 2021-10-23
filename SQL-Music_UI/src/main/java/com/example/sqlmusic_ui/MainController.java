@@ -9,6 +9,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableView;
 
 public class MainController {
@@ -19,7 +20,9 @@ public class MainController {
     @FXML
     public Button showAlbumsForArtistButton;
     @FXML
-    public Button updateArtistsbutton;
+    public Button updateArtistsButton;
+    @FXML
+    public ProgressBar progressBar;
     @FXML
     private TableView<Artist> artistTable;
 
@@ -29,7 +32,7 @@ public class MainController {
         artistTable.getSelectionModel().selectedItemProperty().addListener(((observableValue, artist, t1) -> {
             System.out.println("Cell clicked");
             showAlbumsForArtistButton.setDisable(false);
-            updateArtistsbutton.setDisable(false);
+            updateArtistsButton.setDisable(false);
         }));
 
     }
@@ -37,6 +40,10 @@ public class MainController {
     public void listArtists() {
         Task<ObservableList<Artist>> task = new GetAllArtistsTask();
         artistTable.itemsProperty().bind(task.valueProperty());
+        progressBar.progressProperty().bind(task.progressProperty());
+        progressBar.setVisible(true);
+        task.setOnSucceeded(e -> progressBar.setVisible(false));
+        task.setOnFailed(e -> progressBar.setVisible(false));
         new Thread(task).start();
     }
 

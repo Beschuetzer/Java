@@ -60,7 +60,7 @@
             <children>
                 <Button fx:id="listArtistsButton" onAction="#handleListArtists" maxWidth="Infinity" mnemonicParsing="true" text="_List Artists" disable="true"/>
                 <Button fx:id="showAlbumsForArtistButton" onAction="#handleShowAlbumsForArtist"  maxWidth="Infinity" mnemonicParsing="true" text="_Show Albums (artist)" disable="true"/>
-                <Button fx:id="updateArtistsbutton" onAction="#handleUpdateArtists" maxWidth="Infinity" mnemonicParsing="true" text="_Update Artist" disable="true"/>
+                <Button fx:id="updateArtistsButton" onAction="#handleUpdateArtists" maxWidth="Infinity" mnemonicParsing="true" text="_Update Artist" disable="true"/>
             </children>
             <BorderPane.margin>
                 <Insets right="10.0" />
@@ -70,7 +70,7 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <ProgressBar prefWidth="200.0" progress="0.0" visible="false">
+                <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" visible="false">
                     <HBox.margin>
                         <Insets left="50.0" />
                     </HBox.margin>

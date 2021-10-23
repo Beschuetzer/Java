@@ -335,6 +335,12 @@ public class Datasource {
              ResultSet resultSet = statement.executeQuery("SELECT * FROM " + TABLE_ARTISTS + " ORDER BY " + COLUMN_ARTIST_NAME + " COLLATE NOCASE")
         ) {
             while (resultSet.next()) {
+                try{
+                    Thread.sleep(15);
+                } catch (InterruptedException e) {
+                    System.out.println("Interruped: " + e.getMessage());
+                }
+
                 String name = resultSet.getString(INDEX_ARTIST_NAME);
                 int id = resultSet.getInt(INDEX_ARTIST_ID);
                 Artist newArtist = new Artist(name, id);
