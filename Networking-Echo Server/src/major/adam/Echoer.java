@@ -22,7 +22,7 @@ public class Echoer extends Thread {
 
             while (true) {
                 String echoString = input.readLine();
-                if (echoString.equalsIgnoreCase(EXIT_STRING)) break;
+                if (echoString != null && echoString.equalsIgnoreCase(EXIT_STRING)) break;
                 output.println(echoString);
             }
 
