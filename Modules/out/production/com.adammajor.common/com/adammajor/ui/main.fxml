@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import com.adammajor.common.*?>
+
+<BorderPane fx:id="mainBorderPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adammajor.ui.MainController">
+    <center>
+        <VBox>
+            <TableView fx:id="artistTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+                <columns>
+                    <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".1" text="Id">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="id" />
+                        </cellValueFactory>
+                    </PercentColumn>
+                    <PercentColumn percentageWidth=".9" text="Name">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="name" />
+                        </cellValueFactory>
+                    </PercentColumn>
+    <!--                <TableColumn prefWidth="${artistTable.width}" text="Name">-->
+    <!--                    <cellValueFactory>-->
+    <!--                        <PropertyValueFactory property="name"/>-->
+    <!--                    </cellValueFactory>-->
+    <!--                </TableColumn>-->
+                </columns>
+                <BorderPane.margin>
+                    <Insets right="10.0" />
+                </BorderPane.margin>
+            </TableView>
+            <TableView fx:id="albumsByArtistTable" prefHeight="0" prefWidth="0" visible="false" BorderPane.alignment="CENTER">
+                <columns>
+                    <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".1" text="Id">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="id" />
+                        </cellValueFactory>
+                    </PercentColumn>
+                    <PercentColumn percentageWidth=".8" text="Name">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="name" />
+                        </cellValueFactory>
+                    </PercentColumn>
+                    <PercentColumn maxWidth="75" minWidth="35" percentageWidth=".10" text="Artist Id">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="artistId" />
+                        </cellValueFactory>
+                    </PercentColumn>
+                </columns>
+                <BorderPane.margin>
+                    <Insets right="10.0" />
+                </BorderPane.margin>
+            </TableView>
+        </VBox>
+    </center>
+    <right>
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="170.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="listArtistsButton" onAction="#handleListArtists" maxWidth="Infinity" mnemonicParsing="true" text="_List Artists" disable="true"/>
+                <Button fx:id="showAlbumsForArtistButton" onAction="#handleShowAlbumsForArtist"  maxWidth="Infinity" mnemonicParsing="true" text="_Show Albums (artist)" disable="true"/>
+                <Button fx:id="updateArtistsButton" onAction="#handleUpdateArtists" maxWidth="Infinity" mnemonicParsing="true" text="_Update Artist" disable="true"/>
+            </children>
+            <BorderPane.margin>
+                <Insets right="10.0" />
+            </BorderPane.margin>
+        </VBox>
+    </right>
+    <bottom>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" visible="false">
+                    <HBox.margin>
+                        <Insets left="50.0" />
+                    </HBox.margin>
+                </ProgressBar>
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

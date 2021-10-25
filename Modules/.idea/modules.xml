@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SQL-Music_UI.iml" filepath="$PROJECT_DIR$/SQL-Music_UI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.adammajor.common/com.adammajor.common.iml" filepath="$PROJECT_DIR$/com.adammajor.common/com.adammajor.common.iml" />
+    </modules>
+  </component>
+</project>
