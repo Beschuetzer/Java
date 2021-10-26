@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.example.sqlmusic_ui.custom.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
-<?import com.adammajor.common.*?>
 
-<BorderPane fx:id="mainBorderPane" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.adammajor.ui.MainController">
+<BorderPane fx:id="mainBorderPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.2" fx:controller="com.adammajor.ui.MainController">
     <center>
         <VBox>
             <TableView fx:id="artistTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">

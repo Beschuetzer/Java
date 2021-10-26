@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SQL-Music_UI.iml" filepath="$PROJECT_DIR$/SQL-Music_UI.iml" />
       <module fileurl="file://$PROJECT_DIR$/com.adammajor.common/com.adammajor.common.iml" filepath="$PROJECT_DIR$/com.adammajor.common/com.adammajor.common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.adammajor.db/com.adammajor.db.iml" filepath="$PROJECT_DIR$/com.adammajor.db/com.adammajor.db.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.adammajor.ui/com.adammajor.ui.iml" filepath="$PROJECT_DIR$/com.adammajor.ui/com.adammajor.ui.iml" />
     </modules>
   </component>
 </project>

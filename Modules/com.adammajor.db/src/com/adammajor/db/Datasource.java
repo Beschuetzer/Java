@@ -1,6 +1,5 @@
 package com.adammajor.db;
 
-
 import com.adammajor.common.Album;
 import com.adammajor.common.Artist;
 import com.adammajor.common.SongDetail;
