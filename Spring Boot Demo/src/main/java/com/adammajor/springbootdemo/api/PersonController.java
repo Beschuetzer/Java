@@ -44,4 +44,18 @@ public class PersonController {
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No Person with id of '" + id + "'");
     }
+
+    @DeleteMapping(path = "{id}")
+    public void deletePersonById(@PathVariable("id") UUID id) {
+        System.out.println("id = " + id);
+         personService.deletePerson(id);
+    }
+
+    @PutMapping(path = "{id}")
+    public void updatePersonById(@PathVariable("id") UUID id, @RequestBody Person person) {
+        System.out.println("id = " + id);
+        System.out.println("person = " + person);
+        personService.updatePerson(id, person);
+    }
+
 }

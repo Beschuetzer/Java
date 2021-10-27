@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
+//Business logic goes inside the service methods here
 @Service
 public class PersonService {
     private final PersonDao personDao;
@@ -29,5 +31,13 @@ public class PersonService {
 
     public Optional<Person> getPersonById(UUID id) {
         return personDao.selectPersonById(id);
+    }
+
+    public int deletePerson(UUID id) {
+        return personDao.deletePerson(id);
+    }
+
+    public int updatePerson(UUID id, Person toUpdate) {
+        return personDao.updatePerson(id, toUpdate);
     }
 }
