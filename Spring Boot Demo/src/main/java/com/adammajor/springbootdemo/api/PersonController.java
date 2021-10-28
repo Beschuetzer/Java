@@ -4,6 +4,8 @@ import com.adammajor.springbootdemo.model.Person;
 import com.adammajor.springbootdemo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -52,7 +54,7 @@ public class PersonController {
     }
 
     @PutMapping(path = "{id}")
-    public void updatePersonById(@PathVariable("id") UUID id, @RequestBody Person person) {
+    public void updatePersonById(@PathVariable("id") UUID id, @Validated @NonNull @RequestBody Person person) {
         System.out.println("id = " + id);
         System.out.println("person = " + person);
         personService.updatePerson(id, person);
