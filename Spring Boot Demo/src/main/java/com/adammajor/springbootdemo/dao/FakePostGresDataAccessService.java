@@ -39,7 +39,15 @@ public class FakePostGresDataAccessService implements PersonDao{
 
     @Override
     public Optional<Person> selectPersonById(UUID id) {
-        return Optional.empty();
+        final String sqlQuery = "SELECT * FROM person WHERE id = ?";
+        Person person = jdbcTemplate.queryForObject(sqlQuery, new Object[]{id}, (resultSelt, i) -> {
+            final UUID personId = UUID.fromString(resultSelt.getString("id"));
+            final String firstName = resultSelt.getString("firstName");
+            final String lastName = resultSelt.getString("lastName");
+            return new Person(personId, firstName, lastName);
+        });
+
+        return Optional.ofNullable(person);
     }
 
     @Override
