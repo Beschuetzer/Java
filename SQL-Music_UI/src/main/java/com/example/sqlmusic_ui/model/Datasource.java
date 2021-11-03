@@ -49,7 +49,7 @@ public class Datasource {
     public static final int INDEX_SONG_ALBUM = 4;
     //endregion
 
-    private final String CONNECTION_STRING = "jdbc:sqlite:/home/adam/github/WebDevelopmentStuff/Java/SQL-Music_UI/music.db";
+    private final String CONNECTION_STRING = "jdbc:sqlite:/media/adam/Projects/Java/SQL-Music_UI/music.db";
     private Connection conn;
     private PreparedStatement querySongFullView;
     private PreparedStatement queryArtist;
