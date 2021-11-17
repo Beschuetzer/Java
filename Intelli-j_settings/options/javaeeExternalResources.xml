@@ -1,0 +1,5 @@
+<application>
+  <component name="ExternalResourceManagerImpl">
+    <resource url="http://javafx.com/fxml" location="$USER_HOME$/github/WebDevelopmentStuff/Java/JavaFX-Challenge" />
+  </component>
+</application>

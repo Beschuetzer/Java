@@ -1,0 +1,7 @@
+<templateSet group="Java">
+  <template name="cls" value="System.out.println(&quot;-&quot;.repeat(50));&#10;" description="" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+</templateSet>

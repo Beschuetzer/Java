@@ -1,0 +1,338 @@
+<application>
+  <component name="ProjectJdkTable">
+    <jdk version="2">
+      <name value="11" />
+      <type value="JavaSDK" />
+      <version value="Amazon Corretto version 11.0.12" />
+      <homePath value="/usr/lib/jvm/java-11-amazon-corretto" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/jdkAnnotations.jar!/" type="simple" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.base" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.datatransfer" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.desktop" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.instrument" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.logging" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.management.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.naming" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.net.http" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.prefs" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.scripting" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.se" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.security.jgss" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.security.sasl" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.smartcardio" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.sql" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.sql.rowset" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.transaction.xa" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.xml" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.xml.crypto" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.accessibility" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.aot" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.attach" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.charsets" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.crypto.cryptoki" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.crypto.ec" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.dynalink" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.editpad" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.hotspot.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.httpserver" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.ed" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.jvmstat" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.le" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.opt" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.ci" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.compiler.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jartool" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.javadoc" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jcmd" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jconsole" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdeps" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdwp.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jfr" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jlink" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jshell" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jsobject" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jstatd" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.localedata" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management.jfr" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.dns" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.ldap" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.net" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.pack" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.rmic" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.scripting.nashorn" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.scripting.nashorn.shell" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.sctp" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.security.auth" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.security.jgss" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.unsupported" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.unsupported.desktop" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.xml.dom" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.zipfs" type="simple" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite" />
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.se" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.aot" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jfr" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.net" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.sql" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.xml" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jcmd" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.pack" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.rmic" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.sctp" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.base" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdeps" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jlink" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.zipfs" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.prefs" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.attach" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jshell" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jstatd" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.naming" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.editpad" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jartool" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.javadoc" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.xml.dom" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.desktop" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.logging" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.charsets" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.dynalink" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jconsole" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jsobject" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.net.http" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.crypto.ec" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.scripting" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.httpserver" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdwp.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.localedata" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.dns" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.instrument" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.management" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.sql.rowset" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.xml.crypto" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.ed" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.le" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.ldap" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.unsupported" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.smartcardio" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.opt" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.datatransfer" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.accessibility" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.hotspot.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.security.auth" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.security.jgss" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.security.jgss" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.security.sasl" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.ci" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management.jfr" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.management.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.transaction.xa" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.crypto.cryptoki" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.jvmstat" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.scripting.nashorn" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.unsupported.desktop" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.scripting.nashorn.shell" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.compiler.management" type="simple" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional />
+    </jdk>
+    <jdk version="2">
+      <name value="1.8 (1)" />
+      <type value="JavaSDK" />
+      <version value="Amazon Corretto version 11.0.12" />
+      <homePath value="/usr/lib/jvm/java-11-amazon-corretto" />
+      <roots>
+        <annotationsPath>
+          <root type="composite">
+            <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/jdkAnnotations.jar!/" type="simple" />
+          </root>
+        </annotationsPath>
+        <classPath>
+          <root type="composite">
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.base" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.datatransfer" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.desktop" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.instrument" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.logging" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.management.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.naming" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.net.http" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.prefs" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.scripting" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.se" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.security.jgss" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.security.sasl" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.smartcardio" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.sql" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.sql.rowset" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.transaction.xa" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.xml" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/java.xml.crypto" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.accessibility" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.aot" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.attach" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.charsets" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.crypto.cryptoki" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.crypto.ec" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.dynalink" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.editpad" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.hotspot.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.httpserver" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.ed" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.jvmstat" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.le" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.opt" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.ci" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.compiler" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.internal.vm.compiler.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jartool" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.javadoc" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jcmd" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jconsole" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdeps" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jdwp.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jfr" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jlink" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jshell" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jsobject" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.jstatd" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.localedata" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management.agent" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.management.jfr" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.dns" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.ldap" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.naming.rmi" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.net" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.pack" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.rmic" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.scripting.nashorn" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.scripting.nashorn.shell" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.sctp" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.security.auth" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.security.jgss" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.unsupported" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.unsupported.desktop" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.xml.dom" type="simple" />
+            <root url="jrt:///usr/lib/jvm/java-11-amazon-corretto!/jdk.zipfs" type="simple" />
+          </root>
+        </classPath>
+        <javadocPath>
+          <root type="composite" />
+        </javadocPath>
+        <sourcePath>
+          <root type="composite">
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.se" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.aot" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jfr" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.net" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.sql" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.xml" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jcmd" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.pack" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.rmic" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.sctp" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.base" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdeps" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jlink" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.zipfs" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.prefs" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.attach" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jshell" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jstatd" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.naming" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.editpad" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jartool" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.javadoc" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.xml.dom" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.desktop" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.logging" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.charsets" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.dynalink" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jconsole" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jsobject" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.net.http" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.crypto.ec" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.scripting" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.httpserver" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.jdwp.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.localedata" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.dns" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.instrument" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.management" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.sql.rowset" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.xml.crypto" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.ed" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.le" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.naming.ldap" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.unsupported" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.smartcardio" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.opt" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.datatransfer" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.accessibility" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.hotspot.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.security.auth" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.security.jgss" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.security.jgss" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.security.sasl" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.ci" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management.jfr" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.management.rmi" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/java.transaction.xa" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.crypto.cryptoki" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.jvmstat" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.management.agent" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.scripting.nashorn" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.unsupported.desktop" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.compiler" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.scripting.nashorn.shell" type="simple" />
+            <root url="jar:///usr/lib/jvm/java-11-amazon-corretto/lib/src.zip!/jdk.internal.vm.compiler.management" type="simple" />
+          </root>
+        </sourcePath>
+      </roots>
+      <additional />
+    </jdk>
+  </component>
+</application>

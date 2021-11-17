@@ -1,0 +1,48 @@
+<keymap version="1" name="VSCode copy" parent="VSCode">
+  <action id="$Redo">
+    <keyboard-shortcut first-keystroke="shift ctrl z" />
+    <keyboard-shortcut first-keystroke="shift alt back_space" />
+    <keyboard-shortcut first-keystroke="ctrl y" />
+  </action>
+  <action id="Editor Redo">
+    <keyboard-shortcut first-keystroke="ctrl y" />
+  </action>
+  <action id="EditorCloneCaretAbove">
+    <keyboard-shortcut first-keystroke="ctrl alt up" />
+    <keyboard-shortcut first-keystroke="shift ctrl alt up" />
+    <keyboard-shortcut first-keystroke="shift alt up" />
+  </action>
+  <action id="EditorCloneCaretBelow">
+    <keyboard-shortcut first-keystroke="ctrl alt down" />
+    <keyboard-shortcut first-keystroke="shift ctrl alt down" />
+    <keyboard-shortcut first-keystroke="shift alt down" />
+  </action>
+  <action id="EditorCompleteStatement">
+    <keyboard-shortcut first-keystroke="shift enter" />
+  </action>
+  <action id="EditorDuplicate" />
+  <action id="EditorSelectWord">
+    <keyboard-shortcut first-keystroke="shift alt right" />
+    <keyboard-shortcut first-keystroke="ctrl e" />
+  </action>
+  <action id="ExpandLiveTemplateCustom">
+    <keyboard-shortcut first-keystroke="shift ctrl e" />
+  </action>
+  <action id="Generate">
+    <keyboard-shortcut first-keystroke="alt insert" />
+    <keyboard-shortcut first-keystroke="alt i" />
+  </action>
+  <action id="GotoNextError">
+    <keyboard-shortcut first-keystroke="shift alt e" />
+  </action>
+  <action id="GotoPreviousError">
+    <keyboard-shortcut first-keystroke="shift ctrl alt e" />
+  </action>
+  <action id="QuickJavaDoc">
+    <keyboard-shortcut first-keystroke="shift ctrl d" />
+  </action>
+  <action id="Resume">
+    <keyboard-shortcut first-keystroke="shift f8" />
+    <keyboard-shortcut first-keystroke="f8" />
+  </action>
+</keymap>

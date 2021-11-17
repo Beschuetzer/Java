@@ -1,0 +1,289 @@
+<templateSet group="user">
+  <template name="map_lc" value="Map&lt;$K$, $V$&gt; $mapName$ = Map.ofEntries(&#10;        entry(&quot;$a$&quot;, $b$)$END$&#10;);" description="Map Literal Creation" toReformat="false" toShortenFQNames="true">
+    <variable name="K" expression="capitalize(&quot;test&quot;)" defaultValue="&quot;String&quot;" alwaysStopAt="true" />
+    <variable name="V" expression="" defaultValue="&quot;Object&quot;" alwaysStopAt="true" />
+    <variable name="mapName" expression="" defaultValue="&quot;mapName&quot;" alwaysStopAt="true" />
+    <variable name="a" expression="" defaultValue="&quot;key&quot;" alwaysStopAt="true" />
+    <variable name="b" expression="" defaultValue="&quot;someObject&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="map_iterate" value="for (Map.Entry&lt;$K$, $V$&gt; $entry$ : $someMap$.entrySet()) {&#10;    $K$ key = $entry$.getKey();&#10;    $V$ value = $entry$.getValue();&#10;    $END$&#10;}&#10;" description="Map Iteration" toReformat="false" toShortenFQNames="true">
+    <variable name="K" expression="" defaultValue="&quot;String&quot;" alwaysStopAt="true" />
+    <variable name="V" expression="" defaultValue="&quot;Object" alwaysStopAt="true" />
+    <variable name="entry" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="someMap" expression="" defaultValue="&quot;someMap&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="image" value=" &lt;graphic&gt;&#10;    &lt;ImageView&gt;&#10;        &lt;Image url=&quot;@/$imgPath$.$imgExtension$&quot;/&gt;&#10;    &lt;/ImageView&gt;&#10;&lt;/graphic&gt;" description="FXML Image from external Library" toReformat="false" toShortenFQNames="true">
+    <variable name="imgPath" expression="" defaultValue="&quot;toolbarButtonGraphics/general/Information24&quot;" alwaysStopAt="true" />
+    <variable name="imgExtension" expression="" defaultValue="&quot;gif&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="radio-button-group" value="&lt;fx:define&gt;&#10;    &lt;ToggleGroup fx:id=&quot;$groupName$&quot;/&gt;&#10;&lt;/fx:define&gt;&#10;&lt;RadioButton GridPane.rowIndex=&quot;0&quot; GridPane.columnIndex=&quot;2&quot; text=&quot;red&quot; toggleGroup=&quot;$$$groupName$&quot;/&gt;&#10;&lt;RadioButton GridPane.rowIndex=&quot;0&quot; GridPane.columnIndex=&quot;3&quot; text=&quot;green&quot; toggleGroup=&quot;$$$groupName$&quot;/&gt;&#10;&lt;RadioButton selected=&quot;true&quot; GridPane.rowIndex=&quot;0&quot; GridPane.columnIndex=&quot;4&quot; text=&quot;blue&quot; toggleGroup=&quot;$$$groupName$&quot;/&gt;" description="Toggle Group of radio buttons" toReformat="false" toShortenFQNames="true">
+    <variable name="groupName" expression="" defaultValue="&quot;groupName&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="combobox" value="&lt;?import javafx.collections.*?&gt;&#10;&lt;?import java.lang.String?&gt;&#10; &lt;ComboBox editable=&quot;false&quot; GridPane.rowIndex=&quot;3&quot; GridPane.columnIndex=&quot;0&quot;&gt;&#10;    &lt;items&gt;&#10;        &lt;FXCollections fx:factory=&quot;observableArrayList&quot;&gt;&#10;            &lt;String fx:value=&quot;Option 1&quot;/&gt;&#10;            &lt;String fx:value=&quot;Option 2&quot;/&gt;&#10;            &lt;String fx:value=&quot;Option 3&quot;/&gt;&#10;            &lt;String fx:value=&quot;Option 4&quot;/&gt;&#10;            &lt;String fx:value=&quot;Option 5&quot;/&gt;&#10;        &lt;/FXCollections&gt;&#10;    &lt;/items&gt;&#10;    &lt;value&gt;&#10;        &lt;String fx:value=&quot;This is Default Option&quot;/&gt;&#10;    &lt;/value&gt;&#10;&lt;/ComboBox&gt;" description="combobox" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="slider" value="&lt;Slider orientation=&quot;VERTICAL&quot; GridPane.rowIndex=&quot;4&quot; GridPane.columnIndex=&quot;1&quot; GridPane.columnSpan=&quot;2&quot; min=&quot;0&quot; max=&quot;100&quot; showTickMarks=&quot;true&quot; showTickLabels=&quot;true&quot; minorTickCount=&quot;4&quot; snapToTicks=&quot;true&quot;/&gt;" description="slider" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="spinner" value="&lt;Spinner editable=&quot;true&quot; GridPane.columnSpan=&quot;2&quot; GridPane.rowIndex=&quot;5&quot; min=&quot;0&quot; max=&quot;100&quot; initialValue=&quot;50&quot;/&gt;" description="Spinner(Number input)" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="Accordion" value=" &lt;Accordion &#10;    GridPane.columnIndex=&quot;0&quot; &#10;    GridPane.rowIndex=&quot;7&quot;&#10;    expandedPane=&quot;$pane3&quot;&#10;&gt;&#10;    &lt;panes&gt;&#10;        &lt;TitledPane text=&quot;Title Pane 1&quot;&gt;&#10;            &lt;Label&gt;THis is a title pane&lt;/Label&gt;&#10;        &lt;/TitledPane&gt;&#10;        &lt;TitledPane text=&quot;Title Pane 2&quot;&gt;&#10;            &lt;Label&gt;THis is a title pane&lt;/Label&gt;&#10;        &lt;/TitledPane&gt;&#10;        &lt;TitledPane fx:id=&quot;pane3&quot; text=&quot;Title Pane 3&quot;&gt;&#10;            &lt;Label&gt;THis is a title pane&lt;/Label&gt;&#10;        &lt;/TitledPane&gt;&#10;    &lt;/panes&gt;&#10;&lt;/Accordion&gt;" description="Accordion (Only one thing open at a time" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="file_chooser" value="FileChooser fileChooser = new FileChooser();&#10;fileChooser.showOpenDialog($w$.getScene().getWindow());" description="File Chooser" toReformat="false" toShortenFQNames="true">
+    <variable name="w" expression="" defaultValue="&quot;someParentWindow&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_buffered_reader" value="try(BufferedReader bufferedReader = new BufferedReader(new FileReader(&quot;$fileName$.$EXT$&quot;))) {&#10;            String nextLine;&#10;            while ((nextLine = bufferedReader.readLine()) != null)  {&#10;                String[] splitLine = nextLine.split(&quot;,&quot;);&#10;                $END$&#10;            }&#10;        } catch (IOException e) {&#10;            e.printStackTrace();&#10;        }" description="buffered reader" toReformat="false" toShortenFQNames="true">
+    <variable name="fileName" expression="" defaultValue="&quot;someFile&quot;" alwaysStopAt="true" />
+    <variable name="EXT" expression="" defaultValue="&quot;txt&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_buffered_writer" value="try (&#10;        BufferedWriter $bf1$ = new BufferedWriter(new FileWriter(&quot;$FILENAME$.$EXT$&quot;))&#10;) {&#10;        $END$&#10;}" description="Buffered Writer" toReformat="false" toShortenFQNames="true">
+    <variable name="bf1" expression="" defaultValue="&quot;bufferedReader&quot;" alwaysStopAt="true" />
+    <variable name="FILENAME" expression="" defaultValue="&quot;someFile&quot;" alwaysStopAt="true" />
+    <variable name="EXT" expression="" defaultValue="&quot;txt&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_binary_reader" value="try (DataInputStream $dataStream$ = new DataInputStream(new BufferedInputStream(new FileInputStream(&quot;$fileName$.dat&quot;)))) {&#10;    boolean eof = false;&#10;    while (!eof) {&#10;        try {&#10;            $END$&#10;        } catch (EOFException e) {&#10;            eof = true;&#10;        }&#10;    }&#10;} catch (FileNotFoundException e) {&#10;    e.printStackTrace();&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="reading binary data" toReformat="false" toShortenFQNames="true">
+    <variable name="dataStream" expression="" defaultValue="&quot;dataInputStream&quot;" alwaysStopAt="true" />
+    <variable name="fileName" expression="" defaultValue="&quot;fileName&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_de-serialize" value="  try (ObjectInputStream locFile = new ObjectInputStream(new BufferedInputStream(new FileInputStream(&quot;locations-serialized.dat&quot;)))) {&#10;            boolean eof = false;&#10;            while (!eof) {&#10;                try {&#10;                    Location location = (Location) locFile.readObject();&#10;                    locationsSerialized.put(location.getLocationID(), location);&#10;                } catch (EOFException e) {&#10;                    eof = true;&#10;                } catch (ClassNotFoundException e) {&#10;                    e.printStackTrace();&#10;                }&#10;            }&#10;        } catch (FileNotFoundException e) {&#10;            e.printStackTrace();&#10;        } catch (IOException e) {&#10;            e.printStackTrace();&#10;        }" description="de-serializing using java.io" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_serialize" value="try (ObjectOutputStream locFile = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(&quot;locations-serialized.dat&quot;)))) {&#10;    for (Location location : locationsSerialized.values()) {&#10;        locFile.writeObject(location);&#10;    }&#10;}" description="serializing class" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_buffered_write_nio" value="Path locPath = FileSystems.getDefault().getPath(&quot;$f1$&quot;);&#10;Path dirPath = FileSystems.getDefault().getPath(&quot;$f2$&quot;);&#10;try (&#10;        BufferedWriter locFile = Files.newBufferedWriter(locPath);&#10;        BufferedWriter dirFile = Files.newBufferedWriter(dirPath)&#10;) {&#10;        $END$&#10;} catch (IOException e) {&#10;    System.out.println(&quot;IOException: &quot; + e.getMessage());&#10;}" description="Buffered Writer and reader with nio template" toReformat="false" toShortenFQNames="true">
+    <variable name="f1" expression="" defaultValue="&quot;file1.txt&quot;" alwaysStopAt="true" />
+    <variable name="f2" expression="" defaultValue="&quot;file2.txt&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_buffered_reader_nio" value="Path $path$ = FileSystems.getDefault().getPath(&quot;$f1$&quot;);&#10;try (Scanner scanner = new Scanner(Files.newBufferedReader($path$))) {&#10;    scanner.useDelimiter(&quot;,&quot;);&#10;    while (scanner.hasNextLine()) {&#10;       $END$&#10;    }&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}&#10;&#10;//not using Scanner&#10;//try(BufferedReader dirFile = Files.newBufferedReader(dirPath)) {&#10;   // String input;&#10;    //while ((input = dirFile.readLine()) != null) {&#10;      //...&#10;    //}&#10;//} catch (IOException e) {&#10;    //e.printStackTrace();&#10;//}" description="Buffered Reader with java.nio" toReformat="false" toShortenFQNames="true">
+    <variable name="path" expression="" defaultValue="&quot;filePath&quot;" alwaysStopAt="true" />
+    <variable name="f1" expression="" defaultValue="&quot;File1.txt&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_serialize_nio" value="Path $p1$ = FileSystems.getDefault().getPath(&quot;$f1$.dat&quot;);&#10;try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(Files.newOutputStream($p1$)))) {&#10;    $END$&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Serializing using java.nio" toReformat="false" toShortenFQNames="true">
+    <variable name="p1" expression="" defaultValue="&quot;filePath&quot;" alwaysStopAt="true" />
+    <variable name="f1" expression="" defaultValue="&quot;fileName&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_de-serialize_nio" value="Path $p1$ = FileSystems.getDefault().getPath(&quot;$f1$.dat&quot;);&#10;try (ObjectInputStream objectInputStream = new ObjectInputStream(new BufferedInputStream(Files.newInputStream($p1$)))) {&#10;    boolean eof = false;&#10;    while (!eof) {&#10;        try {&#10;            $END$&#10;        } catch (EOFException e) {&#10;            eof = true;&#10;        }&#10;    }&#10;} catch (InvalidClassException e) {&#10;    e.printStackTrace();&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;} catch (ClassNotFoundException e) {&#10;    e.printStackTrace();&#10;}" description="Using java.nio to deserialize" toReformat="false" toShortenFQNames="true">
+    <variable name="p1" expression="" defaultValue="&quot;filePath&quot;" alwaysStopAt="true" />
+    <variable name="f1" expression="" defaultValue="&quot;fileName&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_nio_read" value="try {&#10;    Path dataPath = FileSystems.getDefault().getPath(&quot;data.txt&quot;);&#10;    List&lt;String&gt; lines = Files.readAllLines(dataPath);&#10;    for (String line : lines) {&#10;        System.out.println(line);&#10;    }&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Reading with java.nio basic" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_nio_write" value="try {&#10;    Files.write(dataPath, &quot;\nLine 4&quot;.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Write using java.nio basic" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_binary_write_nio" value=" try (FileOutputStream fileOutputStream = new FileOutputStream(&quot;data_binary.dat&quot;)) {&#10;    //need to have a channel and buffer&#10;    FileChannel fileChannel = fileOutputStream.getChannel();&#10;    byte[] bytes = &quot;This is string to output.&quot;.getBytes(StandardCharsets.UTF_8);&#10;&#10;    //if you have a byte array, you can use the .wrap convenience method&#10;    //to set the buffer length and reset the position to 0&#10;    ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);&#10;    fileChannel.write(byteBuffer);&#10;&#10;    //when writing numeric value though, you have to use .putInt() and .allocate()&#10;    //.putInt() doesn't reset the head like .wrap(), so you have to reset the head&#10;    //using .flip() before writing&#10;    int[] intsToWrite = {42, -44, 540};&#10;    ByteBuffer intBuffer = ByteBuffer.allocate(Integer.BYTES);&#10;    for (int intToWrite : intsToWrite) {&#10;        intBuffer.putInt(intToWrite);&#10;        intBuffer.flip();&#10;        fileChannel.write(intBuffer);&#10;        intBuffer.flip();&#10;    }&#10;} catch (FileNotFoundException e) {&#10;    e.printStackTrace();&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Writing binary data using nio" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_binary_reader_random" value="try (FileOutputStream fileOutputStream = new FileOutputStream(&quot;data_binary.dat&quot;)) {&#10;    //Reading using java.io's RandomAccessFile&#10;    RandomAccessFile randomAccessFile = new RandomAccessFile(&quot;data_binary.dat&quot;, &quot;rwd&quot;);&#10;&#10;    //have to know the contents of the file when dealing with strings&#10;    //in order to only read the correct number of stringToWriteInBytes for each string&#10;    byte[] bytesRead = new byte[stringToWriteInBytes.length];&#10;    randomAccessFile.read(bytesRead);&#10;    System.out.println(&quot;\nRead Start--------\n&quot; + new String(bytesRead));&#10;&#10;    long int1 = randomAccessFile.readInt();&#10;    long int2 = randomAccessFile.readInt();&#10;    System.out.println(int1);&#10;    System.out.println(int2);&#10;&#10;} catch (FileNotFoundException e) {&#10;    e.printStackTrace();&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="java.io's RandomAccessFile reading" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_binary_reader_random_nio" value="try (FileOutputStream fileOutputStream = new FileOutputStream(&quot;data_binary.dat&quot;)) {&#10;    RandomAccessFile randomAccessFile = new RandomAccessFile(&quot;data_binary.dat&quot;, &quot;rwd&quot;);&#10;    ByteBuffer byteBuffer = ByteBuffer.allocate($size$);&#10;    FileChannel channel = randomAccessFile.getChannel();&#10;    long numBytesRead = channel.read(byteBuffer);&#10;    if (byteBuffer.hasArray()) {&#10;        System.out.println(&quot;byte buffer: &quot; + new String(byteBuffer.array()));&#10;    }&#10;} catch (FileNotFoundException e) {&#10;    e.printStackTrace();&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="using nio and random access file" toReformat="false" toShortenFQNames="true">
+    <variable name="size" expression="" defaultValue="&quot;someBufferSize&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="io_copy_file" value="try (&#10;        RandomAccessFile $copyFile$ = new RandomAccessFile(&quot;data-copy.dat&quot;, &quot;rw&quot;);&#10;        FileChannel $copyChannel$ = copyFile.getChannel()&#10;) {&#10;    long numTransferredTo = $originalFileChannel$.transferTo(0, $originalFileChannel$.size(), $copyChannel$);&#10;    System.out.println(&quot;num transferred = &quot; + numTransferred);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="copying a file to another file" toReformat="false" toShortenFQNames="true">
+    <variable name="copyFile" expression="" defaultValue="&quot;copyFile&quot;" alwaysStopAt="true" />
+    <variable name="copyChannel" expression="" defaultValue="&quot;copyChannel&quot;" alwaysStopAt="true" />
+    <variable name="originalFileChannel" expression="" defaultValue="&quot;originalFileChannel&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="path" value="//relative&#10;//returns a working directory set to the current user's directory or when run in an IDE, the project directory (as that is the IDE's working directory)&#10;Path relativePath = FileSystems.getDefault().getPath(&quot;file.txt&quot;);&#10;&#10;//absolute&#10;Path absolutePath = Paths.get(&quot;c:\\somePath\\to\\file.txt&quot;);" description="how to setup a path" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="path_exists" value="if (Files.exists($filePath$)) {&#10;    $END$   &#10;}" description="how to check if path exists" toReformat="false" toShortenFQNames="true">
+    <variable name="filePath" expression="" defaultValue="&quot;filePath&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="path_permissions" value="boolean isReadable = Files.isReadable($checkFilePath$);&#10;boolean isWritable = Files.isWritable($checkFilePath$);&#10;boolean isExecutable = Files.isExecutable($checkFilePath$);" description="Check path permissions" toReformat="false" toShortenFQNames="true">
+    <variable name="checkFilePath" expression="" defaultValue="&quot;checkFilePath&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="copy_file" value=" try {&#10;    Path sourceFile = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;file1.txt&quot;);&#10;    Path destFile = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;file1-copy.txt&quot;);&#10;    &#10;    //.copy() throws except if file exists by default&#10;    Files.copy(sourceFile, destFile, StandardCopyOption.REPLACE_EXISTING);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Copying" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="move/rename_file" value="try {&#10;    Path fileToMove = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;file1-copy.txt&quot;);&#10;    Path dest = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;Dir1&quot;, &quot;newFileNameHere.txt&quot;);&#10;    Files.move(fileToMove, dest, StandardCopyOption.REPLACE_EXISTING);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Moving and/or Renaming a file" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="delete_file" value="try {&#10;    Path toDelete = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;file1-copy.txt&quot;);&#10;    Files.deleteIfExists(toDelete);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Deleting a file" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="create_directory" value="try {&#10;    Path dirToCreate = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;Dir2&quot;, &quot;Dir3&quot;, &quot;Dir4&quot;, &quot;Dir5&quot;, &quot;Dir6&quot;);&#10;    //.createDirectories() creates every directory in between (if it doesn't exist)&#10;    Files.createDirectories(dirToCreate);&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Create directory" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="file_attributes" value="//Getting all attributes in one shot&#10;try {&#10;    Path fileToGetAllAttributesFor = FileSystems.getDefault().getPath(&quot;Examples&quot;, &quot;Dir1&quot;, &quot;file2.txt&quot;);&#10;    BasicFileAttributes attr = Files.readAttributes(fileToGetAllAttributesFor, BasicFileAttributes.class);&#10;    System.out.println(&quot;size = &quot; + attr.size());&#10;    System.out.println(&quot;lastModifiedTime() = &quot; + attr.lastModifiedTime());&#10;    System.out.println(&quot;creationTime() = &quot; + attr.creationTime());&#10;    System.out.println(&quot;isDirectory() = &quot; + attr.isDirectory());&#10;    System.out.println(&quot;isRegularFile()() = &quot; + attr.isRegularFile());&#10;    System.out.println(&quot;isSymbolicLink()() = &quot; + attr.isSymbolicLink());&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Getting Basic File Attributes (common to all OS)" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="directory_stream" value="private static void readDirectoryStream(Path path) {&#10;    try (&#10;            DirectoryStream&lt;Path&gt; contents = Files.newDirectoryStream(path)&#10;    ) {&#10;        for(Path file : contents) {&#10;            System.out.println(file.getFileName());&#10;            if (Files.isDirectory(file)) readDirectoryStream(file);&#10;        }&#10;    } catch (IOException | DirectoryIteratorException e) {&#10;        e.printStackTrace();&#10;    }&#10;}" description="getting iterator for a directory to get contents" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="directory_stream_filter" value="private static void readDirectoryStream(Path path) {&#10;    DirectoryStream.Filter&lt;Path&gt; filter = (p) -&gt; {&#10;        //if p returns true it is shown (can use attributes or anything else)&#10;        return Pattern.matches(&quot;.*\\.txt&quot;, p.toString());&#10;    };&#10;&#10;    try (&#10;            DirectoryStream&lt;Path&gt; contents = Files.newDirectoryStream(path, filter);&#10;    ) {&#10;        for(Path file : contents) {&#10;            System.out.println(file.getFileName());&#10;            if (Files.isDirectory(file)) readDirectoryStream(file);&#10;&#10;            //https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileSystem.html#getPathMatcher-java.lang.String-&#10;        }&#10;    } catch (IOException | DirectoryIteratorException e) {&#10;        e.printStackTrace();&#10;    }&#10;}" description="Using custom filter to filter DirectoryStream" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="regexp_convenience" value="Pattern.matches(&quot;$regexp$&quot;, $someString$);" description="Regular Expression Convenience" toReformat="false" toShortenFQNames="true">
+    <variable name="regexp" expression="" defaultValue="&quot;.*\\\\.txt&quot;" alwaysStopAt="true" />
+    <variable name="someString" expression="" defaultValue="&quot;someString&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="file_separator" value="System.out.println(File.separator);&#10;String separator = FileSystems.getDefault().getSeparator();&#10;System.out.println(separator);" description="Don't hard code separator" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="temp_file_creation" value="try {&#10;    Path tempFile = Files.createTempFile(&quot;$prefix$&quot;, &quot;.$suffix$&quot;);&#10;    System.out.println(&quot;Tempory file path = &quot; + tempFile.toAbsolutePath());&#10;} catch (IOException e) {&#10;    e.printStackTrace();&#10;}" description="Creating a file in the temp folder for the user's OS" toReformat="false" toShortenFQNames="true">
+    <variable name="prefix" expression="" defaultValue="&quot;filePrefix&quot;" alwaysStopAt="true" />
+    <variable name="suffix" expression="" defaultValue="&quot;fileSuffix&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="stores_and_root_paths" value="Iterable&lt;FileStore&gt; stores = FileSystems.getDefault().getFileStores();&#10;for (FileStore store : stores) {&#10;    System.out.println(store);&#10;    System.out.println(store.getTotalSpace());&#10;}&#10;&#10;//Gets the root dirs (e.g. &quot;c:\&quot;, &quot;d:\&quot; on Win OS)&#10;Iterable&lt;Path&gt; rootPaths = FileSystems.getDefault().getRootDirectories();&#10;for (Path path : rootPaths) {&#10;    System.out.println(path);&#10;}" description="getting &quot;c:/&quot;, &quot;d:/&quot;, etc. on win OS" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="path_relativized" value="//Relativized path&#10;Path sourcePath = FileSystems.getDefault().getPath(&quot;FileTree&quot;, &quot;Dir2&quot;, &quot;Dir3&quot;, &quot;file1.txt&quot;);&#10;Path sourceRoot = FileSystems.getDefault().getPath(&quot;FileTree&quot;);&#10;Path relativizedPath = sourceRoot.relativize(sourcePath);&#10;System.out.println(&quot;relativizedPath = &quot; + relativizedPath);&#10;&#10;Path targetRoot = FileSystems.getDefault().getPath(&quot;FileTree&quot;, &quot;Dir4&quot;, &quot;Dir2Copy&quot;);&#10;Path resolvedPathForCopy = targetRoot.resolve(relativizedPath);&#10;System.out.println(&quot;resolvedPathForCopy = &quot; + resolvedPathForCopy);&#10;" description="Relativized Path takes the difference between two paths" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="working_dir" value="File workingDir = new File(&quot;&quot;).getAbsoluteFile();&#10;" description="Using java.io to get working dir" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="consumer_run" value="@Override&#10;public void run() {&#10;    while (true) {&#10;        $bufferLock$.lock();&#10;        try {&#10;            $END$&#10;        } finally {&#10;            $bufferLock$.unlock();&#10;        }&#10;    }&#10;}" description="Structure of Consumer's run method" toReformat="false" toShortenFQNames="true">
+    <variable name="bufferLock" expression="" defaultValue="&quot;bufferLock&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="rand_int" value="Random random = new Random();&#10;random.nextInt($b$);" description="Random integer" toReformat="false" toShortenFQNames="true">
+    <variable name="b" expression="" defaultValue="&quot;nonInclusiveUpperBound&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="regexp_full" value="//reluctant/lazy quantifier&#10;String h2GroupPattern = &quot;(&lt;h2.*?&gt;)(.*?)(&lt;/h2&gt;)&quot;;&#10;Pattern groupPattern = Pattern.compile(h2GroupPattern);&#10;Matcher groupMatcher = groupPattern.matcher(someHtml);&#10;System.out.println(groupMatcher.matches());&#10;&#10;//have to reset matcher after using&#10;groupMatcher.reset();&#10;&#10;while(groupMatcher.find()) {&#10;    System.out.println(&quot;Start Tag: &quot; + groupMatcher.group(1));&#10;    System.out.println(&quot;innerHtml: &quot; + groupMatcher.group(2));&#10;    System.out.println(&quot;Closing Tag: &quot; + groupMatcher.group(3));&#10;}" description="Using Matcher" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+      <option name="JAVA_STRING" value="true" />
+    </context>
+  </template>
+  <template name="junit5_parameterized_test" value="@ParameterizedTest&#10;@MethodSource&#10;void getAlbums(String artistName, SortOrders sortOrder, List&lt;Album&gt; expected) {&#10;    //test code&#10;}&#10;&#10;//source of test cases&#10;public Stream&lt;Arguments&gt; getAlbums() {&#10;    return Stream.of(&#10;            Arguments.of(&#10;                    &quot;ZZ top&quot;,&#10;                    SortOrders.ASCENDING,&#10;                    Arrays.asList(&#10;                            new Album(114, &quot;Antenna&quot;, 23),&#10;                            new Album(392, &quot;Degüello&quot;, 23),&#10;                            new Album(301, &quot;Mescalero&quot;, 23),&#10;                            new Album(263, &quot;Recycler&quot;, 23),&#10;                            new Album(22, &quot;Rio Grande Mud&quot;, 23),&#10;                            new Album(309, &quot;Tres Hombres&quot;, 23)&#10;                    )&#10;            )&#10;    );&#10;}&#10;" description="" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+  <template name="sf_expression" value="String.format(&quot;$1$&quot;, $1Item$)$END$" description="String formatter as an Expression" toReformat="false" toShortenFQNames="true">
+    <variable name="1" expression="" defaultValue="&quot;%s&quot;" alwaysStopAt="true" />
+    <variable name="1Item" expression="variableOfType(&quot;&quot;)" defaultValue="&quot;someVariable&quot;" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+    </context>
+  </template>
+  <template name="sf_statement" value="String.format(&quot;$1$&quot;, $1Item$);&#10;$END$" description="String formatter statement" toReformat="false" toShortenFQNames="true">
+    <variable name="1" expression="" defaultValue="&quot;%s&quot;" alwaysStopAt="true" />
+    <variable name="1Item" expression="variableOfType(&quot;&quot;)" defaultValue="&quot;EXPR&quot;" alwaysStopAt="false" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="sql_transaction" value="//this is the main outline of a transaction&#10;//insertAlbum and insertArtist follow same structure&#10;//as insertSong and represent individual SQL PreparedStatements&#10;public boolean addSong(int track, String title, String albumName, String artistName) {&#10;    boolean toReturn = true;&#10;    try {&#10;        conn.setAutoCommit(false);&#10;        int artistId = insertArtist(artistName);&#10;        int albumId = insertAlbum(albumName, artistId);&#10;        int songId = insertSong(track, title, albumId);&#10;&#10;        if (songId &gt; 0 &amp;&amp; artistId &gt; 0 &amp;&amp; songId &gt; 0) {&#10;            conn.commit();&#10;        } else toReturn = false;&#10;    } catch (Exception sqlException) {&#10;        System.out.println(&quot;Error adding song: &quot; + sqlException.getMessage());&#10;        try {&#10;            conn.rollback();&#10;        } catch (SQLException throwables) {&#10;            System.out.println(&quot;Error rolling back changes: &quot; + sqlException.getMessage());&#10;        }&#10;    } finally {&#10;        try {&#10;            conn.setAutoCommit(true);&#10;        } catch (SQLException e) {&#10;            e.printStackTrace();&#10;        }&#10;    }&#10;    return toReturn;&#10;}&#10;&#10;private int insertSong(int track, String title, int album) throws SQLException {&#10;    querySong.setString(1, title.trim());&#10;    querySong.setInt(2, album);&#10;    querySong.setInt(3, track);&#10;    ResultSet resultSet = querySong.executeQuery();&#10;    if (resultSet.next()) {&#10;        return -1;&#10;    } else {&#10;        insertIntoSongs.setInt(1, track);&#10;        insertIntoSongs.setString(2, title);&#10;        insertIntoSongs.setInt(3, album);&#10;        int numberOfColumnsAffected = insertIntoSongs.executeUpdate();&#10;        if (numberOfColumnsAffected != 1) throw new SQLException(&quot;Unable to update insertIntoSongs&quot;);&#10;&#10;        ResultSet generatedKeys = insertIntoSongs.getGeneratedKeys();&#10;        if (generatedKeys.next()) return generatedKeys.getInt(1);&#10;        throw new SQLException(&quot;Unable to get generatedKeys from insertIntoSongs&quot;);&#10;    }&#10;}" description="Transactions in SQL" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+</templateSet>

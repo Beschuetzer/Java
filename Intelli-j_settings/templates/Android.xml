@@ -1,0 +1,26 @@
+<templateSet group="Android">
+  <template name="junit_assert-throws" value="assertThrows($className$.class, () -&gt; {&#10;    $END$&#10;    fail(&quot;Should have thrown $className$&quot;);&#10;    &#10;    //older version use try/catch but don't do anything in catch for exception looking to throw&#10;});" description="How to use assertThrows" toReformat="false" toShortenFQNames="true">
+    <variable name="className" expression="" defaultValue="&quot;IllegalArgumentException&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="sqlite_query" value="ResultSet results = statement.executeQuery(&quot;$query$&quot;);&#10;while (results.next()) {&#10;    System.out.println(results.getString(&quot;name&quot;) + &quot; &quot; +&#10;            results.getInt(&quot;phone&quot;) + &quot; &quot; +&#10;            results.getString(&quot;email&quot;));&#10;}&#10;results.close();" description="Querying SQLite DB" toReformat="false" toShortenFQNames="true">
+    <variable name="query" expression="" defaultValue="&quot;SELECT * FROM contacts&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_EXPRESSION" value="true" />
+      <option name="JAVA_STATEMENT" value="true" />
+    </context>
+  </template>
+  <template name="enum_full" value="$access$ enum $enumName$ {&#10;    $type1$(&quot;$type1Value$&quot;),&#10;    $type2$(&quot;$type2Value$&quot;);&#10;    &#10;    public String value;&#10;&#10;    $enumName$(String value) {&#10;        this.value = value;&#10;    }&#10;}" description="Creating Enums with values" toReformat="false" toShortenFQNames="true">
+    <variable name="access" expression="" defaultValue="&quot;public&quot;" alwaysStopAt="true" />
+    <variable name="enumName" expression="" defaultValue="&quot;JoinTypes&quot;" alwaysStopAt="true" />
+    <variable name="type1" expression="" defaultValue="&quot;INNER&quot;" alwaysStopAt="true" />
+    <variable name="type1Value" expression="" defaultValue="&quot;INNER&quot;" alwaysStopAt="true" />
+    <variable name="type2" expression="" defaultValue="&quot;OUTER&quot;" alwaysStopAt="true" />
+    <variable name="type2Value" expression="" defaultValue="&quot;OUTER&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="JAVA_DECLARATION" value="true" />
+    </context>
+  </template>
+</templateSet>
